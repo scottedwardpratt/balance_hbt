@@ -1,0 +1,2 @@
+/usr/bin/ar qc lib/libbalhbt.a CMakeFiles/balhbt.dir/src/BF.cc.o CMakeFiles/balhbt.dir/src/blastwave.cc.o CMakeFiles/balhbt.dir/src/decayproducts.cc.o CMakeFiles/balhbt.dir/src/stableinfo.cc.o
+/usr/bin/ranlib lib/libbalhbt.a
