@@ -196,32 +196,86 @@ src/blastwave.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/blastwave.cc.s
 .PHONY : src/blastwave.cc.s
 
-src/decayproducts.o: src/decayproducts.cc.o
+src/decay.o: src/decay.cc.o
 
-.PHONY : src/decayproducts.o
+.PHONY : src/decay.o
 
 # target to build an object file
-src/decayproducts.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/decayproducts.cc.o
-.PHONY : src/decayproducts.cc.o
+src/decay.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/decay.cc.o
+.PHONY : src/decay.cc.o
 
-src/decayproducts.i: src/decayproducts.cc.i
+src/decay.i: src/decay.cc.i
 
-.PHONY : src/decayproducts.i
+.PHONY : src/decay.i
 
 # target to preprocess a source file
-src/decayproducts.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/decayproducts.cc.i
-.PHONY : src/decayproducts.cc.i
+src/decay.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/decay.cc.i
+.PHONY : src/decay.cc.i
 
-src/decayproducts.s: src/decayproducts.cc.s
+src/decay.s: src/decay.cc.s
 
-.PHONY : src/decayproducts.s
+.PHONY : src/decay.s
 
 # target to generate assembly for a file
-src/decayproducts.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/decayproducts.cc.s
-.PHONY : src/decayproducts.cc.s
+src/decay.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/decay.cc.s
+.PHONY : src/decay.cc.s
+
+src/hbtcalc.o: src/hbtcalc.cc.o
+
+.PHONY : src/hbtcalc.o
+
+# target to build an object file
+src/hbtcalc.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/hbtcalc.cc.o
+.PHONY : src/hbtcalc.cc.o
+
+src/hbtcalc.i: src/hbtcalc.cc.i
+
+.PHONY : src/hbtcalc.i
+
+# target to preprocess a source file
+src/hbtcalc.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/hbtcalc.cc.i
+.PHONY : src/hbtcalc.cc.i
+
+src/hbtcalc.s: src/hbtcalc.cc.s
+
+.PHONY : src/hbtcalc.s
+
+# target to generate assembly for a file
+src/hbtcalc.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/hbtcalc.cc.s
+.PHONY : src/hbtcalc.cc.s
+
+src/hbtpart.o: src/hbtpart.cc.o
+
+.PHONY : src/hbtpart.o
+
+# target to build an object file
+src/hbtpart.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/hbtpart.cc.o
+.PHONY : src/hbtpart.cc.o
+
+src/hbtpart.i: src/hbtpart.cc.i
+
+.PHONY : src/hbtpart.i
+
+# target to preprocess a source file
+src/hbtpart.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/hbtpart.cc.i
+.PHONY : src/hbtpart.cc.i
+
+src/hbtpart.s: src/hbtpart.cc.s
+
+.PHONY : src/hbtpart.s
+
+# target to generate assembly for a file
+src/hbtpart.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/hbtpart.cc.s
+.PHONY : src/hbtpart.cc.s
 
 src/stableinfo.o: src/stableinfo.cc.o
 
@@ -265,9 +319,15 @@ help:
 	@echo "... src/blastwave.o"
 	@echo "... src/blastwave.i"
 	@echo "... src/blastwave.s"
-	@echo "... src/decayproducts.o"
-	@echo "... src/decayproducts.i"
-	@echo "... src/decayproducts.s"
+	@echo "... src/decay.o"
+	@echo "... src/decay.i"
+	@echo "... src/decay.s"
+	@echo "... src/hbtcalc.o"
+	@echo "... src/hbtcalc.i"
+	@echo "... src/hbtcalc.s"
+	@echo "... src/hbtpart.o"
+	@echo "... src/hbtpart.i"
+	@echo "... src/hbtpart.s"
 	@echo "... src/stableinfo.o"
 	@echo "... src/stableinfo.i"
 	@echo "... src/stableinfo.s"

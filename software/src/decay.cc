@@ -1,166 +1,80 @@
 #include "balhbt.h"
-#include <boost/math/special_functions/erf.hpp>
-
 using namespace std;
 
-CblastWave::CblastWave(CparameterMap &parmap,CRandy *randyset,CResList *reslistset){
-	randy=randyset;
-	reslist=reslistset;
-	Tf=parmap.getD("BW_T",100.0);
-	uperpmax=parmap.getD("BW_UPERPMAX",0.9);
-	etamax=parmap.getD("BW_ETAMAX",5.0);
-	uperpmax=parmap.getD("BW_UPERP",1.0);
-	Rperp=parmap.getD("BW_ROUT",16.0);
-	tau=parmap.getD("BW_TAU",20.0);
-	sigma_eta=parmap.getD("BW_SIGMA_ETA",0.6);
-	sigmaR=parmap.getD("BW_SIGMA_R",7.0);
-}
-
-void CblastWave::GenerateParts(vector<CResInfo *> &resinfovec,vector<CHBTPart *> &partvec){
-	vector<CHBTPart *> mothervec;
-	vector<CHBTPart *> daughtervec;
-	mothervec.clear();
-	daughtervec.clear();
-	array<CResInfo *,5> daughterresinfo;
-	CHBTPart *part;
-	int ipart0,nproducts,imother,nbodies,ibody,nparts0=resinfovec.size();
-	double mtot,Ti;
-	CResInfo *resinfo;
+void CBalHBT::GetDecayParts(CHBTPart *part,vector<CHBTPart *> &products){
+	int idaughter,ndaughters;
+	array<CResInfo *,5> dresinfo;
+	array<CHBTPart,5> daughter;
+	GetDecayResInfo(part->resinfo,ndaughters,dresinfo);
+	for(idaughter=0;idaughter<ndaughters;idaughter++){
+		daughter[idaughter].resinfo=dresinfo[idaughter];
+	}
+	Decay(part,ndaughters,daughter);
 	
-	for(ipart0=0;ipart0<nparts0;ipart0++){
-		nproducts=0;
-		resinfo=resinfovec[ipart0];
-		Ti=Tf;
-		part=new CHBTPart(resinfo);
-		randy->generate_boltzmann(resinfo->mass,Ti,part->p);
-		if(resinfo->decay){
-			mothervec.push_back(part);
-		}
-		else{
-			partvec.push_back(part);
-			nproducts+=1;
-			delete part;
-		}
-		while(mothervec.size()>0){
-			imother=mothervec.size()-1;
-			do{
-				mothervec[imother]->resinfo->DecayGetResInfoPtr(nbodies,daughterresinfo);
-				mtot=0.0;
-				for(ibody=0;ibody<nbodies;ibody++){
-					mtot+=daughterresinfo[ibody]->mass;
-				}
-			}while(mtot>mothervec[imother]->resinfo->mass);
-			for(ibody=0;ibody<nbodies;ibody++){
-				part=new CHBTPart(daughterresinfo[ibody]);
-				daughtervec.push_back(part);
-			}
-			GetDecayMomenta(mothervec[imother],nbodies,daughtervec);
-			delete mothervec[imother];
-			mothervec.pop_back();
-			for(ibody=0;ibody<nbodies;ibody++){
-				if(daughtervec[ibody]->resinfo->decay){
-					mothervec.push_back(daughtervec[ibody]);
-				}
-				else{
-					if(daughtervec[ibody]->resinfo->charge!=0 || daughtervec[ibody]->resinfo->baryon!=0 || daughtervec[ibody]->resinfo->strange!=0){
-						partvec.push_back(daughtervec[ibody]);
-						nproducts+=1;
-						delete(daughtervec[ibody]);
-					}
-					else
-						delete daughtervec[ibody];
-				}
-			}
-			daughtervec.clear();
-		}
+	for(int iproduct=0;iproduct<int(products.size());iproduct++){
+		delete products[iproduct];
+	}
+	products.resize(ndaughters);
+	for(idaughter=0;idaughter<ndaughters;idaughter++){
+		products[idaughter]->Copy(&daughter[idaughter]);
 	}
 }
 
-void CblastWave::GetXP(vector<CHBTPart *> &partvec){
-	unsigned int ipart,nparts=partvec.size();
-	FourVector u,ubar;
-	double eta,Rbar,etabar,xbar,ybar,g1,g2;
-	CHBTPart *part;
-	randy->ran_gauss2(ubar[1],ubar[2]);
-	etabar=etamax*(1.0-2.0*randy->ran());
-	randy->ran_gauss2(g1,g2);
-	Rbar=sqrt(Rperp*Rperp-sigmaR*sigmaR);
-	xbar=Rbar*g1;
-	ybar=Rbar*g2;
-	for(ipart=0;ipart<nparts;ipart++){
-		part=partvec[ipart];
-		randy->ran_gauss2(g1,g2);
-		part->x[1]=xbar+sigmaR*g1;
-		part->x[2]=ybar+sigmaR*g2;
-		eta=etabar+sigma_eta*randy->ran_gauss();
-		while(eta<etamax)
-			eta+=2.0*etamax;
-		while(eta>etamax)
-			eta-=2.0*etamax;
-		part->x[0]=tau*cosh(eta);
-		part->x[3]=tau*sinh(eta);
-		u[1]=uperpmax*part->x[1]/Rperp;
-		u[2]=uperpmax*part->x[2]/Rperp;
-		u[3]=sqrt(1.0+u[1]*u[1]+u[2]*u[2])*sinh(eta);
-		u[0]=sqrt(1.0+u[1]*u[1]+u[2]*u[2]+u[3]*u[3]);
-		randy->generate_boltzmann(part->resinfo->mass,Tf,part->p);
-		Misc::Boost(u,part->p,part->p);
+void CBalHBT::GetDecayResInfo(CResInfo *resinfo0,int &ndaughters,array<CResInfo *,5> &daughter){
+	//resinfo0->decay=false; //this turns off decays
+	int idaughtertemp;
+	int nmothers,imother,ndaughterstemp;
+	array <CResInfo *,5> mother;
+	array <CResInfo *,5> daughtertemp;
+	/** Decay the i-particles */
+	if(resinfo0->decay){
+		mother[0]=resinfo0;
+		nmothers=1;
+		ndaughters=0;
+	}
+	else{
+		ndaughters=1;
+		nmothers=0;
+		daughter[0]=resinfo0;
+	}
+	imother=0;
+	while(imother<nmothers){
+		mother[imother]->DecayGetResInfoPtr(ndaughterstemp,daughtertemp);
+		for(idaughtertemp=0;idaughtertemp<ndaughterstemp;idaughtertemp++){
+			if(daughtertemp[idaughtertemp]->decay){
+				mother[nmothers]=daughtertemp[idaughtertemp];
+				nmothers+=1;
+			}
+			else{
+				daughter[ndaughters]=daughtertemp[idaughtertemp];
+				ndaughters+=1;
+			}
+		}
+		imother+=1;
 	}
 }
 
-void CblastWave::GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *> &daughtervec){
-	int ibody,jbody,alpha;
-	double mass[6],mtot,mprime,wmaxmass,wmass,mguess,kmaxmass,kguess;
-	CHBTPart *dptr;
+void CBalHBT::Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter){
+	int ibody,alpha;
+	double mass[6],mtot;
+
 	FourVector *p[6],kprime,qprime,pprime,u12,pp,u;
 	double q,weight,wmax,sthet,cthet,phi;
 	double p3mag,kprimemax,p3max,ppmax,kprimemax2,kprimemag2,qprimemax,qprimemax2,qprimemag2,ppmag;
 	double e1prime,e2prime,e3prime,e4prime,e1max,e2max,e3max,e4max;
 
-	mass[0]=mother->resinfo->mass;
+	mass[0]=mother->GetMass();
 	p[0]=&mother->p;
-
+	
 	/* Create daughter objects */
 	mtot=0.0;
 	for(ibody=0;ibody<nbodies;ibody++){
-		mass[ibody+1]=daughtervec[ibody]->resinfo->mass;
+		mass[ibody+1]=daughter[ibody].resinfo->mass;
 	}
 	for(ibody=0;ibody<nbodies;ibody++){
-		if(daughtervec[ibody]->resinfo->decay){
-			//generate mass according to density of states, ~ rho(m)*k*E1*E2
-			mprime=0;
-			for(jbody=0;jbody<nbodies;jbody++){
-				if(jbody!=ibody)
-					mprime+=mass[jbody+1];
-			}
-			kmaxmass=pow(mass[0],4)+pow(mprime,4)-2.0*mass[0]*mass[0]*mprime*mprime;
-			kmaxmass=0.5*sqrt(kmaxmass)/mass[0];
-			wmaxmass=kmaxmass*kmaxmass*sqrt(kmaxmass*kmaxmass+mprime*mprime);
-			do{
-				mguess=daughtervec[ibody]->resinfo->mass;
-				if(mass[0]>mguess+mprime){
-					kguess=pow(mass[0],4)+pow(mprime,4)+pow(mguess,4)-2.0*mass[0]*mass[0]*mprime*mprime
-						-2.0*mass[0]*mass[0]*mguess*mguess-2.0*mguess*mguess*mprime*mprime;
-					kguess=0.5*sqrt(kguess)/mass[0];
-					wmass=kguess*sqrt(mprime*mprime+kguess*kguess)*sqrt(mguess*mguess+kguess*kguess);
-				}
-				else
-					wmass=-1.0;
-			}while(wmass<0.0 || randy->ran()>wmass/wmaxmass);
-			if(wmass>wmaxmass){
-				printf("In  CB3D::Decay, wmass=%g > wmaxmass=%g\n",wmass,wmaxmass);
-				printf("kguess=%g, mguess=%g, mprime=%g, E1=%g, E2=%g, E1+E2=%g=?%g\n",kguess,mguess,mprime,
-				sqrt(kguess*kguess+mguess*mguess),sqrt(kguess*kguess+mprime*mprime),
-				sqrt(kguess*kguess+mguess*mguess)+sqrt(kguess*kguess+mprime*mprime),mass[0]);
-				exit(1);
-			}
-			mass[ibody+1]=mguess;
-		}
-		else{
-			mass[ibody+1]=daughtervec[ibody]->resinfo->mass;
-		}
+		mass[ibody+1]=daughter[ibody].resinfo->mass;
 		mtot+=mass[ibody+1];
-		p[ibody+1]=&daughtervec[ibody]->p;
+		p[ibody+1]=&daughter[ibody].p;
 	}
 
 	/* TWO-BODY DECAYS */
@@ -208,7 +122,6 @@ void CblastWave::GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *
 			(*p[3])[1]=p3mag*sthet*cos(phi);
 			(*p[3])[2]=p3mag*sthet*sin(phi);
 			(*p[3])[0]=sqrt(p3mag*p3mag+mass[3]*mass[3]);
-			//e12=sqrt(pow(e1prime+e2prime,2)+p3mag*p3mag);
 			for(alpha=1;alpha<4;alpha++)
 				u12[alpha]=-(*p[3])[alpha]/(e1prime+e2prime);
 			u12[0]=sqrt(1.0+u12[1]*u12[1]+u12[2]*u12[2]+u12[3]*u12[3]);
@@ -226,14 +139,14 @@ void CblastWave::GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *
 		kprimemax=sqrt(kprimemax2);
 		qprimemax2=Misc::triangle(mass[0]-mass[1]-mass[2],mass[3],mass[4]);
 		qprimemax=sqrt(qprimemax2);
-
+		
 		ppmax=sqrt(Misc::triangle(mass[0],mass[1]+mass[2],mass[3]+mass[4]));
 		e1max=sqrt(pow(mass[1],2)+ppmax*ppmax);
 		e2max=sqrt(pow(mass[2],2)+ppmax*ppmax);
 		e3max=sqrt(pow(mass[3],2)+ppmax*ppmax);
 		e4max=sqrt(pow(mass[4],2)+ppmax*ppmax);
 		wmax=ppmax*pow(e1max+e2max,2)*pow(e3max+e4max,2)/((mass[1]+mass[2])*(mass[3]+mass[4]));
-
+		
 		do{
 			TRY_AGAIN_4:
 			do{
@@ -252,7 +165,7 @@ void CblastWave::GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *
 			} while(qprimemag2>qprimemax2);
 			e3prime=sqrt(qprimemag2+mass[3]*mass[3]);
 			e4prime=sqrt(qprimemag2+mass[4]*mass[4]);
-
+			
 			if(e1prime+e2prime+e3prime+e4prime>mass[0]) goto TRY_AGAIN_4;
 
 			ppmag=Misc::triangle(mass[0],e1prime+e2prime,e3prime+e4prime);
@@ -291,17 +204,15 @@ void CblastWave::GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *
 			}
 			else weight=0.0;
 		} while(randy->ran()>weight/wmax);
-
 	}
 
 	/* Boost the new particles */
-	for(alpha=0;alpha<4;alpha++)
-		u[alpha]=mother->p[alpha]/mother->resinfo->mass;
+	for(alpha=0;alpha<4;alpha++) u[alpha]=mother->p[alpha]/mass[0];
 	for(ibody=0;ibody<nbodies;ibody++){
-		dptr=daughtervec[ibody];
 		Misc::lorentz(u,*p[ibody+1],pprime);
-		for(alpha=0;alpha<4;alpha++)
-			dptr->p[alpha]=pprime[alpha];
+		for(alpha=0;alpha<4;alpha++){
+			daughter[ibody].p[alpha]=pprime[alpha];
+			daughter[ibody].x[alpha]=mother->x[alpha];
+		}
 	}
-
 }

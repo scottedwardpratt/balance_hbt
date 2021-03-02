@@ -2,7 +2,7 @@
 using namespace std;
 double CStableInfo::denstot=0.0;
 
-void GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnorm){
+void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnorm){
 	int id,id1,id2,NID,ires,pid1,pid2;
 	double weight;
 	CStableInfo *stableinfo;
@@ -69,7 +69,7 @@ void GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stable
 	
 }
 
-void GetPart(vector<CStableInfo *> &stablevec,unsigned int &id){
+void CBalHBT::GetPart(vector<CStableInfo *> &stablevec,unsigned int &id){
 	id=0;
 	double denstarget=CStableInfo::denstot*CResInfo::randy->ran();
 	double netdens=stablevec[id]->density;

@@ -15,6 +15,26 @@
 
 using namespace std;
 
+class CHBTPart;
+class Cacceptance;
+class CStableInfo;
+class CblastWave;
+class CHBTCalc;
+class CBF;
+
+class CBalHBT{
+public:
+	CBalHBT(){
+		randy=new CRandy(1234);
+	};
+	CRandy *randy;
+	void GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnormweight);
+	void GetDecayParts(CHBTPart *part,vector<CHBTPart *> &products);
+	void GetDecayResInfo(CResInfo *resinfo0,int &ndaughters,array<CResInfo *,5> &daughter);
+	void Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter);
+	void GetPart(vector<CStableInfo *> &stablevec,unsigned int &id);
+};
+
 class CHBTPart{
 public:
 	FourVector p;
@@ -26,6 +46,10 @@ public:
 	CHBTPart(CResInfo *resinfoset){
 		resinfo=resinfoset;
 	}
+	void BjBoost(double dely);
+	void Copy(CHBTPart *);
+	double GetMass();
+	double GetRapidity();
 };
 
 class Cacceptance{
@@ -55,13 +79,7 @@ public:
 	}
 	static double denstot;
 };
-
-void GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnormweight);
-
-void GetProducts(CResInfo *resinfo0,unsigned int &ndaughters,array<CResInfo *,10> &daughter);
-
-void GetPart(vector<CStableInfo *> &stablevec,unsigned int &id);
-
+	
 class CblastWave{
 public:
 	CRandy *randy;
@@ -78,9 +96,7 @@ public:
 
 class CHBTCalc{
 public:
-	double GetPsiSquared(CHBTPart *part,CHBTPart *partprime){
-		return 1.0;
-	}
+	double GetPsiSquared(CHBTPart *part,CHBTPart *partprime);
 };
 
 class CBF{
@@ -115,7 +131,7 @@ public:
 	vector<double> DENOMphi_Kp;
 	vector<double> DENOMphi_pp;
 	
-	CBF(int NYBINS,int NPHIBINS);
+	CBF(CparameterMap &parmap);
 	void Zero();
 	
 	void Increment(vector<CHBTPart *> &partvec,vector<CHBTPart *> &partvecprime,double weight);	
