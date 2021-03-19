@@ -24,7 +24,7 @@ int main(int argc,char *argv[]){
 	vector<CStableInfo *> stablevec;
 	unsigned int id,id1,id2,id1prime,id2prime,NID,i,iprod;
 	CHBTPart part1,part2,part1prime,part2prime;
-	long long int imc,NMC=10000000;
+	long long int imc,NMC=1000;
 
 	balhbt->reslist->Tf=Tchem;
 	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,
@@ -52,7 +52,7 @@ int main(int argc,char *argv[]){
 	
 	for(imc=0;imc<NMC;imc++){
 		if(imc%(NMC/10)==0)
-			printf("finished %d percent\n",lrint(100.0*imc/double(NMC)));
+			printf("finished %ld percent\n",lrint(100.0*imc/double(NMC)));
 		balhbt->GetPart(stablevec,id1);
 		balhbt->GetPart(stablevec,id2);
 		balhbt->GetPart(stablevec,id1prime);
@@ -72,7 +72,6 @@ int main(int argc,char *argv[]){
 		balhbt->GetDecayProducts(partprimevec[1],productprimevec[1]);
 						
 		balhbt->bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight);
-		balhbt->bf->WriteResults("results");
 		
 		for(i=0;i<2;i++){
 			for(iprod=0;iprod<productvec[i].size();iprod++)
