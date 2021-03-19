@@ -24,7 +24,7 @@ int main(int argc,char *argv[]){
 	vector<CStableInfo *> stablevec;
 	unsigned int id,id1,id2,id1prime,id2prime,NID,i,iprod;
 	CHBTPart part1,part2,part1prime,part2prime;
-	long long int imc,NMC=1000;
+	long long int imc,NMC=10000;
 
 	balhbt->reslist->Tf=Tchem;
 	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,
@@ -49,6 +49,8 @@ int main(int argc,char *argv[]){
 	}
 	vector<vector<CHBTPart *>> productvec(2);
 	vector<vector<CHBTPart *>> productprimevec(2);
+	
+	printf("check\n");
 	
 	for(imc=0;imc<NMC;imc++){
 		if(imc%(NMC/10)==0)
