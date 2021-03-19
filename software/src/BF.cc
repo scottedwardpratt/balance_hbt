@@ -200,11 +200,13 @@ void CBF::WriteResults(int run_number){
 	FILE *fptrphi=fopen(filename,"w");
 	for(int iy=0;iy<NYBINS;iy++){
 		fprintf(fptry,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iy+0.5)*DELY,
-		BFy_pipi[iy],BFy_piK[iy],BFy_pip[iy],BFy_KK[iy],BFy_Kp[iy],BFy_pp[iy]);
+		BFy_pipi[iy]/DENOMy_pipi[iy],BFy_piK[iy]/DENOMy_piK[iy],BFy_pip[iy]/DENOMy_pip[iy],
+		BFy_KK[iy]/DENOMy_KK[iy],BFy_Kp[iy]/DENOMy_Kp[iy],BFy_pp[iy]/DENOMy_pp[iy]);
 	}
 	for(int iphi=0;iphi<NPHIBINS;iphi++){
 		fprintf(fptrphi,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iphi+0.5)*DELPHI,
-		BFphi_pipi[iphi],BFphi_piK[iphi],BFphi_pip[iphi],BFphi_KK[iphi],BFphi_Kp[iphi],BFphi_pp[iphi]);
+		BFphi_pipi[iphi]/DENOMphi_pipi[iphi],BFphi_piK[iphi]/DENOMphi_piK[iphi],BFphi_pip[iphi]/DENOMphi_pip[iphi],
+		BFphi_KK[iphi]/DENOMphi_KK[iphi],BFphi_Kp[iphi]/DENOMphi_Kp[iphi],BFphi_pp[iphi]/DENOMphi_pp[iphi]);
 	}
 	fclose(fptry);
 	fclose(fptrphi);
