@@ -13,7 +13,6 @@ int main(int argc,char *argv[]){
 	else{
 		run_number=atoi(argv[1]);
 	}
-	
 	CparameterMap parmap;
 	parmap.ReadParsFromFile("parameters/respars.txt");
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
