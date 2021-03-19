@@ -1,22 +1,41 @@
 #include "balhbt.h"
 using namespace std;
 
-void CBalHBT::GetDecayParts(CHBTPart *part,vector<CHBTPart *> &products){
+void CBalHBT::GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products){
 	int idaughter,ndaughters;
-	array<CResInfo *,5> dresinfo;
-	array<CHBTPart,5> daughter;
-	GetDecayResInfo(part->resinfo,ndaughters,dresinfo);
-	for(idaughter=0;idaughter<ndaughters;idaughter++){
-		daughter[idaughter].resinfo=dresinfo[idaughter];
-	}
-	Decay(part,ndaughters,daughter);
-	
 	for(int iproduct=0;iproduct<int(products.size());iproduct++){
 		delete products[iproduct];
 	}
+	products.clear();
+	
+	array<CResInfo *,5> dresinfo;
+	array<CHBTPart,5> daughter;
+	GetDecayResInfo(part->resinfo,ndaughters,dresinfo);
+	if(part->resinfo->decay){
+		for(idaughter=0;idaughter<ndaughters;idaughter++){
+			daughter[idaughter].resinfo=dresinfo[idaughter];
+		}
+		Decay(part,ndaughters,daughter);
+	}
+	else{
+		ndaughters=1;
+	}
+	
 	products.resize(ndaughters);
+	if(ndaughters>1){
+		for(idaughter=0;idaughter<ndaughters;idaughter++){
+			products[idaughter]=new CHBTPart();
+			products[idaughter]->Copy(&daughter[idaughter]);
+		}
+	}
+	else{
+		products[0]=new CHBTPart();
+		products[0]->Copy(part);
+	}
 	for(idaughter=0;idaughter<ndaughters;idaughter++){
-		products[idaughter]->Copy(&daughter[idaughter]);
+		if(products[idaughter]->p[0]!=products[idaughter]->p[0]){
+			printf("In GetDecayProducts, p0=NaN!\n");
+		}
 	}
 }
 
@@ -211,6 +230,10 @@ void CBalHBT::Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter){
 	for(ibody=0;ibody<nbodies;ibody++){
 		Misc::lorentz(u,*p[ibody+1],pprime);
 		for(alpha=0;alpha<4;alpha++){
+			if(pprime[alpha]!=pprime[alpha]){
+				printf("In Decay, pprime is NaN!\n");
+				exit(1);
+			}
 			daughter[ibody].p[alpha]=pprime[alpha];
 			daughter[ibody].x[alpha]=mother->x[alpha];
 		}

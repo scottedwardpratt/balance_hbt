@@ -12,9 +12,7 @@ INPUT_OSCAR_BASE_DIRECTORY ppbar/scottrun/runss/smash_output/AuAu19.6/
 OUTSIDELONG_DIRECTION_CUT 0.9
 OSCAR_NRUNS 24
 QARRAYFILENAME crap.txt
-DELQ 2.0
-NQMAX 50
 NEVENTS_MAX 200
-NMC 100000000
+NMC 10000
 RANSEED -12345
 QINVTEST 25.0       #for determining if momenta are sufficiently close for HBT calc

@@ -53,10 +53,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/Cellar/cmake/3.19.5/bin/cmake
+CMAKE_COMMAND = /usr/local/Cellar/cmake/3.19.7/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/Cellar/cmake/3.19.5/bin/cmake -E rm -f
+RM = /usr/local/Cellar/cmake/3.19.7/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -89,9 +89,22 @@ CMakeFiles/balhbt.dir/src/BF.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/balhbt.dir/src/BF.cc.s"
 	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scottpratt/git/balance_hbt/software/src/BF.cc -o CMakeFiles/balhbt.dir/src/BF.cc.s
 
+CMakeFiles/balhbt.dir/src/balhbt.cc.o: CMakeFiles/balhbt.dir/flags.make
+CMakeFiles/balhbt.dir/src/balhbt.cc.o: src/balhbt.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/balhbt.dir/src/balhbt.cc.o"
+	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/balhbt.dir/src/balhbt.cc.o -c /Users/scottpratt/git/balance_hbt/software/src/balhbt.cc
+
+CMakeFiles/balhbt.dir/src/balhbt.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/balhbt.dir/src/balhbt.cc.i"
+	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/scottpratt/git/balance_hbt/software/src/balhbt.cc > CMakeFiles/balhbt.dir/src/balhbt.cc.i
+
+CMakeFiles/balhbt.dir/src/balhbt.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/balhbt.dir/src/balhbt.cc.s"
+	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/scottpratt/git/balance_hbt/software/src/balhbt.cc -o CMakeFiles/balhbt.dir/src/balhbt.cc.s
+
 CMakeFiles/balhbt.dir/src/blastwave.cc.o: CMakeFiles/balhbt.dir/flags.make
 CMakeFiles/balhbt.dir/src/blastwave.cc.o: src/blastwave.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/balhbt.dir/src/blastwave.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/balhbt.dir/src/blastwave.cc.o"
 	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/balhbt.dir/src/blastwave.cc.o -c /Users/scottpratt/git/balance_hbt/software/src/blastwave.cc
 
 CMakeFiles/balhbt.dir/src/blastwave.cc.i: cmake_force
@@ -104,7 +117,7 @@ CMakeFiles/balhbt.dir/src/blastwave.cc.s: cmake_force
 
 CMakeFiles/balhbt.dir/src/decay.cc.o: CMakeFiles/balhbt.dir/flags.make
 CMakeFiles/balhbt.dir/src/decay.cc.o: src/decay.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/balhbt.dir/src/decay.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/balhbt.dir/src/decay.cc.o"
 	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/balhbt.dir/src/decay.cc.o -c /Users/scottpratt/git/balance_hbt/software/src/decay.cc
 
 CMakeFiles/balhbt.dir/src/decay.cc.i: cmake_force
@@ -117,7 +130,7 @@ CMakeFiles/balhbt.dir/src/decay.cc.s: cmake_force
 
 CMakeFiles/balhbt.dir/src/hbtcalc.cc.o: CMakeFiles/balhbt.dir/flags.make
 CMakeFiles/balhbt.dir/src/hbtcalc.cc.o: src/hbtcalc.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/balhbt.dir/src/hbtcalc.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/balhbt.dir/src/hbtcalc.cc.o"
 	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/balhbt.dir/src/hbtcalc.cc.o -c /Users/scottpratt/git/balance_hbt/software/src/hbtcalc.cc
 
 CMakeFiles/balhbt.dir/src/hbtcalc.cc.i: cmake_force
@@ -130,7 +143,7 @@ CMakeFiles/balhbt.dir/src/hbtcalc.cc.s: cmake_force
 
 CMakeFiles/balhbt.dir/src/hbtpart.cc.o: CMakeFiles/balhbt.dir/flags.make
 CMakeFiles/balhbt.dir/src/hbtpart.cc.o: src/hbtpart.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/balhbt.dir/src/hbtpart.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/balhbt.dir/src/hbtpart.cc.o"
 	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/balhbt.dir/src/hbtpart.cc.o -c /Users/scottpratt/git/balance_hbt/software/src/hbtpart.cc
 
 CMakeFiles/balhbt.dir/src/hbtpart.cc.i: cmake_force
@@ -143,7 +156,7 @@ CMakeFiles/balhbt.dir/src/hbtpart.cc.s: cmake_force
 
 CMakeFiles/balhbt.dir/src/stableinfo.cc.o: CMakeFiles/balhbt.dir/flags.make
 CMakeFiles/balhbt.dir/src/stableinfo.cc.o: src/stableinfo.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/balhbt.dir/src/stableinfo.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/balhbt.dir/src/stableinfo.cc.o"
 	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/balhbt.dir/src/stableinfo.cc.o -c /Users/scottpratt/git/balance_hbt/software/src/stableinfo.cc
 
 CMakeFiles/balhbt.dir/src/stableinfo.cc.i: cmake_force
@@ -157,6 +170,7 @@ CMakeFiles/balhbt.dir/src/stableinfo.cc.s: cmake_force
 # Object files for target balhbt
 balhbt_OBJECTS = \
 "CMakeFiles/balhbt.dir/src/BF.cc.o" \
+"CMakeFiles/balhbt.dir/src/balhbt.cc.o" \
 "CMakeFiles/balhbt.dir/src/blastwave.cc.o" \
 "CMakeFiles/balhbt.dir/src/decay.cc.o" \
 "CMakeFiles/balhbt.dir/src/hbtcalc.cc.o" \
@@ -167,6 +181,7 @@ balhbt_OBJECTS = \
 balhbt_EXTERNAL_OBJECTS =
 
 lib/libbalhbt.a: CMakeFiles/balhbt.dir/src/BF.cc.o
+lib/libbalhbt.a: CMakeFiles/balhbt.dir/src/balhbt.cc.o
 lib/libbalhbt.a: CMakeFiles/balhbt.dir/src/blastwave.cc.o
 lib/libbalhbt.a: CMakeFiles/balhbt.dir/src/decay.cc.o
 lib/libbalhbt.a: CMakeFiles/balhbt.dir/src/hbtcalc.cc.o
@@ -174,7 +189,7 @@ lib/libbalhbt.a: CMakeFiles/balhbt.dir/src/hbtpart.cc.o
 lib/libbalhbt.a: CMakeFiles/balhbt.dir/src/stableinfo.cc.o
 lib/libbalhbt.a: CMakeFiles/balhbt.dir/build.make
 lib/libbalhbt.a: CMakeFiles/balhbt.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library lib/libbalhbt.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/scottpratt/git/balance_hbt/software/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX static library lib/libbalhbt.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/balhbt.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/balhbt.dir/link.txt --verbose=$(VERBOSE)
 

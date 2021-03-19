@@ -58,10 +58,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/Cellar/cmake/3.19.5/bin/cmake
+CMAKE_COMMAND = /usr/local/Cellar/cmake/3.19.7/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/Cellar/cmake/3.19.5/bin/cmake -E rm -f
+RM = /usr/local/Cellar/cmake/3.19.7/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -78,7 +78,7 @@ CMAKE_BINARY_DIR = /Users/scottpratt/git/balance_hbt/software
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/local/Cellar/cmake/3.19.5/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/Cellar/cmake/3.19.7/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -89,7 +89,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/local/Cellar/cmake/3.19.5/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/Cellar/cmake/3.19.7/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -168,6 +168,33 @@ src/BF.s: src/BF.cc.s
 src/BF.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/BF.cc.s
 .PHONY : src/BF.cc.s
+
+src/balhbt.o: src/balhbt.cc.o
+
+.PHONY : src/balhbt.o
+
+# target to build an object file
+src/balhbt.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/balhbt.cc.o
+.PHONY : src/balhbt.cc.o
+
+src/balhbt.i: src/balhbt.cc.i
+
+.PHONY : src/balhbt.i
+
+# target to preprocess a source file
+src/balhbt.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/balhbt.cc.i
+.PHONY : src/balhbt.cc.i
+
+src/balhbt.s: src/balhbt.cc.s
+
+.PHONY : src/balhbt.s
+
+# target to generate assembly for a file
+src/balhbt.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/balhbt.dir/build.make CMakeFiles/balhbt.dir/src/balhbt.cc.s
+.PHONY : src/balhbt.cc.s
 
 src/blastwave.o: src/blastwave.cc.o
 
@@ -316,6 +343,9 @@ help:
 	@echo "... src/BF.o"
 	@echo "... src/BF.i"
 	@echo "... src/BF.s"
+	@echo "... src/balhbt.o"
+	@echo "... src/balhbt.i"
+	@echo "... src/balhbt.s"
 	@echo "... src/blastwave.o"
 	@echo "... src/blastwave.i"
 	@echo "... src/blastwave.s"

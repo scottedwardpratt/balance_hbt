@@ -1,10 +1,12 @@
 #include "balhbt.h"
 using namespace std;
 
-CBF::CBF(CparameterMap &parmap){
-	NYBINS=parmap.getD("BF_NYBINS",20);
-	NPHIBINS=parmap.getD("BF_NPHIBINS",18);
-	DELY=parmap.getD("BF_DELY",0.1);
+CBF::CBF(CparameterMap *parmapin){
+	parmap=parmapin;
+
+	NYBINS=parmap->getD("BF_NYBINS",20);
+	NPHIBINS=parmap->getD("BF_NPHIBINS",18);
+	DELY=parmap->getD("BF_DELY",0.1);
 	BFy_pipi.resize(NYBINS);
 	BFy_piK.resize(NYBINS);
 	BFy_pip.resize(NYBINS);
@@ -71,38 +73,62 @@ void CBF::Zero(){
 	
 }
 
-void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<CHBTPart *> &productvec,
-vector<CHBTPart *> &partprimevec,vector<CHBTPart *> &productprimevec,double balweight){
-	double dely,dely0,delytarget,hbtweight;
-	unsigned int i,iprime,j,k;
+void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
+vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight){
+	double hbtweight;
+	double psisquared1,psisquared2,psisquared3,psisquared4;
+	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
-	for(i=0;i<productvec.size();i++){
-		part=productvec[i];
-		for(iprime=0;iprime<productprimevec.size();iprime++){
-			partprime=productprimevec[iprime];
-			dely0=part.GetRapidity()-partprime.GetRapidity();
-			delytarget=YMAX*(1.0-2.0*randy->ran());
-			dely=delytarget-dely0;
-			for(j=0;j<2;j++){
-				partvec[j].BjBoost(dely);
+		
+	psisquared1=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0]);
+	psisquared2=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1]);
+	psisquared3=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0]);
+	psisquared4=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1]);
+	hbtweight=psisquared1*psisquared2*psisquared3*psisquared4; 
+	if(psisquared1!=psisquared1){
+		printf("_____ FAILURE ______\n");
+		partvec[0]->Print();
+		partprimevec[0]->Print();
+		exit(1);
+	}
+	if(psisquared2!=psisquared2){
+		printf("_____ FAILURE ______\n");
+		partvec[0]->Print();
+		partprimevec[1]->Print();
+		exit(1);
+	}
+	if(psisquared3!=psisquared3){
+		printf("_____ FAILURE ______\n");
+		partvec[1]->Print();
+		partprimevec[0]->Print();
+		exit(1);
+	}
+	if(psisquared4!=psisquared4){
+		printf("_____ FAILURE ______\n");
+		partvec[1]->Print();
+		partprimevec[1]->Print();
+		exit(1);
+	}
+
+	for(i=0;i<2;i++){
+		for(iprod=0;iprod<productvec[i].size();iprod++){
+			part=productvec[i][iprod];
+			for(iprime=0;iprime<2;iprime++){
+				for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
+					partprime=productprimevec[iprime][iprodprime];
+					Increment(part,partprime,balweight*hbtweight);
+				}
 			}
-			for(k=0;k<productvec.size();k++){
-				productvec[k].BjBoost(dely);
-			}
-			hbtweight=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0])
-				*hbtcalc->GetPsiSquared(partvec[0],partprimevec[1])
-					hbtcalc->GetPsiSquared(partvec[1],partprimevec[0])
-						hbtcalc->GetPsiSquared(partvec[1],partprimevec[1]);
-			Increment(part,partprime,balweight*hbtweight);
 		}
 	}
 }
 
-void CBF::Increment(CHBTPart *part,CHBTPart partprime,double weight){
+void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 	int iy,iphi,pid,pidprime;
 	double y,yprime,phi,phiprime,dy,dphi,qqprime;
 	pid=part->resinfo->code;
 	pidprime=partprime->resinfo->code;
+	
 	pid=abs(pid);
 	pidprime=abs(pidprime);
 	if((pid==211 || pid==321 || pid==2212) && (pidprime==211 || pidprime==321 || pidprime==2212)){
@@ -163,5 +189,23 @@ void CBF::Increment(CHBTPart *part,CHBTPart partprime,double weight){
 				DENOMphi_pp[iphi]+=1.0;
 			}
 		}
-	}	
+	}
+}
+
+void CBF::WriteResults(int run_number){
+	char filename[100];
+	sprintf(filename,"results/bf%d_y.dat",run_number);
+	FILE *fptry=fopen(filename,"w");
+	sprintf(filename,"results/bf%d_phi.dat",run_number);
+	FILE *fptrphi=fopen(filename,"w");
+	for(int iy=0;iy<NYBINS;iy++){
+		fprintf(fptry,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iy+0.5)*DELY,
+		BFy_pipi[iy],BFy_piK[iy],BFy_pip[iy],BFy_KK[iy],BFy_Kp[iy],BFy_pp[iy]);
+	}
+	for(int iphi=0;iphi<NPHIBINS;iphi++){
+		fprintf(fptrphi,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iphi+0.5)*DELPHI,
+		BFphi_pipi[iphi],BFphi_piK[iphi],BFphi_pip[iphi],BFphi_KK[iphi],BFphi_Kp[iphi],BFphi_pp[iphi]);
+	}
+	fclose(fptry);
+	fclose(fptrphi);
 }

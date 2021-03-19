@@ -3,11 +3,24 @@
 
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: balance_hbt.cc
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/balance_hbt/software/include/balhbt.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/arrays.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/commondefs.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/commonutils.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/constants.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/gslmatrix.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/misc.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/parametermap.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/qualifier.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/randy.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/commonutils/software/include/sf.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/coral/software/include/cfcalc.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/coral/software/include/coral.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/coral/software/include/kernel.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/coral/software/include/minimization.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/coral/software/include/sfit.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/coral/software/include/source2cf.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/coral/software/include/sourcecalc.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/coral/software/include/wavefunction.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/hp/alice/software/b3d2/include/resonances.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_blas.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_blas_types.h
@@ -57,6 +70,8 @@ CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/g
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_poly.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_pow_int.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_precision.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_randist.h
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_rng.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_sf.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_sf_airy.h
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /usr/local/Cellar/gsl/2.6/include/gsl/gsl_sf_bessel.h

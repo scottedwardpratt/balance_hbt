@@ -1,6 +1,11 @@
 #include "balhbt.h"
 using namespace std;
 
+CHBTCalc::CHBTCalc(CparameterMap *parmapin){
+	parmap=parmapin;
+	
+}
+
 double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime){
 	double q2,r2,qdotr,P2,Pdotq,Pdotr;
 	int alpha;

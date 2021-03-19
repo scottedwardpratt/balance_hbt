@@ -4,72 +4,87 @@
 #include "balhbt.h"
 
 using namespace std;
-int main(){
+int main(int argc,char *argv[]){
+	int run_number;
+	if (argc != 2) {
+		printf("Usage: balance_hbt run_number\n");
+		exit(-1);
+	}
+	else{
+		run_number=atoi(argv[1]);
+	}
+	
 	CparameterMap parmap;
 	parmap.ReadParsFromFile("parameters/respars.txt");
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
-	parmap.ReadParsFromFile("parameters/hbtpars.txt");
-	CBalHBT balhbt;
-	CResList *reslist=new CResList(&parmap);
-	CResInfo::randy->reset(-1234567);
-	double Tchem=150.0,taumax=100.0,strangecontent,udcontent;
+	CBalHBT *balhbt=new CBalHBT(&parmap);
+
+	double Tchem=150.0,taumax=100.0,strangecontent,udcontent,balweight;
 	vector<vector<double>> bfnormweight;
 	vector<CStableInfo *> stablevec;
-	unsigned int id,id1,id2,id1prime,id2prime,NID;
+	unsigned int id,id1,id2,id1prime,id2prime,NID,i,iprod;
 	CHBTPart part1,part2,part1prime,part2prime;
-	int imc,NMC=100000;
-	CblastWave *bw;
-	CHBTCalc hbtcalc;
-	vector<CHBTPart *> partvec;
-	vector<CHBTPart *> partvecprime;
-	CBF bf(parmap);
-	
-	reslist->Tf=Tchem;
-	reslist->CalcEoSandChiandQdens(reslist->Tf,reslist->Pf,reslist->epsilonf,reslist->nf,reslist->densityf,
-	reslist->maxweightf,reslist->chif,strangecontent,udcontent);
-	reslist->chiinvf=(reslist->chif).inverse();
-	reslist->FindFinalProducts(taumax);
-	
-	bw=new CblastWave(parmap,CResInfo::randy,reslist);
-	
-	balhbt.GetStableInfo(reslist,taumax,stablevec,bfnormweight);
+	long long int imc,NMC=10000000;
+
+	balhbt->reslist->Tf=Tchem;
+	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,
+	balhbt->reslist->maxweightf,balhbt->reslist->chif,strangecontent,udcontent);
+	balhbt->reslist->FindFinalProducts(taumax);
+	balhbt->bw=new CblastWave(&parmap,balhbt->randy,balhbt->reslist);
+	balhbt->GetStableInfo(balhbt->reslist,taumax,stablevec,bfnormweight);
 	NID=stablevec.size();
+	balhbt->InitHBT(stablevec,"parameters/hbtpars.txt");
+	
 	for(id1=0;id1<NID;id1++){
 		for(id2=0;id2<NID;id2++){
 			printf("%10.4f ",bfnormweight[id1][id2]);
 		}
 		printf("\n");
 	}
+	vector<CHBTPart *> partvec(2);
+	vector<CHBTPart *> partprimevec(2);
+	for(id=0;id<2;id++){
+		partvec[id]=new CHBTPart();
+		partprimevec[id]=new CHBTPart();
+	}
+	vector<vector<CHBTPart *>> productvec(2);
+	vector<vector<CHBTPart *>> productprimevec(2);
 	
-	double balweight,hbtweight;
 	for(imc=0;imc<NMC;imc++){
-		partvec.resize(2);
-		partvecprime.resize(2);
-		for(id=0;id<2;id++){
-			partvec[id]=new CHBTPart();
-			partvecprime[id]=new CHBTPart();
-		}
-		balhbt.GetPart(stablevec,id1);
-		balhbt.GetPart(stablevec,id2);
-		balhbt.GetPart(stablevec,id1prime);
-		balhbt.GetPart(stablevec,id2prime);
+		if(imc%(NMC/10)==0)
+			printf("finished %d percent\n",lrint(100.0*imc/double(NMC)));
+		balhbt->GetPart(stablevec,id1);
+		balhbt->GetPart(stablevec,id2);
+		balhbt->GetPart(stablevec,id1prime);
+		balhbt->GetPart(stablevec,id2prime);
 		balweight=bfnormweight[id1][id2]*bfnormweight[id1prime][id2prime];
 		partvec[0]->resinfo=stablevec[id1]->resinfo;
 		partvec[1]->resinfo=stablevec[id2]->resinfo;
-		partvecprime[0]->resinfo=stablevec[id1prime]->resinfo;
-		partvecprime[1]->resinfo=stablevec[id2prime]->resinfo;
-		bw->GetXP(partvec);
-		bw->GetXP(partvecprime);
+		partprimevec[0]->resinfo=stablevec[id1prime]->resinfo;
+		partprimevec[1]->resinfo=stablevec[id2prime]->resinfo;
 		
-	
+		balhbt->bw->GetXP(partvec);
+		balhbt->bw->GetXP(partprimevec);
 		
-		for(id=0;id<partvec.size();id++)
-			delete partvec[id];
-		for(id=0;id<partvecprime.size();id++)
-			delete partvecprime[id];
-		partvec.clear();
-		partvecprime.clear();
+		balhbt->GetDecayProducts(partvec[0],productvec[0]);
+		balhbt->GetDecayProducts(partvec[1],productvec[1]);
+		balhbt->GetDecayProducts(partprimevec[0],productprimevec[0]);
+		balhbt->GetDecayProducts(partprimevec[1],productprimevec[1]);
+						
+		balhbt->bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight);
+		balhbt->bf->WriteResults("results");
+		
+		for(i=0;i<2;i++){
+			for(iprod=0;iprod<productvec[i].size();iprod++)
+				delete productvec[i][iprod];
+			productvec[i].clear();
+			for(iprod=0;iprod<productprimevec[i].size();iprod++)
+				delete productprimevec[i][iprod];
+			productprimevec[i].clear();	
+		}
+		balhbt->bf->WriteResults(run_number);
 	}
+	
 	
 	return 0;
 }

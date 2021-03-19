@@ -10,6 +10,7 @@
 #include "resonances.h"
 #include "misc.h"
 #include "randy.h"
+#include "coral.h"
 #include "constants.h"
 #include <list>
 
@@ -24,15 +25,20 @@ class CBF;
 
 class CBalHBT{
 public:
-	CBalHBT(){
-		randy=new CRandy(1234);
-	};
+	CBalHBT(CparameterMap *parmapin);
+	CparameterMap *parmap;
+	CResList *reslist;
+	CblastWave *bw;
 	CRandy *randy;
+	CBF *bf;
+	CHBTCalc *hbtcalc;
 	void GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnormweight);
-	void GetDecayParts(CHBTPart *part,vector<CHBTPart *> &products);
+	void GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products);
 	void GetDecayResInfo(CResInfo *resinfo0,int &ndaughters,array<CResInfo *,5> &daughter);
 	void Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter);
 	void GetPart(vector<CStableInfo *> &stablevec,unsigned int &id);
+	void InitHBT(vector<CStableInfo *> &stablevec,string hbtparsfilename);
+	void WriteResults(string dirname);
 };
 
 class CHBTPart{
@@ -50,6 +56,7 @@ public:
 	void Copy(CHBTPart *);
 	double GetMass();
 	double GetRapidity();
+	void Print();
 };
 
 class Cacceptance{
@@ -82,12 +89,13 @@ public:
 	
 class CblastWave{
 public:
+	CparameterMap *parmap;
 	CRandy *randy;
 	double Tf,uperpmax,Rperp,etamax,tau;
 	double Ybeam,sigmaR;
 	double sigma_eta;
 	CResList *reslist;
-	CblastWave(CparameterMap &parmap,CRandy *randyset,CResList *reslistset);
+	CblastWave(CparameterMap *parmapin,CRandy *randyset,CResList *reslistset);
 	void GenerateParts(vector<CResInfo *> &resinfovec,vector<CHBTPart *> &partvec);
 	void GetXP(vector<CHBTPart *> &partvec);
 	void GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *> &daughterpartvec);
@@ -96,11 +104,15 @@ public:
 
 class CHBTCalc{
 public:
+	CHBTCalc(CparameterMap *parmapin);
 	double GetPsiSquared(CHBTPart *part,CHBTPart *partprime);
+	CparameterMap *parmap;
+	vector<vector<CWaveFunction *>> wf;
 };
 
 class CBF{
 public:
+	CparameterMap *parmap;
 	int NYBINS,NPHIBINS;
 	double DELPHI,DELY,YMAX;
 	vector<double> BFy_pipi;
@@ -131,10 +143,15 @@ public:
 	vector<double> DENOMphi_Kp;
 	vector<double> DENOMphi_pp;
 	
-	CBF(CparameterMap &parmap);
+	CBF(CparameterMap *parmapin);
 	void Zero();
+	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
+	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight);
+	void Increment(CHBTPart *part,CHBTPart *partprime,double weight);
+	void WriteResults(int run_number);
 	
-	void Increment(vector<CHBTPart *> &partvec,vector<CHBTPart *> &partvecprime,double weight);	
+	CHBTCalc *hbtcalc;
+	CRandy *randy;
 };
 
 #endif

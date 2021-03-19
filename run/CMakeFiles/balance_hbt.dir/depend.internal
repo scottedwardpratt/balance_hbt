@@ -4,11 +4,24 @@
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o
  /Users/scottpratt/git/balance_hbt/run/balance_hbt.cc
  /Users/scottpratt/git/balance_hbt/software/include/balhbt.h
+ /Users/scottpratt/git/commonutils/software/include/arrays.h
  /Users/scottpratt/git/commonutils/software/include/commondefs.h
+ /Users/scottpratt/git/commonutils/software/include/commonutils.h
  /Users/scottpratt/git/commonutils/software/include/constants.h
+ /Users/scottpratt/git/commonutils/software/include/gslmatrix.h
  /Users/scottpratt/git/commonutils/software/include/misc.h
  /Users/scottpratt/git/commonutils/software/include/parametermap.h
+ /Users/scottpratt/git/commonutils/software/include/qualifier.h
  /Users/scottpratt/git/commonutils/software/include/randy.h
+ /Users/scottpratt/git/commonutils/software/include/sf.h
+ /Users/scottpratt/git/coral/software/include/cfcalc.h
+ /Users/scottpratt/git/coral/software/include/coral.h
+ /Users/scottpratt/git/coral/software/include/kernel.h
+ /Users/scottpratt/git/coral/software/include/minimization.h
+ /Users/scottpratt/git/coral/software/include/sfit.h
+ /Users/scottpratt/git/coral/software/include/source2cf.h
+ /Users/scottpratt/git/coral/software/include/sourcecalc.h
+ /Users/scottpratt/git/coral/software/include/wavefunction.h
  /Users/scottpratt/git/hp/alice/software/b3d2/include/resonances.h
  /usr/local/Cellar/gsl/2.6/include/gsl/gsl_blas.h
  /usr/local/Cellar/gsl/2.6/include/gsl/gsl_blas_types.h
@@ -58,6 +71,8 @@ CMakeFiles/balance_hbt.dir/balance_hbt.cc.o
  /usr/local/Cellar/gsl/2.6/include/gsl/gsl_poly.h
  /usr/local/Cellar/gsl/2.6/include/gsl/gsl_pow_int.h
  /usr/local/Cellar/gsl/2.6/include/gsl/gsl_precision.h
+ /usr/local/Cellar/gsl/2.6/include/gsl/gsl_randist.h
+ /usr/local/Cellar/gsl/2.6/include/gsl/gsl_rng.h
  /usr/local/Cellar/gsl/2.6/include/gsl/gsl_sf.h
  /usr/local/Cellar/gsl/2.6/include/gsl/gsl_sf_airy.h
  /usr/local/Cellar/gsl/2.6/include/gsl/gsl_sf_bessel.h

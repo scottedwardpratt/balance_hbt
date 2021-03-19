@@ -53,10 +53,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/Cellar/cmake/3.19.5/bin/cmake
+CMAKE_COMMAND = /usr/local/Cellar/cmake/3.19.7/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/Cellar/cmake/3.19.5/bin/cmake -E rm -f
+RM = /usr/local/Cellar/cmake/3.19.7/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -78,7 +78,7 @@ include CMakeFiles/balance_hbt.dir/flags.make
 
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: CMakeFiles/balance_hbt.dir/flags.make
 CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: balance_hbt.cc
-CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/hp/alice/software/b3d2/lib/libb3d_alice.a
+CMakeFiles/balance_hbt.dir/balance_hbt.cc.o: /Users/scottpratt/git/balance_hbt/software/lib/libbalhbt.a
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/scottpratt/git/balance_hbt/run/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/balance_hbt.dir/balance_hbt.cc.o"
 	/usr/local/bin/g++-10 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/balance_hbt.dir/balance_hbt.cc.o -c /Users/scottpratt/git/balance_hbt/run/balance_hbt.cc
 
