@@ -3,10 +3,10 @@ using namespace std;
 #include "balhbt.h"
 using namespace std;
 
-CBalHBT::CBalHBT(CparameterMap *parmapin){
+CBalHBT::CBalHBT(CparameterMap *parmapin,int run_number){
 	parmap=parmapin;
 	reslist=new CResList(parmap);
-	randy=new CRandy(1234);
+	randy=new CRandy(run_number);
 	bf=new CBF(parmap);
 	hbtcalc=new CHBTCalc(parmap);
 	bf->hbtcalc=hbtcalc;

@@ -16,14 +16,14 @@ int main(int argc,char *argv[]){
 	CparameterMap parmap;
 	parmap.ReadParsFromFile("parameters/respars.txt");
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
-	CBalHBT *balhbt=new CBalHBT(&parmap);
+	CBalHBT *balhbt=new CBalHBT(&parmap,run_number);
 
 	double Tchem=150.0,taumax=100.0,strangecontent,udcontent,balweight;
 	vector<vector<double>> bfnormweight;
 	vector<CStableInfo *> stablevec;
 	unsigned int id,id1,id2,id1prime,id2prime,NID,i,iprod;
 	CHBTPart part1,part2,part1prime,part2prime;
-	long long int imc,NMC=1000000;
+	long long int imc,NMC=10000000;
 
 	balhbt->reslist->Tf=Tchem;
 	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,

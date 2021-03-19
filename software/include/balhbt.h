@@ -25,7 +25,8 @@ class CBF;
 
 class CBalHBT{
 public:
-	CBalHBT(CparameterMap *parmapin);
+	int run_number;
+	CBalHBT(CparameterMap *parmapin,int run_number);
 	CparameterMap *parmap;
 	CResList *reslist;
 	CblastWave *bw;

@@ -14,12 +14,12 @@ CBF::CBF(CparameterMap *parmapin){
 	BFy_Kp.resize(NYBINS);
 	BFy_pp.resize(NYBINS);
 	
-	BFphi_pipi.resize(NYBINS);
-	BFphi_piK.resize(NYBINS);
-	BFphi_pip.resize(NYBINS);
-	BFphi_KK.resize(NYBINS);
-	BFphi_Kp.resize(NYBINS);
-	BFphi_pp.resize(NYBINS);
+	BFphi_pipi.resize(NPHIBINS);
+	BFphi_piK.resize(NPHIBINS);
+	BFphi_pip.resize(NPHIBINS);
+	BFphi_KK.resize(NPHIBINS);
+	BFphi_Kp.resize(NPHIBINS);
+	BFphi_pp.resize(NPHIBINS);
 
 	DENOMy_pipi.resize(NYBINS);
 	DENOMy_piK.resize(NYBINS);
@@ -28,12 +28,12 @@ CBF::CBF(CparameterMap *parmapin){
 	DENOMy_Kp.resize(NYBINS);
 	DENOMy_pp.resize(NYBINS);
 	
-	DENOMphi_pipi.resize(NYBINS);
-	DENOMphi_piK.resize(NYBINS);
-	DENOMphi_pip.resize(NYBINS);
-	DENOMphi_KK.resize(NYBINS);
-	DENOMphi_Kp.resize(NYBINS);
-	DENOMphi_pp.resize(NYBINS);
+	DENOMphi_pipi.resize(NPHIBINS);
+	DENOMphi_piK.resize(NPHIBINS);
+	DENOMphi_pip.resize(NPHIBINS);
+	DENOMphi_KK.resize(NPHIBINS);
+	DENOMphi_Kp.resize(NPHIBINS);
+	DENOMphi_pp.resize(NPHIBINS);
 	
 	DELPHI=PI/double(NPHIBINS);
 	YMAX=DELY*NYBINS;
@@ -50,12 +50,12 @@ void CBF::Zero(){
 	BFy_Kp.assign(NYBINS,0.0);
 	BFy_pp.assign(NYBINS,0.0);
 	
-	BFphi_pipi.assign(NYBINS,0.0);
-	BFphi_piK.assign(NYBINS,0.0);
-	BFphi_pip.assign(NYBINS,0.0);
-	BFphi_KK.assign(NYBINS,0.0);
-	BFphi_Kp.assign(NYBINS,0.0);
-	BFphi_pp.assign(NYBINS,0.0);
+	BFphi_pipi.assign(NPHIBINS,0.0);
+	BFphi_piK.assign(NPHIBINS,0.0);
+	BFphi_pip.assign(NPHIBINS,0.0);
+	BFphi_KK.assign(NPHIBINS,0.0);
+	BFphi_Kp.assign(NPHIBINS,0.0);
+	BFphi_pp.assign(NPHIBINS,0.0);
 	
 	DENOMy_pipi.assign(NYBINS,0.0);
 	DENOMy_piK.assign(NYBINS,0.0);
@@ -64,12 +64,12 @@ void CBF::Zero(){
 	DENOMy_Kp.assign(NYBINS,0.0);
 	DENOMy_pp.assign(NYBINS,0.0);
 	
-	DENOMphi_pipi.assign(NYBINS,0.0);
-	DENOMphi_piK.assign(NYBINS,0.0);
-	DENOMphi_pip.assign(NYBINS,0.0);
-	DENOMphi_KK.assign(NYBINS,0.0);
-	DENOMphi_Kp.assign(NYBINS,0.0);
-	DENOMphi_pp.assign(NYBINS,0.0);
+	DENOMphi_pipi.assign(NPHIBINS,0.0);
+	DENOMphi_piK.assign(NPHIBINS,0.0);
+	DENOMphi_pip.assign(NPHIBINS,0.0);
+	DENOMphi_KK.assign(NPHIBINS,0.0);
+	DENOMphi_Kp.assign(NPHIBINS,0.0);
+	DENOMphi_pp.assign(NPHIBINS,0.0);
 	
 }
 
@@ -151,7 +151,7 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 			if(dphi>PI)
 				dphi-=2.0*PI;
 			dphi=fabs(dphi);
-			iphi=lrint(floor((dphi*180.0/PI)/DELPHI));
+			iphi=lrint(floor(dphi/DELPHI));
 			if(pid==211 && pidprime==211){
 				BFy_pipi[iy]-=qqprime*weight;
 				BFphi_pipi[iphi]-=qqprime*weight;
@@ -167,7 +167,7 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 			else if((pid==211 && pidprime==2212) || (pid==2212 && pidprime==211)){
 				BFy_pip[iy]-=qqprime*weight;
 				BFphi_pip[iphi]-=qqprime*weight;
-				DENOMy_pipi[iy]+=1.0;
+				DENOMy_pip[iy]+=1.0;
 				DENOMphi_pip[iphi]+=1.0;
 			}
 			else if(pid==321 && pidprime==321){
@@ -204,7 +204,7 @@ void CBF::WriteResults(int run_number){
 		BFy_KK[iy]/DENOMy_KK[iy],BFy_Kp[iy]/DENOMy_Kp[iy],BFy_pp[iy]/DENOMy_pp[iy]);
 	}
 	for(int iphi=0;iphi<NPHIBINS;iphi++){
-		fprintf(fptrphi,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iphi+0.5)*DELPHI,
+		fprintf(fptrphi,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iphi+0.5)*DELPHI*180.0/PI,
 		BFphi_pipi[iphi]/DENOMphi_pipi[iphi],BFphi_piK[iphi]/DENOMphi_piK[iphi],BFphi_pip[iphi]/DENOMphi_pip[iphi],
 		BFphi_KK[iphi]/DENOMphi_KK[iphi],BFphi_Kp[iphi]/DENOMphi_Kp[iphi],BFphi_pp[iphi]/DENOMphi_pp[iphi]);
 	}
