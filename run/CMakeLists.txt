@@ -28,6 +28,8 @@ SET_SOURCE_FILES_PROPERTIES(
       balance_hbt.cc PROPERTIES
 			OBJECT_DEPENDS ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a
 			OBJECT_DEPENDS ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a
+			OBJECT_DEPENDS ${GITHOME_MSU}/coral/software/lib/libcoral.a
+			OBJECT_DEPENDS ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a
  )
 add_executable(balance_hbt ${SOURCE_FILES})
 add_dependencies(balance_hbt extern_balhbt extern_b3d2 extern_coral extern_commonutils)

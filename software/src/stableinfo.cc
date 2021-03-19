@@ -22,7 +22,6 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 		}
 	}
 	NID=stablevec.size();
-	printf("NID=%d\n",NID);
 	bfnorm.resize(NID);
 	for(id1=0;id1<NID;id1++){
 		bfnorm[id1].resize(NID);
@@ -41,12 +40,14 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 				stablevec[id1]->density+=weight*reslist->densityf[ires];
 			}
 		}
-		printf("%5d: density=%g\n",pid1,stablevec[id1]->density);
+	}
+	for(id1=0;id1<NID;id1++){
+		pid1=stablevec[id1]->resinfo->code;
 		for(id2=0;id2<NID;id2++){
 			pid2=stablevec[id2]->resinfo->code;
 			bfnorm[id1][id2]=reslist->CalcBalanceNorm(pid1,pid2,taumax);
 			if(id1>=id2){
-				printf("bfnorm[%d][%d]*dens=%g =? %g\n",id1,id2,
+				printf("bfnorm[%d][%d]=%g, bfnorm[%d][%d]*dens=%g =? %g\n",id1,id2,bfnorm[id1][id2],id1,id2,
 				bfnorm[id1][id2]*stablevec[id2]->density,bfnorm[id2][id1]*stablevec[id1]->density);
 			}
 		}
@@ -66,7 +67,7 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 		CStableInfo::denstot+=stablevec[id2]->density;
 		printf("%5d: netQ=%8.5f, netB=%8.5f, netS=%8.5f\n",stablevec[id2]->resinfo->code,netcharge,netbaryon,netstrange);
 	}
-	
+
 }
 
 void CBalHBT::GetPart(vector<CStableInfo *> &stablevec,unsigned int &id){
