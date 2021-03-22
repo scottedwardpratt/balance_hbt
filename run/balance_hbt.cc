@@ -25,6 +25,8 @@ int main(int argc,char *argv[]){
 	CHBTPart part1,part2,part1prime,part2prime;
 	double bfw12,bfw21,bfw12prime,bfw21prime,nhadron0;
 	long long int imc,NMC=10000;
+	printf("Enter NMC: ");
+	scanf("%lld",&NMC);
 
 	balhbt->reslist->Tf=Tchem;
 	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,

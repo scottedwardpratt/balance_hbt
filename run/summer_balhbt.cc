@@ -15,12 +15,14 @@ int main(int argc,char *argv[]){
 	FILE *fptr;
 	double phi,y,dely=0.1,delphi=10.0;
 	vector<double> bfread(6);
-	int irun,ib,NPHI=18,NY=20,NRUNS=12;
+	int irun,ib,NPHI=18,NY=20,NRUNS;
 	char filename[120];
 	vector<vector<double>> bf_phi;
 	vector<vector<double>> bf_y;
 	bf_phi.resize(6);
 	bf_y.resize(6);
+	printf("Enter NRUNS: ");
+	scanf("%d",&NRUNS);
 	for(ib=0;ib<6;ib++){
 		bf_phi[ib].resize(NPHI);
 		bf_y[ib].resize(NY);
