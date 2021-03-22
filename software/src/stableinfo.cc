@@ -16,7 +16,7 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 				stableinfo=new CStableInfo(resinfo);
 				stablevec.push_back(stableinfo);
 				//if(resinfo->decay)
-					printf("PID=%d, tau=%g, %s\n",resinfo->code,HBARC/resinfo->width,resinfo->name.c_str());
+				printf("PID=%d, tau=%g, %s\n",resinfo->code,HBARC/resinfo->width,resinfo->name.c_str());
 			}
 			id+=1;
 		}

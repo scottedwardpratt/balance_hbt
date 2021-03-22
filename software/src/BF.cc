@@ -73,60 +73,77 @@ void CBF::Zero(){
 	
 }
 
-void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double Z12,double Z21,double Z12prime,double Z21prime){
-	double hbtweight,balweight;
-	double psisquared1,psisquared2,psisquared3,psisquared4;
-	unsigned int i,iprime,iprod,iprodprime;
-	CHBTPart *part,*partprime;
-		
-	psisquared1=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0]);
-	psisquared2=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1]);
-	psisquared3=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0]);
-	psisquared4=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1]);
-	hbtweight=psisquared1*psisquared2*psisquared3*psisquared4; 
-	hbtweight=1.0;
-	if(psisquared1!=psisquared1){
-		printf("_____ FAILURE ______\n");
-		partvec[0]->Print();
-		partprimevec[0]->Print();
-		exit(1);
+void CBF::PartAntipart(CHBTPart *part){
+	CResInfo *resinfo=part->resinfo;
+	if(resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0){
+		part->resinfo=part->resinfo->reslist->GetResInfoPtr(-resinfo->code);
 	}
-	if(psisquared2!=psisquared2){
-		printf("_____ FAILURE ______\n");
-		partvec[0]->Print();
-		partprimevec[1]->Print();
-		exit(1);
-	}
-	if(psisquared3!=psisquared3){
-		printf("_____ FAILURE ______\n");
-		partvec[1]->Print();
-		partprimevec[0]->Print();
-		exit(1);
-	}
-	if(psisquared4!=psisquared4){
-		printf("_____ FAILURE ______\n");
-		partvec[1]->Print();
-		partprimevec[1]->Print();
-		exit(1);
-	}
+}
 
-	for(i=0;i<2;i++){
-		for(iprime=0;iprime<2;iprime++){
-			if(i==0 && iprime==0)
-				balweight=Z21*Z21prime;
-			else if(i==0 && iprime==1)
-				balweight=Z21*Z12prime;
-			else if(i==1 && iprime==0)
-				balweight=Z12*Z21prime;
-			else
-				balweight=Z12*Z12prime;
-			for(iprod=0;iprod<productvec[i].size();iprod++){
-				part=productvec[i][iprod];
+void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
+vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight){
+	double hbtweight,psisquared1,psisquared2,psisquared3,psisquared4;
+	unsigned int i,iprime,iprod,iprodprime,jpartantipart;
+	CHBTPart *part,*partprime;
+	
+	for(jpartantipart=0;jpartantipart<4;jpartantipart++){
+		if(jpartantipart==2){
+			for(i=0;i<2;i++){
+				PartAntipart(partvec[i]);
+				for(iprod=0;iprod<productvec[i].size();iprod++){
+					PartAntipart(productvec[i][iprod]);
+				}
+			}
+		}
+		if(jpartantipart==1 || jpartantipart==3){
+			for(iprime=0;iprime<2;iprime++){
+				PartAntipart(partprimevec[iprime]);
 				for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
-					partprime=productprimevec[iprime][iprodprime];
-					
-					Increment(part,partprime,balweight*hbtweight);
+					PartAntipart(productprimevec[iprime][iprodprime]);
+				}
+			}
+		}
+		
+		psisquared1=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0]);
+		psisquared2=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1]);
+		psisquared3=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0]);
+		psisquared4=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1]);
+		hbtweight=psisquared1*psisquared2*psisquared3*psisquared4;
+		if(psisquared1!=psisquared1){
+			printf("_____ FAILURE ______\n");
+			partvec[0]->Print();
+			partprimevec[0]->Print();
+			exit(1);
+		}
+		if(psisquared2!=psisquared2){
+			printf("_____ FAILURE ______\n");
+			partvec[0]->Print();
+			partprimevec[1]->Print();
+			exit(1);
+		}
+		if(psisquared3!=psisquared3){
+			printf("_____ FAILURE ______\n");
+			partvec[1]->Print();
+			partprimevec[0]->Print();
+			exit(1);
+		}
+		if(psisquared4!=psisquared4){
+			printf("_____ FAILURE ______\n");
+			partvec[1]->Print();
+			partprimevec[1]->Print();
+			exit(1);
+		}
+		
+		//hbtweight=1.0;
+	
+		for(i=0;i<2;i++){
+			for(iprime=0;iprime<2;iprime++){
+				for(iprod=0;iprod<productvec[i].size();iprod++){
+					part=productvec[i][iprod];
+					for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
+						partprime=productprimevec[iprime][iprodprime];
+						Increment(part,partprime,balweight*hbtweight);
+					}
 				}
 			}
 		}
