@@ -66,7 +66,7 @@ int main(int argc,char *argv[]){
 	for(iy=0;iy<NY;iy++){
 		y=(0.5+iy)*dely;
 		fprintf(fptr,"%6.2f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f\n",y,
-		bf_y[0][iphi],bf_y[1][iphi],bf_y[1][iphi],bf_y[1][iphi],bf_y[1][iphi],bf_y[1][iphi]);
+		bf_y[0][iy],bf_y[1][iy],bf_y[1][iy],bf_y[1][iy],bf_y[1][iy],bf_y[1][iy]);
 	}
 	fclose(fptr);
 	
