@@ -19,10 +19,11 @@ int main(int argc,char *argv[]){
 	CBalHBT *balhbt=new CBalHBT(&parmap,run_number);
 
 	double Tchem=150.0,taumax=100.0,strangecontent,udcontent,balweight;
-	vector<vector<double>> bfnormweight;
+	vector<vector<double>> bfnorm;
 	vector<CStableInfo *> stablevec;
 	unsigned int id,id1,id2,id1prime,id2prime,NID,i,iprod;
 	CHBTPart part1,part2,part1prime,part2prime;
+	double bfw12,bfw21,bfw12prime,bfw21prime,nhadron0;
 	long long int imc,NMC=10000000;
 
 	balhbt->reslist->Tf=Tchem;
@@ -30,13 +31,14 @@ int main(int argc,char *argv[]){
 	balhbt->reslist->maxweightf,balhbt->reslist->chif,strangecontent,udcontent);
 	balhbt->reslist->FindFinalProducts(taumax);
 	balhbt->bw=new CblastWave(&parmap,balhbt->randy,balhbt->reslist);
-	balhbt->GetStableInfo(balhbt->reslist,taumax,stablevec,bfnormweight);
+	balhbt->GetStableInfo(balhbt->reslist,taumax,stablevec,bfnorm);
 	NID=stablevec.size();
 	balhbt->InitHBT(stablevec,"parameters/hbtpars.txt");
+	nhadron0=balhbt->reslist->nf;
 	
 	for(id1=0;id1<NID;id1++){
 		for(id2=0;id2<NID;id2++){
-			printf("%10.4f ",bfnormweight[id1][id2]);
+			printf("%10.4f ",bfnorm[id1][id2]);
 		}
 		printf("\n");
 	}
@@ -56,7 +58,9 @@ int main(int argc,char *argv[]){
 		balhbt->GetPart(stablevec,id2);
 		balhbt->GetPart(stablevec,id1prime);
 		balhbt->GetPart(stablevec,id2prime);
-		balweight=bfnormweight[id1][id2]*bfnormweight[id1prime][id2prime];
+		balweight=bfnorm[id1][id2]*bfnorm[id1prime][id2prime];
+		balweight=balweight*(balhbt->reslist->nf*balhbt->reslist->nf)
+			/(stablevec[id1]->density*stablevec[id1prime]->density);
 		partvec[0]->resinfo=stablevec[id1]->resinfo;
 		partvec[1]->resinfo=stablevec[id2]->resinfo;
 		partprimevec[0]->resinfo=stablevec[id1prime]->resinfo;
@@ -69,8 +73,11 @@ int main(int argc,char *argv[]){
 		balhbt->GetDecayProducts(partvec[1],productvec[1]);
 		balhbt->GetDecayProducts(partprimevec[0],productprimevec[0]);
 		balhbt->GetDecayProducts(partprimevec[1],productprimevec[1]);
-						
-		balhbt->bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight);
+
+		bfw12=nhadron0*nhadron0*bfnorm[id1][id2]; //stablevec[id1]->density;
+		bfw21=nhadron0*nhadron0*bfnorm[id2][id1]; //stablevec[id2]->density;
+		bfw12prime=bfw21prime=nhadron0*nhadron0*bfnorm[id1prime][id2prime]/stablevec[id1prime]->density;
+		balhbt->bf->Evaluate(partvec,productvec,partprimevec,productprimevec,bfw12,bfw21,bfw12prime,bfw21prime);
 		
 		for(i=0;i<2;i++){
 			for(iprod=0;iprod<productvec[i].size();iprod++)

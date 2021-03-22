@@ -74,8 +74,8 @@ void CBF::Zero(){
 }
 
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight){
-	double hbtweight;
+vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double Z12,double Z21,double Z12prime,double Z21prime){
+	double hbtweight,balweight;
 	double psisquared1,psisquared2,psisquared3,psisquared4;
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
@@ -85,6 +85,7 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 	psisquared3=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0]);
 	psisquared4=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1]);
 	hbtweight=psisquared1*psisquared2*psisquared3*psisquared4; 
+	hbtweight=1.0;
 	if(psisquared1!=psisquared1){
 		printf("_____ FAILURE ______\n");
 		partvec[0]->Print();
@@ -111,11 +112,20 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 	}
 
 	for(i=0;i<2;i++){
-		for(iprod=0;iprod<productvec[i].size();iprod++){
-			part=productvec[i][iprod];
-			for(iprime=0;iprime<2;iprime++){
+		for(iprime=0;iprime<2;iprime++){
+			if(i==0 && iprime==0)
+				balweight=Z21*Z21prime;
+			else if(i==0 && iprime==1)
+				balweight=Z21*Z12prime;
+			else if(i==1 && iprime==0)
+				balweight=Z12*Z21prime;
+			else
+				balweight=Z12*Z12prime;
+			for(iprod=0;iprod<productvec[i].size();iprod++){
+				part=productvec[i][iprod];
 				for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
 					partprime=productprimevec[iprime][iprodprime];
+					
 					Increment(part,partprime,balweight*hbtweight);
 				}
 			}

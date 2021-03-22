@@ -46,10 +46,8 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 		for(id2=0;id2<NID;id2++){
 			pid2=stablevec[id2]->resinfo->code;
 			bfnorm[id1][id2]=reslist->CalcBalanceNorm(pid1,pid2,taumax);
-			if(id1>=id2){
-				printf("bfnorm[%d][%d]=%g, bfnorm[%d][%d]*dens=%g =? %g\n",id1,id2,bfnorm[id1][id2],id1,id2,
-				bfnorm[id1][id2]*stablevec[id2]->density,bfnorm[id2][id1]*stablevec[id1]->density);
-			}
+			printf("bfnorm[%d][%d]=%g, bfnorm[%d][%d]*dens=%g =? %g\n",id1,id2,bfnorm[id1][id2],id1,id2,
+			bfnorm[id1][id2]*stablevec[id2]->density,bfnorm[id2][id1]*stablevec[id1]->density);
 		}
 		printf("--------------------------------------\n");
 	}
