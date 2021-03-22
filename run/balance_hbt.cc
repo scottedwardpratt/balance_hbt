@@ -24,7 +24,7 @@ int main(int argc,char *argv[]){
 	unsigned int id,id1,id2,id1prime,id2prime,NID,i,iprod;
 	CHBTPart part1,part2,part1prime,part2prime;
 	double bfw12,bfw21,bfw12prime,bfw21prime,nhadron0;
-	long long int imc,NMC=10000000;
+	long long int imc,NMC=10000;
 
 	balhbt->reslist->Tf=Tchem;
 	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,
