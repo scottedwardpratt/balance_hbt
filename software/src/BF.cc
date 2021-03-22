@@ -85,7 +85,7 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 	double hbtweight,psisquared1,psisquared2,psisquared3,psisquared4;
 	unsigned int i,iprime,iprod,iprodprime,jpartantipart;
 	CHBTPart *part,*partprime;
-	
+
 	for(jpartantipart=0;jpartantipart<4;jpartantipart++){
 		if(jpartantipart==2){
 			for(i=0;i<2;i++){
@@ -103,7 +103,7 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 				}
 			}
 		}
-		
+
 		psisquared1=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0]);
 		psisquared2=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1]);
 		psisquared3=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0]);
