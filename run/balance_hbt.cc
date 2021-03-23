@@ -36,7 +36,7 @@ int main(int argc,char *argv[]){
 	balhbt->GetStableInfo(balhbt->reslist,taumax,stablevec,bfnorm);
 	NID=stablevec.size();
 	balhbt->InitHBT(stablevec,"parameters/hbtpars.txt");
-	nhadron0=balhbt->reslist->nf;
+	nhadron0=CStableInfo::denstot;
 	
 	for(id1=0;id1<NID;id1++){
 		for(id2=0;id2<NID;id2++){
@@ -86,6 +86,6 @@ int main(int argc,char *argv[]){
 		}
 		balhbt->bf->WriteResults(run_number);
 	}
-
+	
 	return 0;
 }
