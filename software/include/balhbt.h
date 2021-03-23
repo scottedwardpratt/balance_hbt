@@ -114,8 +114,8 @@ public:
 class CBF{
 public:
 	CparameterMap *parmap;
-	int NYBINS,NPHIBINS;
-	double DELPHI,DELY,YMAX;
+	int NYBINS,NPHIBINS,NQINVBINS;
+	double DELPHI,DELY,YMAX,DELQINV,QINVMAX;
 	vector<double> BFy_pipi;
 	vector<double> BFy_piK;
 	vector<double> BFy_pip;
@@ -129,6 +129,13 @@ public:
 	vector<double> BFphi_KK;
 	vector<double> BFphi_Kp;
 	vector<double> BFphi_pp;
+	
+	vector<double> BFqinv_pipi;
+	vector<double> BFqinv_piK;
+	vector<double> BFqinv_pip;
+	vector<double> BFqinv_KK;
+	vector<double> BFqinv_Kp;
+	vector<double> BFqinv_pp;
 	
 	vector<double> DENOMy_pipi;
 	vector<double> DENOMy_piK;
@@ -144,6 +151,13 @@ public:
 	vector<double> DENOMphi_Kp;
 	vector<double> DENOMphi_pp;
 	
+	vector<double> DENOMqinv_pipi;
+	vector<double> DENOMqinv_piK;
+	vector<double> DENOMqinv_pip;
+	vector<double> DENOMqinv_KK;
+	vector<double> DENOMqinv_Kp;
+	vector<double> DENOMqinv_pp;
+	
 	CBF(CparameterMap *parmapin);
 	void Zero();
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
@@ -151,7 +165,8 @@ public:
 	void Increment(CHBTPart *part,CHBTPart *partprime,double weight);
 	void PartAntipart(CHBTPart *part);
 	void WriteResults(int run_number);
-	
+	double Getqinv(CHBTPart *part,CHBTPart *partprime);
+	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
 	CHBTCalc *hbtcalc;
 	CRandy *randy;
 };

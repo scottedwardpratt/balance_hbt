@@ -37,6 +37,7 @@ int main(int argc,char *argv[]){
 	NID=stablevec.size();
 	balhbt->InitHBT(stablevec,"parameters/hbtpars.txt");
 	nhadron0=CStableInfo::denstot;
+	printf("denstot=%g, nh=%g\n",CStableInfo::denstot,balhbt->reslist->nf);
 	
 	for(id1=0;id1<NID;id1++){
 		for(id2=0;id2<NID;id2++){
