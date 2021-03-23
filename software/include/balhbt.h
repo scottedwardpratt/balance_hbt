@@ -161,7 +161,7 @@ public:
 	CBF(CparameterMap *parmapin);
 	void Zero();
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight);
+	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime);
 	void Increment(CHBTPart *part,CHBTPart *partprime,double weight);
 	void PartAntipart(CHBTPart *part);
 	void WriteResults(int run_number);

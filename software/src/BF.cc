@@ -99,8 +99,9 @@ void CBF::PartAntipart(CHBTPart *part){
 }
 
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight){
-	double hbtweight,psisquared1,psisquared2,psisquared3,psisquared4;
+vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime){
+	double weight;
+	double psisquared00,psisquared01,psisquared10,psisquared11;
 	unsigned int i,iprime,iprod,iprodprime,jpartantipart;
 	CHBTPart *part,*partprime;
 
@@ -122,25 +123,37 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 			}
 		}
 		/*
-		psisquared1=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0]);
-		psisquared2=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1]);
-		psisquared3=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0]);
-		psisquared4=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1]);
+		psisquared00=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0])-1.0;
+		psisquared01=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1])-1.0;
+		psisquared10=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0])-1.0;
+		psisquared11=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1])-1.0;
 		*/
-		psisquared1=CheapPsiSquared(partvec[0],partprimevec[0]);
-		psisquared2=CheapPsiSquared(partvec[0],partprimevec[1]);
-		psisquared3=CheapPsiSquared(partvec[1],partprimevec[0]);
-		psisquared4=CheapPsiSquared(partvec[1],partprimevec[1]);
+		psisquared00=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
+		psisquared01=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;
+		psisquared10=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
+		psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
 		
-		hbtweight=psisquared1*psisquared2*psisquared3*psisquared4;
+		
 		
 		for(i=0;i<2;i++){
 			for(iprime=0;iprime<2;iprime++){
+				if(i==0 && iprime==0){
+					weight=psisquared00+psisquared01*balweightprime+psisquared10*balweight+psisquared11*balweight*balweightprime;
+				}
+				else if(i==0 && iprime==1){
+					weight=psisquared01+psisquared00*balweightprime+psisquared11*balweight+psisquared10*balweight*balweightprime;
+				}
+				else if(i==1 && iprime==0){
+					weight=psisquared10+psisquared11*balweightprime+psisquared00*balweight+psisquared01*balweight*balweightprime;
+				}
+				else{
+					weight=psisquared11+psisquared10*balweightprime+psisquared01*balweight+psisquared00*balweight*balweightprime;
+				}
 				for(iprod=0;iprod<productvec[i].size();iprod++){
 					part=productvec[i][iprod];
 					for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
 						partprime=productprimevec[iprime][iprodprime];
-						Increment(part,partprime,balweight*hbtweight);
+						Increment(part,partprime,weight);
 					}
 				}
 			}
