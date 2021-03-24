@@ -36,7 +36,6 @@ int main(int argc,char *argv[]){
 	NID=stablevec.size();
 	balhbt->InitHBT(stablevec,"parameters/hbtpars.txt");
 	nhadron0=CStableInfo::denstot;
-	printf("denstot=%g, nh=%g\n",CStableInfo::denstot,balhbt->reslist->nf);
 	
 	for(id1=0;id1<NID;id1++){
 		for(id2=0;id2<NID;id2++){
@@ -60,12 +59,31 @@ int main(int argc,char *argv[]){
 		balhbt->GetPart(stablevec,id2);
 		balhbt->GetPart(stablevec,id1prime);
 		balhbt->GetPart(stablevec,id2prime);
-		balweight=bfnorm[id1][id2]*nhadron0;
-		balweightprime=bfnorm[id1prime][id2prime]*nhadron0;
+		balweight=-bfnorm[id1][id2]*nhadron0;
+		balweightprime=-bfnorm[id1prime][id2prime]*nhadron0;
 		partvec[0]->resinfo=stablevec[id1]->resinfo;
 		partvec[1]->resinfo=stablevec[id2]->resinfo;
 		partprimevec[0]->resinfo=stablevec[id1prime]->resinfo;
 		partprimevec[1]->resinfo=stablevec[id2prime]->resinfo;
+		if(balhbt->randy->ran()<0.5){
+			CBF::PartAntipart(partvec[0]);
+			balweight=-balweight;
+		}
+		if(balhbt->randy->ran()<0.5){
+			CBF::PartAntipart(partvec[1]);
+			balweight=-balweight;
+		}
+		if(balhbt->randy->ran()<0.5){
+			CBF::PartAntipart(partprimevec[0]);
+			balweightprime=-balweightprime;
+		}
+		if(balhbt->randy->ran()<0.5){
+			CBF::PartAntipart(partprimevec[1]);
+			balweightprime=-balweightprime;
+		}
+		partvec[0]->resinfo->Print();
+		partvec[1]->resinfo->Print();
+		printf("-----------------------------------------------------\n");
 		
 		balhbt->bw->GetXP(partvec);
 		balhbt->bw->GetXP(partprimevec);
@@ -83,7 +101,7 @@ int main(int argc,char *argv[]){
 			productvec[i].clear();
 			for(iprod=0;iprod<productprimevec[i].size();iprod++)
 				delete productprimevec[i][iprod];
-			productprimevec[i].clear();	
+			productprimevec[i].clear();
 		}
 		balhbt->bf->WriteResults(run_number);
 	}
