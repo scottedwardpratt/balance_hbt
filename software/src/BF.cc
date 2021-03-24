@@ -105,15 +105,7 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 	unsigned int i,iprime,iprod,iprodprime,jpartantipart;
 	CHBTPart *part,*partprime;
 
-	for(jpartantipart=0;jpartantipart<4;jpartantipart++){
-		if(jpartantipart==2){
-			for(i=0;i<2;i++){
-				PartAntipart(partvec[i]);
-				for(iprod=0;iprod<productvec[i].size();iprod++){
-					PartAntipart(productvec[i][iprod]);
-				}
-			}
-		}
+	for(jpartantipart=0;jpartantipart<2;jpartantipart++){
 		if(jpartantipart==1 || jpartantipart==3){
 			for(iprime=0;iprime<2;iprime++){
 				PartAntipart(partprimevec[iprime]);
