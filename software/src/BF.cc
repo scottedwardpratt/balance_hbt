@@ -91,13 +91,6 @@ void CBF::Zero(){
 	
 }
 
-void CBF::PartAntipart(CHBTPart *part){
-	CResInfo *resinfo=part->resinfo;
-	if(resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0){
-		part->resinfo=part->resinfo->reslist->GetResInfoPtr(-resinfo->code);
-	}
-}
-
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime){
 	double weight;

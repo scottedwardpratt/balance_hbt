@@ -66,24 +66,21 @@ int main(int argc,char *argv[]){
 		partprimevec[0]->resinfo=stablevec[id1prime]->resinfo;
 		partprimevec[1]->resinfo=stablevec[id2prime]->resinfo;
 		if(balhbt->randy->ran()<0.5){
-			CBF::PartAntipart(partvec[0]);
+			partvec[0]->PartAntipart();
 			balweight=-balweight;
 		}
 		if(balhbt->randy->ran()<0.5){
-			CBF::PartAntipart(partvec[1]);
+			partvec[1]->PartAntipart();
 			balweight=-balweight;
 		}
 		if(balhbt->randy->ran()<0.5){
-			CBF::PartAntipart(partprimevec[0]);
+			partprimevec[0]->PartAntipart();
 			balweightprime=-balweightprime;
 		}
 		if(balhbt->randy->ran()<0.5){
-			CBF::PartAntipart(partprimevec[1]);
+			partprimevec[1]->PartAntipart();
 			balweightprime=-balweightprime;
 		}
-		partvec[0]->resinfo->Print();
-		partvec[1]->resinfo->Print();
-		printf("-----------------------------------------------------\n");
 		
 		balhbt->bw->GetXP(partvec);
 		balhbt->bw->GetXP(partprimevec);

@@ -24,6 +24,13 @@ void CHBTPart::BjBoost(double dely){
 	Misc::Boost(u,x,x);
 }
 
+void CHBTPart::PartAntipart(){
+	if(resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0){
+		resinfo=resinfo->reslist->GetResInfoPtr(-resinfo->code);
+	}
+}
+
+
 void CHBTPart::Print(){
 	resinfo->Print();
 	printf("p=(%g,%g,%g,%g)\n",p[0],p[1],p[2],p[3]);

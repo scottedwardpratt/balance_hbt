@@ -58,6 +58,7 @@ public:
 	double GetMass();
 	double GetRapidity();
 	void Print();
+	void PartAntipart();
 };
 
 class Cacceptance{
@@ -163,7 +164,6 @@ public:
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime);
 	void Increment(CHBTPart *part,CHBTPart *partprime,double weight);
-	void PartAntipart(CHBTPart *part);
 	void WriteResults(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
