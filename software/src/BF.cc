@@ -9,7 +9,6 @@ CBF::CBF(CparameterMap *parmapin){
 	DELY=parmap->getD("BF_DELY",0.1);
 	DELQINV=parmap->getD("BF_DELQINV",5.0);
 	NQINVBINS=parmap->getI("BF_NQINVBINS",100);
-	printf("NYBINS=%d\n",NYBINS);
 	
 	BFy_pipi.resize(NYBINS);
 	BFy_piK.resize(NYBINS);
