@@ -123,7 +123,7 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 		psisquared00=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
 		psisquared01=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;
 		psisquared10=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
-		psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;		
+		psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
 		
 		for(i=0;i<2;i++){
 			for(iprime=0;iprime<2;iprime++){
@@ -160,8 +160,8 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 	pid=abs(pid);
 	pidprime=abs(pidprime);
 	if((pid==211 || pid==321 || pid==2212) && (pidprime==211 || pidprime==321 || pidprime==2212)){
-		//qqprime=part->resinfo->charge*partprime->resinfo->charge;
-		qqprime=1.0;
+		qqprime=part->resinfo->charge*partprime->resinfo->charge;
+		//qqprime=1.0;
 		y=atanh(part->p[3]/part->p[0]);
 		phi=atan2(part->p[2],part->p[1]);
 		yprime=atanh(partprime->p[3]/partprime->p[0]);
