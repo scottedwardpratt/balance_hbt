@@ -15,7 +15,7 @@ int main(int argc,char *argv[]){
 	FILE *fptr;
 	double phi,y,dely=0.1,delqinv=5.0,qinv,delphi=10.0;
 	vector<double> bfread(6);
-	int irun,ib,iqinv,NPHI=18,NY=20,NQINV=100,NRUNS;
+	int irun,ib,iqinv,NPHI=18,NY=50,NQINV=200,NRUNS;
 	char filename[120];
 	vector<vector<double>> bf_phi;
 	vector<vector<double>> bf_qinv;
