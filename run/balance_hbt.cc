@@ -17,6 +17,11 @@ int main(int argc,char *argv[]){
 	parmap.ReadParsFromFile("parameters/respars.txt");
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
 	CBalHBT *balhbt=new CBalHBT(&parmap,run_number);
+	
+	int ranseed;
+	printf("Enter ran seed: ");
+	scanf("%d",&ranseed);
+	balhbt->randy->reset(ranseed);
 
 	double Tchem=150.0,taumax=100.0,strangecontent,udcontent,balweight,balweightprime,nhadron0;
 	vector<vector<double>> bfnorm;
@@ -59,8 +64,8 @@ int main(int argc,char *argv[]){
 		balhbt->GetPart(stablevec,id2);
 		balhbt->GetPart(stablevec,id1prime);
 		balhbt->GetPart(stablevec,id2prime);
-		balweight=-bfnorm[id1][id2]*nhadron0;
-		balweightprime=-bfnorm[id1prime][id2prime]*nhadron0;
+		balweight=-bfnorm[id1][id2]*nhadron0*0.5;
+		balweightprime=-bfnorm[id1prime][id2prime]*nhadron0*0.5;
 		partvec[0]->resinfo=stablevec[id1]->resinfo;
 		partvec[1]->resinfo=stablevec[id2]->resinfo;
 		partprimevec[0]->resinfo=stablevec[id1prime]->resinfo;
@@ -89,8 +94,20 @@ int main(int argc,char *argv[]){
 		balhbt->GetDecayProducts(partvec[1],productvec[1]);
 		balhbt->GetDecayProducts(partprimevec[0],productprimevec[0]);
 		balhbt->GetDecayProducts(partprimevec[1],productprimevec[1]);
-
-		balhbt->bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight,balweightprime);
+		
+		for(int anti=0;anti<2;anti++){
+			if(anti==1){
+				partvec[0]->PartAntipart();
+				partvec[1]->PartAntipart();
+				for(unsigned long int iprod=0;iprod<productvec[0].size();iprod++){
+					productvec[0][iprod]->PartAntipart();
+				}
+				for(unsigned long int iprod=0;iprod<productvec[1].size();iprod++){
+					productvec[1][iprod]->PartAntipart();
+				}
+			}
+			balhbt->bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight,balweightprime);
+		}
 		
 		for(i=0;i<2;i++){
 			for(iprod=0;iprod<productvec[i].size();iprod++)
@@ -102,6 +119,7 @@ int main(int argc,char *argv[]){
 		}
 		balhbt->bf->WriteResults(run_number);
 	}
+	printf("net weight=%g =? 0\n",CBF::netweight);
 	
 	return 0;
 }

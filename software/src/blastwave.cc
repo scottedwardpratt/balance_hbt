@@ -83,7 +83,7 @@ void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 	double eta,Rbar,etabar,xbar,ybar,g1,g2;
 	CHBTPart *part;
 	randy->ran_gauss2(ubar[1],ubar[2]);
-	etabar=etamax*(1.0-2.0*randy->ran());
+	etabar=etamax*randy->ran_gauss();
 	randy->ran_gauss2(g1,g2);
 	Rbar=sqrt(Rperp*Rperp-sigmaR*sigmaR);
 	xbar=Rbar*g1;
@@ -94,10 +94,6 @@ void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 		part->x[1]=xbar+sigmaR*g1;
 		part->x[2]=ybar+sigmaR*g2;
 		eta=etabar+sigma_eta*randy->ran_gauss();
-		while(eta<etamax)
-			eta+=2.0*etamax;
-		while(eta>etamax)
-			eta-=2.0*etamax;
 		part->x[0]=tau*cosh(eta);
 		part->x[3]=tau*sinh(eta);
 		u[1]=uperpmax*part->x[1]/Rperp;

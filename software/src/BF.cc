@@ -1,6 +1,8 @@
 #include "balhbt.h"
 using namespace std;
 
+double CBF::netweight=0.0;
+
 CBF::CBF(CparameterMap *parmapin){
 	parmap=parmapin;
 
@@ -98,7 +100,6 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
 
-	
 	/*
 	psisquared00=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0])-1.0;
 	psisquared01=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1])-1.0;
@@ -114,15 +115,19 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 		for(iprime=0;iprime<2;iprime++){
 			if(i==0 && iprime==0){
 				weight=psisquared00+psisquared01*balweightprime+psisquared10*balweight+psisquared11*balweight*balweightprime;
+				netweight+=weight*partvec[0]->resinfo->charge*partprimevec[0]->resinfo->charge;
 			}
 			else if(i==0 && iprime==1){
 				weight=psisquared01+psisquared00*balweightprime+psisquared11*balweight+psisquared10*balweight*balweightprime;
+				netweight+=weight*partvec[0]->resinfo->charge*partprimevec[1]->resinfo->charge;
 			}
 			else if(i==1 && iprime==0){
 				weight=psisquared10+psisquared11*balweightprime+psisquared00*balweight+psisquared01*balweight*balweightprime;
+				netweight+=weight*partvec[1]->resinfo->charge*partprimevec[0]->resinfo->charge;
 			}
 			else{
 				weight=psisquared11+psisquared10*balweightprime+psisquared01*balweight+psisquared00*balweight*balweightprime;
+				netweight+=weight*partvec[1]->resinfo->charge*partprimevec[1]->resinfo->charge;
 			}
 			for(iprod=0;iprod<productvec[i].size();iprod++){
 				part=productvec[i][iprod];
@@ -140,11 +145,10 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 	double y,yprime,phi,phiprime,dy,dphi,qqprime,qinv;
 	pid=part->resinfo->code;
 	pidprime=partprime->resinfo->code;
-	
+	qqprime=part->resinfo->charge*partprime->resinfo->charge;
 	pid=abs(pid);
 	pidprime=abs(pidprime);
 	if((pid==211 || pid==321 || pid==2212) && (pidprime==211 || pidprime==321 || pidprime==2212)){
-		qqprime=part->resinfo->charge*partprime->resinfo->charge;
 		//qqprime=1.0;
 		y=atanh(part->p[3]/part->p[0]);
 		phi=atan2(part->p[2],part->p[1]);

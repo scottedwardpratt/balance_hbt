@@ -169,6 +169,8 @@ public:
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
 	CHBTCalc *hbtcalc;
 	CRandy *randy;
+	
+	static double netweight;
 };
 
 #endif
