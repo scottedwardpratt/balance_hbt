@@ -62,7 +62,7 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 			netstrange+=bfnorm[id1][id2]*stablevec[id1]->resinfo->strange;
 			bfnorm[id1][id2]=bfnorm[id1][id2]/stablevec[id1]->density;
 		}
-		CStableInfo::denstot+=stablevec[id2]->density;
+		CStableInfo::denstot+=2.0*stablevec[id2]->density;
 		printf("%5d: netQ=%8.5f, netB=%8.5f, netS=%8.5f\n",stablevec[id2]->resinfo->code,netcharge,netbaryon,netstrange);
 	}
 
@@ -71,9 +71,12 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 void CBalHBT::GetPart(vector<CStableInfo *> &stablevec,unsigned int &id){
 	id=0;
 	double denstarget=CStableInfo::denstot*CResInfo::randy->ran();
-	double netdens=stablevec[id]->density;
+	if(denstarget>CStableInfo::denstot){
+		printf("CStableInfo::denstot=%g, denstarget=%g\n",CStableInfo::denstot,denstarget);
+	}
+	double netdens=2.0*stablevec[id]->density;
 	while(denstarget>netdens){
 		id+=1;
-		netdens+=stablevec[id]->density;
+		netdens+=2.0*stablevec[id]->density;
 	}
 }
