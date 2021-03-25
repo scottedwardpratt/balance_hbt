@@ -18,11 +18,6 @@ int main(int argc,char *argv[]){
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
 	CBalHBT *balhbt=new CBalHBT(&parmap,run_number);
 	
-	int ranseed;
-	printf("Enter ran seed: ");
-	scanf("%d",&ranseed);
-	balhbt->randy->reset(ranseed);
-
 	double Tchem=150.0,taumax=100.0,strangecontent,udcontent,balweight,balweightprime,nhadron0;
 	vector<vector<double>> bfnorm;
 	vector<CStableInfo *> stablevec;

@@ -240,25 +240,25 @@ void CBF::WriteResults(int run_number){
 	sprintf(filename,"results/bf%d_y.dat",run_number);
 	FILE *fptr=fopen(filename,"w");
 	for(int iy=0;iy<NYBINS;iy++){
-		fprintf(fptr,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iy+0.5)*DELY,
-		BFy_pipi[iy]/DENOMy_pipi[iy],BFy_piK[iy]/DENOMy_piK[iy],BFy_pip[iy]/DENOMy_pip[iy],
-		BFy_KK[iy]/DENOMy_KK[iy],BFy_Kp[iy]/DENOMy_Kp[iy],BFy_pp[iy]/DENOMy_pp[iy]);
+		fprintf(fptr,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iy+0.5)*DELY,
+		BFy_pipi[iy],DENOMy_pipi[iy],BFy_piK[iy],DENOMy_piK[iy],BFy_pip[iy],DENOMy_pip[iy],
+		BFy_KK[iy],DENOMy_KK[iy],BFy_Kp[iy],DENOMy_Kp[iy],BFy_pp[iy],DENOMy_pp[iy]);
 	}
 	fclose(fptr);
 	sprintf(filename,"results/bf%d_phi.dat",run_number);
 	fptr=fopen(filename,"w");
 	for(int iphi=0;iphi<NPHIBINS;iphi++){
-		fprintf(fptr,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iphi+0.5)*DELPHI*180.0/PI,
-		BFphi_pipi[iphi]/DENOMphi_pipi[iphi],BFphi_piK[iphi]/DENOMphi_piK[iphi],BFphi_pip[iphi]/DENOMphi_pip[iphi],
-		BFphi_KK[iphi]/DENOMphi_KK[iphi],BFphi_Kp[iphi]/DENOMphi_Kp[iphi],BFphi_pp[iphi]/DENOMphi_pp[iphi]);
+		fprintf(fptr,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iphi+0.5)*DELPHI*180.0/PI,
+		BFphi_pipi[iphi],DENOMphi_pipi[iphi],BFphi_piK[iphi],DENOMphi_piK[iphi],BFphi_pip[iphi],DENOMphi_pip[iphi],
+		BFphi_KK[iphi],DENOMphi_KK[iphi],BFphi_Kp[iphi],DENOMphi_Kp[iphi],BFphi_pp[iphi],DENOMphi_pp[iphi]);
 	}
 	fclose(fptr);
 	sprintf(filename,"results/bf%d_qinv.dat",run_number);
 	fptr=fopen(filename,"w");
 	for(int iqinv=0;iqinv<NQINVBINS;iqinv++){
-		fprintf(fptr,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iqinv+0.5)*DELQINV,
-		BFqinv_pipi[iqinv]/DENOMqinv_pipi[iqinv],BFqinv_piK[iqinv]/DENOMqinv_piK[iqinv],BFqinv_pip[iqinv]/DENOMqinv_pip[iqinv],
-		BFqinv_KK[iqinv]/DENOMqinv_KK[iqinv],BFqinv_Kp[iqinv]/DENOMqinv_Kp[iqinv],BFqinv_pp[iqinv]/DENOMqinv_pp[iqinv]);
+		fprintf(fptr,"%7.3f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f %9.6f\n",(iqinv+0.5)*DELQINV,
+		BFqinv_pipi[iqinv],DENOMqinv_pipi[iqinv],BFqinv_piK[iqinv],DENOMqinv_piK[iqinv],BFqinv_pip[iqinv],DENOMqinv_pip[iqinv],
+		BFqinv_KK[iqinv],DENOMqinv_KK[iqinv],BFqinv_Kp[iqinv],DENOMqinv_Kp[iqinv],BFqinv_pp[iqinv],DENOMqinv_pp[iqinv]);
 	}
 	fclose(fptr);
 
