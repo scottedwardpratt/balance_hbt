@@ -112,8 +112,8 @@ int main(int argc,char *argv[]){
 				delete productprimevec[i][iprod];
 			productprimevec[i].clear();
 		}
-		balhbt->bf->WriteResults(run_number);
 	}
+	balhbt->bf->WriteResults(run_number);
 	printf("net weight=%g =? 0\n",CBF::netweight);
 	
 	return 0;
