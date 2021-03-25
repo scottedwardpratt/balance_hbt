@@ -30,6 +30,11 @@ void CHBTPart::PartAntipart(){
 	}
 }
 
+void CHBTPart::SetEtaYPt(){
+	pt=sqrt(p[1]*p[1]+p[2]*p[2]);
+	y=atanh(p[3]/p[0]);
+	eta=asinh(p[3]/pt);
+}
 
 void CHBTPart::Print(){
 	resinfo->Print();

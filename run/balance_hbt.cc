@@ -115,6 +115,7 @@ int main(int argc,char *argv[]){
 	}
 	balhbt->bf->WriteResults(run_number);
 	printf("net weight=%g =? 0\n",CBF::netweight);
+	printf("Npi=%lld, NK=%lld, Np=%lld\n",balhbt->bf->picount,balhbt->bf->Kcount,balhbt->bf->pcount);
 	
 	return 0;
 }

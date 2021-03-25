@@ -92,11 +92,13 @@ void CBF::Zero(){
 	DENOMphi_Kp.assign(NPHIBINS,0.0);
 	DENOMphi_pp.assign(NPHIBINS,0.0);
 	
+	picount=Kcount=pcount=0;
+	
 }
 
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime){
-	double weight,efficiency,psisquared00,psisquared01,psisquared10,psisquared11;
+	double weight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime;
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
 
@@ -131,10 +133,18 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 			}
 			for(iprod=0;iprod<productvec[i].size();iprod++){
 				part=productvec[i][iprod];
-				for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
-					partprime=productprimevec[iprime][iprodprime];
-					if(acceptancebal->acceptance(part,partprime,efficiency))
-					Increment(part,partprime,weight,efficiency);
+				if(acceptancebal->acceptance(part,eff)){
+					if(abs(part->resinfo->code)==211)
+						picount+=1;
+					if(abs(part->resinfo->code)==321)
+						Kcount+=1;
+					if(abs(part->resinfo->code)==2212)
+						pcount+=1;
+					for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
+						partprime=productprimevec[iprime][iprodprime];
+						if(acceptancebal->acceptance(partprime,effprime))
+							Increment(part,partprime,weight,eff*effprime);
+					}
 				}
 			}
 		}
@@ -262,7 +272,10 @@ void CBF::WriteResults(int run_number){
 		BFqinv_KK[iqinv],DENOMqinv_KK[iqinv],BFqinv_Kp[iqinv],DENOMqinv_Kp[iqinv],BFqinv_pp[iqinv],DENOMqinv_pp[iqinv]);
 	}
 	fclose(fptr);
-
+	sprintf(filename,"results/bf%d_hadcount.dat",run_number);
+	fptr=fopen(filename,"w");
+	fprintf(fptr,"%lld  %lld  %lld\n",picount,Kcount,pcount);
+	fclose(fptr);
 }
 
 double CBF::Getqinv(CHBTPart *part,CHBTPart *partprime){

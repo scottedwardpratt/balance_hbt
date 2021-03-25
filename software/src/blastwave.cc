@@ -101,6 +101,7 @@ void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 		u[0]=sqrt(1.0+u[1]*u[1]+u[2]*u[2]+u[3]*u[3]);
 		randy->generate_boltzmann(part->resinfo->mass,Tf,p);
 		Misc::Boost(u,p,part->p);
+		part->SetEtaYPt();
 	}
 }
 

@@ -18,6 +18,7 @@ CAcceptanceBal::CAcceptanceBal(CparameterMap *parmap){
 }
 
 bool CAcceptanceBal::acceptance(CHBTPart *part1,CHBTPart *part2,double &efficiency){
+	
 	double pt1,pt2,eta1,eta2;
 	efficiency=0.0;
 	if(abs(part1->resinfo->code)!=211 && abs(part1->resinfo->code)!=321 && abs(part1->resinfo->code)!=2212)
@@ -51,4 +52,25 @@ bool CAcceptanceBal::acceptance(CHBTPart *part1,CHBTPart *part2,double &efficien
 		efficiency=1.0-0.5*fabs(eta1-eta2)/etamax;
 
 	return true;	
+}
+
+bool CAcceptanceBal::acceptance(CHBTPart *part,double &efficiency){
+	bool accept=false;
+	int abspid=abs(part->resinfo->code);
+	efficiency=0.0;
+	if(abspid!=211 && abspid!=321 && abspid!=2212)
+		return false;
+	else if(abs(part->eta)<etamax)
+		return false;
+	else if(abspid==211 && part->pt<ptmin_pi)
+		return false;
+	else if(abspid==321 && part->pt<ptmin_K)
+		return false;
+	else if(abspid==2212 && part->pt<ptmin_p)
+		return false;
+	else{
+		efficiency=1.0;
+		accept=true;
+	}
+	return accept;
 }

@@ -47,6 +47,7 @@ class CHBTPart{
 public:
 	FourVector p;
 	FourVector x;
+	double eta,y,pt;
 	int motherid;
 	CResInfo *resinfo;
 	CHBTPart(){};
@@ -60,6 +61,7 @@ public:
 	double GetRapidity();
 	void Print();
 	void PartAntipart();
+	void SetEtaYPt();
 };
 
 /*
@@ -172,6 +174,7 @@ public:
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
 	CHBTCalc *hbtcalc;
 	CRandy *randy;
+	long long int picount,Kcount,pcount;
 	
 	static double netweight;
 };
