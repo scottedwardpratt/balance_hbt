@@ -11,6 +11,7 @@ CBF::CBF(CparameterMap *parmapin){
 	DELY=parmap->getD("BF_DELY",0.1);
 	DELQINV=parmap->getD("BF_DELQINV",5.0);
 	NQINVBINS=parmap->getI("BF_NQINVBINS",100);
+	acceptancebal=new CAcceptanceBal(parmap);
 	
 	BFy_pipi.resize(NYBINS);
 	BFy_piK.resize(NYBINS);
@@ -95,21 +96,20 @@ void CBF::Zero(){
 
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime){
-	double weight;
-	double psisquared00,psisquared01,psisquared10,psisquared11;
+	double weight,efficiency,psisquared00,psisquared01,psisquared10,psisquared11;
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
 
-	/*
 	psisquared00=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0])-1.0;
 	psisquared01=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1])-1.0;
 	psisquared10=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0])-1.0;
 	psisquared11=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1])-1.0;
-	*/
+	/*
 	psisquared00=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
 	psisquared01=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;
 	psisquared10=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
 	psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
+	*/
 		
 	for(i=0;i<2;i++){
 		for(iprime=0;iprime<2;iprime++){
@@ -133,14 +133,15 @@ vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,dou
 				part=productvec[i][iprod];
 				for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
 					partprime=productprimevec[iprime][iprodprime];
-					Increment(part,partprime,weight);
+					if(acceptancebal->acceptance(part,partprime,efficiency))
+					Increment(part,partprime,weight,efficiency);
 				}
 			}
 		}
 	}
 }
 
-void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
+void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency){
 	int iy,iphi,iqinv,pid,pidprime;
 	double y,yprime,phi,phiprime,dy,dphi,qqprime,qinv;
 	pid=part->resinfo->code;
@@ -177,8 +178,8 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 				DENOMy_pipi[iy]+=1.0;
 				DENOMphi_pipi[iphi]+=1.0;
 				if(iqinv<NQINVBINS){
-					BFqinv_pipi[iqinv]-=qqprime*weight;
-					DENOMqinv_pipi[iqinv]+=1.0;
+					BFqinv_pipi[iqinv]-=qqprime*weight*efficiency;
+					DENOMqinv_pipi[iqinv]+=efficiency;
 				}
 			}
 			else if((pid==211 && pidprime==321) || (pid==321 && pidprime==211)){
@@ -187,8 +188,8 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 				DENOMy_piK[iy]+=1.0;
 				DENOMphi_piK[iphi]+=1.0;
 				if(iqinv<NQINVBINS){
-					BFqinv_piK[iqinv]-=qqprime*weight;
-					DENOMqinv_piK[iqinv]+=1.0;
+					BFqinv_piK[iqinv]-=qqprime*weight*efficiency;
+					DENOMqinv_piK[iqinv]+=efficiency;
 				}
 			}
 			else if((pid==211 && pidprime==2212) || (pid==2212 && pidprime==211)){
@@ -197,8 +198,8 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 				DENOMy_pip[iy]+=1.0;
 				DENOMphi_pip[iphi]+=1.0;
 				if(iqinv<NQINVBINS){
-					BFqinv_pip[iqinv]-=qqprime*weight;
-					DENOMqinv_pip[iqinv]+=1.0;
+					BFqinv_pip[iqinv]-=qqprime*weight*efficiency;
+					DENOMqinv_pip[iqinv]+=efficiency;
 				}
 			}
 			else if(pid==321 && pidprime==321){
@@ -207,8 +208,8 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 				DENOMy_KK[iy]+=1.0;
 				DENOMphi_KK[iphi]+=1.0;
 				if(iqinv<NQINVBINS){
-					BFqinv_KK[iqinv]-=qqprime*weight;
-					DENOMqinv_KK[iqinv]+=1.0;
+					BFqinv_KK[iqinv]-=qqprime*weight*efficiency;
+					DENOMqinv_KK[iqinv]+=efficiency;
 				}
 			}
 			else if((pid==321 && pidprime==2212) || (pid==2212 && pidprime==321)){
@@ -217,8 +218,8 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 				DENOMy_Kp[iy]+=1.0;
 				DENOMphi_Kp[iphi]+=1.0;
 				if(iqinv<NQINVBINS){
-					BFqinv_Kp[iqinv]-=qqprime*weight;
-					DENOMqinv_Kp[iqinv]+=1.0;
+					BFqinv_Kp[iqinv]-=qqprime*weight*efficiency;
+					DENOMqinv_Kp[iqinv]+=efficiency;
 				}
 			}
 			else if(pid==2212 && pidprime==2212){
@@ -227,8 +228,8 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight){
 				DENOMy_pp[iy]+=1.0;
 				DENOMphi_pp[iphi]+=1.0;
 				if(iqinv<NQINVBINS){
-					BFqinv_pp[iqinv]-=qqprime*weight;
-					DENOMqinv_pp[iqinv]+=1.0;
+					BFqinv_pp[iqinv]-=qqprime*weight*efficiency;
+					DENOMqinv_pp[iqinv]+=efficiency;
 				}
 			}
 		}

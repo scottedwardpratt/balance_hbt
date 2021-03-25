@@ -12,6 +12,7 @@
 #include "randy.h"
 #include "coral.h"
 #include "constants.h"
+#include "acceptancebal.h"
 #include <list>
 
 using namespace std;
@@ -61,6 +62,7 @@ public:
 	void PartAntipart();
 };
 
+/*
 class Cacceptance{
 public:
 	CRandy *randy;
@@ -76,7 +78,7 @@ public:
 			return false;
 	}
 	void Acceptance(CHBTPart *part,bool &acceptQ,bool &acceptP,bool &acceptK,bool &acceptPi,bool &acceptB);
-};
+};*/
 
 class CStableInfo{
 public:
@@ -160,10 +162,11 @@ public:
 	vector<double> DENOMqinv_pp;
 	
 	CBF(CparameterMap *parmapin);
+	CAcceptanceBal *acceptancebal;
 	void Zero();
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime);
-	void Increment(CHBTPart *part,CHBTPart *partprime,double weight);
+	void Increment(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void WriteResults(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
