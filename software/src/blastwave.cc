@@ -8,11 +8,10 @@ CblastWave::CblastWave(CparameterMap *parmapin,CRandy *randyset,CResList *reslis
 	randy=randyset;
 	reslist=reslistset;
 	Tf=parmap->getD("BW_T",100.0);
-	uperpmax=parmap->getD("BW_UPERPMAX",0.9);
-	etamax=parmap->getD("BW_ETAMAX",5.0);
+	etamax=parmap->getD("BW_ETAMAX",1.0);
 	uperpmax=parmap->getD("BW_UPERP",1.0);
-	Rperp=parmap->getD("BW_ROUT",16.0);
-	tau=parmap->getD("BW_TAU",20.0);
+	Rperp=parmap->getD("BW_RPERP",12.0);
+	tau=parmap->getD("BW_TAU",10.0);
 	sigma_eta=parmap->getD("BW_SIGMA_ETA",0.6);
 	sigmaR=parmap->getD("BW_SIGMA_R",7.0);
 }
