@@ -8,9 +8,11 @@ CHBTCalc::CHBTCalc(CparameterMap *parmapin){
 double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idprime){
 	double q2,r2,qdotr,P2,Pdotq,Pdotr,psisquared;
 	double qmag,rmag,ctheta;
-	int alpha;
+	int alpha,pid,pidprime;
 	FourVector q,r,P;
-	int pid=part->resinfo->code,pidprime=partprime->resinfo->code;
+	pid=part->resinfo->code;
+	pidprime=partprime->resinfo->code;
+	int q1q2=part->resinfo->charge*partprime->resinfo->charge;
 	q2=qdotr=r2=P2=0.0;
 	double g[4]={1.0,-1.0,-1.0,-1.0};
 	q2=qdotr=P2=Pdotr=Pdotq=0.0;
@@ -31,10 +33,18 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 	qmag=sqrt(-q2);
 	rmag=sqrt(-r2);
 	ctheta=-qdotr/(qmag*rmag);
-	if((abs(pid)==211 || abs(pid)==321 || abs(pid)==2212) && pid==pidprime){
-		psisquared=wf[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
-		return psisquared;
+	if(q1q2>0){
+		psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
 	}
-	else
-		return 1.0;
+	else if(q1q2<0){
+		psisquared=wf_opp[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
+	}
+	else{
+		if(pid==pidprime)
+			psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
+		else
+			psisquared=1.0;
+	}
+	
+	return psisquared;
 }

@@ -16,35 +16,48 @@ CBalHBT::CBalHBT(CparameterMap *parmapin,int run_number){
 
 void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 	int NID=stablevec.size();
-	int id1,id2,q1,q2;
+	int id1,id2,q1,q2,q1q2;
 	CStableInfo *info1,*info2;
 	double symweight;
-	hbtcalc->wf.resize(NID);
-	for(id1=0;id1<NID;id1++)
-		hbtcalc->wf[id1].resize(NID);
+	hbtcalc->wf_same.resize(NID);
+	hbtcalc->wf_opp.resize(NID);
+	for(id1=0;id1<NID;id1++){
+		hbtcalc->wf_same[id1].resize(NID);
+		hbtcalc->wf_opp[id1].resize(NID);
+		for(id2=0;id2<NID;id2++){
+			hbtcalc->wf_same[id1][id2]=NULL;
+			hbtcalc->wf_opp[id1][id2]=NULL;
+		}
+	}
+
 	for(id1=0;id1<NID;id1++){
 		info1=stablevec[id1];
 		q1=info1->resinfo->charge;
 		for(id2=0;id2<=id1;id2++){
 			info2=stablevec[id2];
 			q2=info2->resinfo->charge;
+			q1q2=abs(q1*q2);
 			if(id1!=id2){
-				symweight=0.5;
+				if(q1q2!=0){
+					hbtcalc->wf_same[id1][id2]=new CWaveFunction_generic(parsfilename,q1q2,info1->resinfo->mass,info2->resinfo->mass,0.5);
+					hbtcalc->wf_same[id2][id1]=hbtcalc->wf_same[id1][id2];
+					hbtcalc->wf_opp[id1][id2]=new CWaveFunction_generic(parsfilename,-q1q2,info1->resinfo->mass,info2->resinfo->mass,0.5);
+					hbtcalc->wf_opp[id2][id1]=hbtcalc->wf_opp[id1][id2];
+				}
 			}
 			else{
-				if(abs(info1->resinfo->code)==2212){
-					hbtcalc->wf[id1][id2]=new CWaveFunction_pp_schrod(parsfilename);
-				}
-				else if(info1->resinfo->spin==0)
+				hbtcalc->wf_opp[id1][id2]=new CWaveFunction_generic(parsfilename,-q1q2,info1->resinfo->mass,info2->resinfo->mass,0.5);
+				if(fabs(info1->resinfo->spin-0.5)<1.0E-5)
 					symweight=1.0;
 				else if(fabs(info1->resinfo->spin-0.5)<1.0E-5)
 					symweight=0.25;
 				else
 					symweight=0.5;
+				if(id1==id2 && abs(info1->resinfo->code)==2212)
+					hbtcalc->wf_same[id1][id2]=new CWaveFunction_pp_schrod(parsfilename);
+				else
+					hbtcalc->wf_same[id1][id2]=new CWaveFunction_generic(parsfilename,q1q2,info1->resinfo->mass,info2->resinfo->mass,symweight);
 			}
-			hbtcalc->wf[id1][id2]=new CWaveFunction_generic(parsfilename,q1*q2,info1->resinfo->mass,info2->resinfo->mass,symweight);	
 		}
-		if(id1!=id2)
-			hbtcalc->wf[id2][id1]=hbtcalc->wf[id1][id2];
 	}
 }
