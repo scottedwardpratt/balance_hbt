@@ -101,7 +101,7 @@ int main(int argc,char *argv[]){
 					productvec[1][iprod]->PartAntipart();
 				}
 			}
-			balhbt->bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight,balweightprime);
+			balhbt->bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight,balweightprime,id1,id2,id1prime,id2prime);
 		}
 		
 		for(i=0;i<2;i++){

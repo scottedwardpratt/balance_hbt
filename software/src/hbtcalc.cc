@@ -3,11 +3,11 @@ using namespace std;
 
 CHBTCalc::CHBTCalc(CparameterMap *parmapin){
 	parmap=parmapin;
-	
 }
 
-double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime){
-	double q2,r2,qdotr,P2,Pdotq,Pdotr;
+double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idprime){
+	double q2,r2,qdotr,P2,Pdotq,Pdotr,psisquared;
+	double qmag,rmag,ctheta;
 	int alpha;
 	FourVector q,r,P;
 	int pid=part->resinfo->code,pidprime=partprime->resinfo->code;
@@ -28,9 +28,13 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime){
 	q2=q2-Pdotq*Pdotq/P2;
 	r2=r2-Pdotr*Pdotr/P2;
 	qdotr=qdotr-(Pdotr*Pdotq)/P2;
-	if((abs(pid)==211 || abs(pid)==321) && pid==pidprime){
-		return 1.0+cos(2.0*qdotr/HBARC);
+	qmag=sqrt(-q2);
+	rmag=sqrt(-r2);
+	ctheta=-qdotr/(qmag*rmag);
+	if((abs(pid)==211 || abs(pid)==321 || abs(pid)==2212) && pid==pidprime){
+		psisquared=wf[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
+		return psisquared;
 	}
 	else
-		return 1.0;	
+		return 1.0;
 }

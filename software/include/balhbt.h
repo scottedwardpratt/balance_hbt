@@ -111,7 +111,7 @@ public:
 class CHBTCalc{
 public:
 	CHBTCalc(CparameterMap *parmapin);
-	double GetPsiSquared(CHBTPart *part,CHBTPart *partprime);
+	double GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idprime);
 	CparameterMap *parmap;
 	vector<vector<CWaveFunction *>> wf;
 };
@@ -167,7 +167,8 @@ public:
 	CAcceptanceBal *acceptancebal;
 	void Zero();
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime);
+	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,
+	int id1,int id2,int id1prime,int id2prime);
 	void Increment(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void WriteResults(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
