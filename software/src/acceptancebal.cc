@@ -15,10 +15,13 @@ CAcceptanceBal::CAcceptanceBal(CparameterMap *parmap){
 		ptmin_K=200.0;
 		ptmin_p=200.0;
 	}
+	else{
+		printf("ACCEPTANCE not recognized\n");
+		exit(1);
+	}
 }
 
 bool CAcceptanceBal::acceptance(CHBTPart *part1,CHBTPart *part2,double &efficiency){
-	
 	double pt1,pt2,eta1,eta2;
 	efficiency=0.0;
 	if(abs(part1->resinfo->code)!=211 && abs(part1->resinfo->code)!=321 && abs(part1->resinfo->code)!=2212)

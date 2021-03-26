@@ -33,6 +33,7 @@ void CBalHBT::GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products){
 		products[0]->Copy(part);
 	}
 	for(idaughter=0;idaughter<ndaughters;idaughter++){
+		products[idaughter]->SetEtaYPt();
 		if(products[idaughter]->p[0]!=products[idaughter]->p[0]){
 			printf("In GetDecayProducts, p0=NaN!\n");
 		}
