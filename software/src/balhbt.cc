@@ -25,7 +25,7 @@ void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 	for(id1=0;id1<NID;id1++){
 		info1=stablevec[id1];
 		q1=info1->resinfo->charge;
-		for(id2=0;id2<id1;id2++){
+		for(id2=0;id2<=id1;id2++){
 			info2=stablevec[id2];
 			q2=info2->resinfo->charge;
 			if(id1!=id2){
