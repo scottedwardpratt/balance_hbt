@@ -47,12 +47,16 @@ void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 			}
 			else{
 				hbtcalc->wf_opp[id1][id2]=new CWaveFunction_generic(parsfilename,-q1q2,info1->resinfo->mass,info2->resinfo->mass,0.5);
-				if(fabs(info1->resinfo->spin-0.5)<1.0E-5)
+				if(fabs(info1->resinfo->spin)<1.0E-3)
 					symweight=1.0;
-				else if(fabs(info1->resinfo->spin-0.5)<1.0E-5)
+				else if(fabs(info1->resinfo->spin-0.5)<1.0E-3)
 					symweight=0.25;
-				else
+				else if(fabs(info1->resinfo->spin-1.5)<1.0E-3)
+					symweight=0.375;
+				else{
+					printf("spin not recognized\n");
 					symweight=0.5;
+				}
 				if(id1==id2 && abs(info1->resinfo->code)==2212)
 					hbtcalc->wf_same[id1][id2]=new CWaveFunction_pp_schrod(parsfilename);
 				else
