@@ -59,7 +59,7 @@ int main(int argc,char *argv[]){
 	fptr=fopen(filename,"w");
 	for(iphi=0;iphi<NPHI;iphi++){
 		phi=(0.5+iphi)*delphi;
-		fprintf(fptr,"%6.2f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f\n",phi,
+		fprintf(fptr,"%6.2f %11.7f %11.7f %11.7f %11.7f %11.7f %11.7f\n",phi,
 		bf_phi[0][iphi]/denom_phi[0][iphi],bf_phi[1][iphi]/denom_phi[1][iphi],bf_phi[2][iphi]/denom_phi[2][iphi],
 		bf_phi[3][iphi]/denom_phi[3][iphi],bf_phi[4][iphi]/denom_phi[4][iphi],bf_phi[5][iphi]/denom_phi[5][iphi]);
 	}
@@ -83,7 +83,7 @@ int main(int argc,char *argv[]){
 	fptr=fopen(filename,"w");
 	for(iy=0;iy<NY;iy++){
 		y=(0.5+iy)*dely;
-		fprintf(fptr,"%6.2f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f\n",y,
+		fprintf(fptr,"%6.2f %11.7f %11.7f %11.7f %11.7f %11.7f %11.7f\n",y,
 		bf_y[0][iy]/denom_y[0][iy],bf_y[1][iy]/denom_y[1][iy],bf_y[2][iy]/denom_y[2][iy],
 		bf_y[3][iy]/denom_y[3][iy],bf_y[4][iy]/denom_y[4][iy],bf_y[5][iy]/denom_y[5][iy]);
 	}
@@ -107,7 +107,7 @@ int main(int argc,char *argv[]){
 	fptr=fopen(filename,"w");
 	for(iqinv=0;iqinv<NQINV;iqinv++){
 		qinv=(0.5+iqinv)*delqinv;
-		fprintf(fptr,"%6.2f %9.5f %9.5f %9.5f %9.5f %9.5f %9.5f\n",qinv,
+		fprintf(fptr,"%6.2f %11.7f %11.7f %11.7f %11.7f %11.7f %11.7f\n",qinv,
 		bf_qinv[0][iqinv]/denom_qinv[0][iqinv],bf_qinv[1][iqinv]/denom_qinv[1][iqinv],bf_qinv[2][iqinv]/denom_qinv[2][iqinv],
 		bf_qinv[3][iqinv]/denom_qinv[3][iqinv],bf_qinv[4][iqinv]/denom_qinv[4][iqinv],bf_qinv[5][iqinv]/denom_qinv[5][iqinv]);
 	}
