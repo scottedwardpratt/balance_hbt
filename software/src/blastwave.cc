@@ -8,12 +8,12 @@ CblastWave::CblastWave(CparameterMap *parmapin,CRandy *randyset,CResList *reslis
 	randy=randyset;
 	reslist=reslistset;
 	Tf=parmap->getD("BW_T",100.0);
-	etamax=parmap->getD("BW_ETAMAX",1.0);
+	etawidth=parmap->getD("BW_ETAWIDTH",1.8);
 	uperpmax=parmap->getD("BW_UPERP",1.0);
 	Rperp=parmap->getD("BW_RPERP",12.0);
-	tau=parmap->getD("BW_TAU",10.0);
-	sigma_eta=parmap->getD("BW_SIGMA_ETA",0.6);
-	sigmaR=parmap->getD("BW_SIGMA_R",7.0);
+	tau=parmap->getD("BW_TAU",12.0);
+	sigma_eta=parmap->getD("BW_SIGMA_ETA",0.5);
+	sigmaR=parmap->getD("BW_SIGMA_R",3.0);
 }
 
 void CblastWave::GenerateParts(vector<CResInfo *> &resinfovec,vector<CHBTPart *> &partvec){
@@ -78,15 +78,21 @@ void CblastWave::GenerateParts(vector<CResInfo *> &resinfovec,vector<CHBTPart *>
 
 void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 	unsigned int ipart,nparts=partvec.size();
-	FourVector u,ubar,p;
-	double eta,Rbar,etabar,xbar,ybar,g1,g2;
+	FourVector u,p;
+	double eta,etabar,xbar,ybar,g1,g2;
 	CHBTPart *part;
-	randy->ran_gauss2(ubar[1],ubar[2]);
-	etabar=etamax*randy->ran_gauss();
+	
+	/*randy->ran_gauss2(ubar[1],ubar[2]);
 	randy->ran_gauss2(g1,g2);
 	Rbar=sqrt(Rperp*Rperp-sigmaR*sigmaR);
 	xbar=Rbar*g1;
-	ybar=Rbar*g2;
+	ybar=Rbar*g2;*/
+	do{
+		xbar=Rperp*(1.0-2.0*randy->ran());
+		ybar=Rperp*(1.0-2.0*randy->ran());
+	}while(xbar*xbar+ybar*ybar>Rperp*Rperp);
+	etabar=etawidth*randy->ran_gauss();
+	
 	for(ipart=0;ipart<nparts;ipart++){
 		part=partvec[ipart];
 		randy->ran_gauss2(g1,g2);

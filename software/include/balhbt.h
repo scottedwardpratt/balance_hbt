@@ -97,7 +97,7 @@ class CblastWave{
 public:
 	CparameterMap *parmap;
 	CRandy *randy;
-	double Tf,uperpmax,Rperp,etamax,tau;
+	double Tf,uperpmax,Rperp,etawidth,tau;
 	double Ybeam,sigmaR;
 	double sigma_eta;
 	CResList *reslist;
