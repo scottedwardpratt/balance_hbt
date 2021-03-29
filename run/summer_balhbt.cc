@@ -51,9 +51,9 @@ int main(int argc,char *argv[]){
 		sprintf(filename,"results/bf%d_hadcount.dat",irun);
 		fptr=fopen(filename,"r");
 		fscanf(fptr,"%lld %lld %lld",&picount,&Kcount,&pcount);
-		picounttot+=2*picount;
-		Kcounttot+=2*Kcount;
-		pcounttot+=2*pcount;
+		picounttot+=picount;
+		Kcounttot+=Kcount;
+		pcounttot+=pcount;
 		fclose(fptr);
 	}
 	
@@ -67,7 +67,7 @@ int main(int argc,char *argv[]){
 			&bfread[0],&denomread[0],&bfread[1],&denomread[1],&bfread[2],&denomread[2],
 			&bfread[3],&denomread[3],&bfread[4],&denomread[4],&bfread[5],&denomread[5]);
 			for(ib=0;ib<6;ib++){
-				bf_phi[ib][iphi]+=bfread[ib];;
+				bf_phi[ib][iphi]+=bfread[ib];
 				denom_phi[ib][iphi]+=denomread[ib];
 			}
 		}
@@ -89,8 +89,8 @@ int main(int argc,char *argv[]){
 	for(iphi=0;iphi<NPHI;iphi++){
 		phi=(0.5+iphi)*delphi;
 		fprintf(fptr,"%6.2f %11.7f %11.7f %11.7f %11.7f %11.7f %11.7f\n",phi,
-		bf_phi[0][iphi]/(Nhad*picounttot),bf_phi[1][iphi]/(Nhad*Kcounttot),bf_phi[2][iphi]/(Nhad*pcounttot),
-		bf_phi[3][iphi]/(Nhad*Kcounttot),bf_phi[4][iphi]/(Nhad*pcounttot),bf_phi[5][iphi]/(Nhad*pcounttot));
+		Nhad*bf_phi[0][iphi]/(picounttot*delphi*PI/180.0),Nhad*bf_phi[1][iphi]/(Kcounttot*delphi*PI/180.0),Nhad*bf_phi[2][iphi]/(pcounttot*delphi*PI/180.0),
+		Nhad*bf_phi[3][iphi]/(Kcounttot*delphi*PI/180.0),Nhad*bf_phi[4][iphi]/(pcounttot*delphi*PI/180.0),Nhad*bf_phi[5][iphi]/(pcounttot*delphi*PI/180.0));
 	}
 	fclose(fptr);
 	
@@ -126,8 +126,8 @@ int main(int argc,char *argv[]){
 	for(iy=0;iy<NY;iy++){
 		y=(0.5+iy)*dely;
 		fprintf(fptr,"%6.2f %11.7f %11.7f %11.7f %11.7f %11.7f %11.7f\n",y,
-		bf_y[0][iy]/(Nhad*picounttot),bf_y[1][iy]/(Nhad*Kcounttot),bf_y[2][iy]/(Nhad*pcounttot),
-		bf_y[3][iy]/(Nhad*Kcounttot),bf_y[4][iy]/(Nhad*pcounttot),bf_y[5][iy]/(Nhad*pcounttot));
+		Nhad*bf_y[0][iy]/(picounttot*dely),Nhad*bf_y[1][iy]/(Kcounttot*dely),Nhad*bf_y[2][iy]/(pcounttot*dely),
+		Nhad*bf_y[3][iy]/(Kcounttot*dely),Nhad*bf_y[4][iy]/(pcounttot*dely),Nhad*bf_y[5][iy]/(pcounttot*dely));
 	}
 	fclose(fptr);
 	
@@ -163,8 +163,8 @@ int main(int argc,char *argv[]){
 	for(iqinv=0;iqinv<NQINV;iqinv++){
 		qinv=(0.5+iqinv)*delqinv;
 		fprintf(fptr,"%6.2f %11.7f %11.7f %11.7f %11.7f %11.7f %11.7f\n",qinv,
-		bf_qinv[0][iqinv]/(Nhad*picounttot),bf_qinv[1][iqinv]/(Nhad*Kcounttot),bf_qinv[2][iqinv]/(Nhad*pcounttot),
-		bf_qinv[3][iqinv]/(Nhad*Kcounttot),bf_qinv[4][iqinv]/(Nhad*pcounttot),bf_qinv[5][iqinv]/(Nhad*pcounttot));
+		Nhad*bf_qinv[0][iqinv]/(picounttot*delqinv),Nhad*bf_qinv[1][iqinv]/(Kcounttot*delqinv),Nhad*bf_qinv[2][iqinv]/(pcounttot*delqinv),
+		Nhad*bf_qinv[3][iqinv]/(Kcounttot*delqinv),Nhad*bf_qinv[4][iqinv]/(pcounttot*delqinv),Nhad*bf_qinv[5][iqinv]/(pcounttot*delqinv));
 	}
 	fclose(fptr);
 	

@@ -113,6 +113,8 @@ int id1,int id2,int id1prime,int id2prime){
 	psisquared10=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
 	psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
 	*/
+	
+	
 		
 	for(i=0;i<2;i++){
 		for(iprime=0;iprime<2;iprime++){
