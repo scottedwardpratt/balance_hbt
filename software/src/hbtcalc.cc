@@ -34,7 +34,11 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 	rmag=sqrt(-r2);
 	ctheta=-qdotr/(qmag*rmag);
 	if(q1q2>0){
-		psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
+		if(abs(pid)==2212 && pid==pidprime && qmag<200.0){
+			psisquared=wf_pp->GetPsiSquared(qmag,rmag,ctheta);
+		}
+		else
+			psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
 	}
 	else if(q1q2<0){
 		psisquared=wf_opp[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);

@@ -23,7 +23,7 @@ x0=0.12
 width=0.5*(1.0-x0-0.1)
 y0=0.08
 height=(1.0-y0-0.04)/3.0
-xmax=200
+xmax=500
 
 results = np.loadtxt('results/bf_qinv.dat',skiprows=0,unpack=True)
 x=results[0]
@@ -150,7 +150,7 @@ for ipanel in range(0,2):
     else:
       plt.xlabel(None)
     if jpanel==1 and ipanel ==0:
-      plt.ylabel('$B_{HBT}(q_{\\rm inv})$',fontsize=24)
+      plt.ylabel('$B_{HBT}(q_{\\rm inv})$  (GeV/$c$)$^{-1}$',fontsize=24)
     else:
       plt.ylabel(None)
 

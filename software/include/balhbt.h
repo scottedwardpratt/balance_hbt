@@ -114,6 +114,7 @@ public:
 	double GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idprime);
 	CparameterMap *parmap;
 	vector<vector<CWaveFunction *>> wf_same,wf_opp;
+	CWaveFunction *wf_pp;
 };
 
 class CBF{
