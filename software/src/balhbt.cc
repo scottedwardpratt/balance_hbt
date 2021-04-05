@@ -62,4 +62,5 @@ void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 		}
 	}
 	hbtcalc->wf_pp=new CWaveFunction_pp_schrod(parsfilename);
+	hbtcalc->wf_classical=new CWaveFunction_classical();
 }

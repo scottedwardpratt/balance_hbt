@@ -115,6 +115,7 @@ public:
 	CparameterMap *parmap;
 	vector<vector<CWaveFunction *>> wf_same,wf_opp;
 	CWaveFunction *wf_pp;
+	CWaveFunction_classical *wf_classical;
 };
 
 class CBF{
