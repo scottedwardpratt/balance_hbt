@@ -33,7 +33,7 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 	rmag=sqrt(-r2);
 	qdotr=qdotr-(Pdotr*Pdotq)/P2;
 	ctheta=-qdotr/(qmag*rmag);
-	if(qmag<150.0){
+	if(qmag<0.0){
 		if(q1q2>0){
 			if(abs(pid)==2212 && pid==pidprime && qmag<200.0){
 				psisquared=wf_pp->GetPsiSquared(qmag,rmag,ctheta);
