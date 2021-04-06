@@ -33,27 +33,28 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 	rmag=sqrt(-r2);
 	qdotr=qdotr-(Pdotr*Pdotq)/P2;
 	ctheta=-qdotr/(qmag*rmag);
-	if(qmag<150.0){
-		if(q1q2>0){
-			if(abs(pid)==2212 && pid==pidprime && qmag<200.0){
-				psisquared=wf_pp->GetPsiSquared(qmag,rmag,ctheta);
-			}
-			else
-				psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
-		}
-		else if(q1q2<0){
-			psisquared=wf_opp[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
+	if(q1q2>0){
+		if(abs(pid)==2212 && pid==pidprime && qmag<150.0){
+			psisquared=wf_pp->GetPsiSquared(qmag,rmag,ctheta);
 		}
 		else{
-			if(pid==pidprime)
-				psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
-			else
-				psisquared=1.0;
+			if(qmag>150.0)
+				wf_same[id][idprime]->KILLSYM=true;
+			psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
 		}
 	}
-	else{
-		psisquared=wf_classical->CalcPsiSquared(qmag,rmag,ctheta,part->resinfo->mass,partprime->resinfo->mass,part->resinfo->charge*partprime->resinfo->charge);
+	else if(q1q2<0){
+		if(qmag>150.0)
+			wf_opp[id][idprime]->KILLSYM=true;
+		psisquared=wf_opp[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
 	}
+	else{
+		if(pid==pidprime)
+			psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
+		else
+			psisquared=1.0;
+	}
+}
 	
 	return psisquared;
 }
