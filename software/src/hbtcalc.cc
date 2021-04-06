@@ -49,8 +49,11 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 		psisquared=wf_opp[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
 	}
 	else{
-		if(pid==pidprime)
+		if(pid==pidprime){
+			if(qmag>150.0)
+				wf_same[id][idprime]->KILLSYM=true;
 			psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
+		}
 		else
 			psisquared=1.0;
 	}	
