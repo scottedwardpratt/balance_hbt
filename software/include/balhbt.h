@@ -113,7 +113,7 @@ public:
 	CHBTCalc(CparameterMap *parmapin);
 	double GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idprime);
 	CparameterMap *parmap;
-	vector<vector<CWaveFunction *>> wf_same,wf_opp;
+	vector<vector<CWaveFunction_generic *>> wf_same,wf_opp;
 	CWaveFunction *wf_pp;
 	CWaveFunction_classical *wf_classical;
 };
