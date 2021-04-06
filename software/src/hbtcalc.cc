@@ -53,8 +53,6 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 			psisquared=wf_same[id][idprime]->GetPsiSquared(qmag,rmag,ctheta);
 		else
 			psisquared=1.0;
-	}
-}
-	
+	}	
 	return psisquared;
 }
