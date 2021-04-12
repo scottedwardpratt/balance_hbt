@@ -71,12 +71,12 @@ for ipanel in range(0,2):
       plt.plot(x,bf_KK,linestyle='-',linewidth=3,color='r',label=type)
     if ipanel==1 and jpanel==1:
       type='$Kp$'
-      ymin=-0.05
+      ymin=-0.15
       ymax=0.3
       plt.plot(x,bf_Kp,linestyle='-',linewidth=3,color='r',label=type)
     if ipanel==1 and jpanel==2:
       type='$pp$'
-      ymin=-0.01
+      ymin=-0.025
       ymax=0.04
       plt.plot(x,bf_pp,linestyle='-',linewidth=3,color='r',label=type)
 

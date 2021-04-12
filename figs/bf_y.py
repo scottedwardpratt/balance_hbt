@@ -66,7 +66,7 @@ for ipanel in range(0,2):
     if ipanel==1 and jpanel==0:
       type='$KK$'
       ymin=-0.02
-      ymax=0.04
+      ymax=0.08
       plt.plot(x,bf_KK,linestyle='-',linewidth=3,color='r',label=type)
     if ipanel==1 and jpanel==1:
       type='$Kp$'
