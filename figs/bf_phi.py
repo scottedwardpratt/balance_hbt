@@ -74,7 +74,7 @@ for ipanel in range(0,2):
       plt.plot(x,bf_Kp,linestyle='-',linewidth=3,color='r',label=type)
     if ipanel==1 and jpanel==2:
       type='$pp$'
-      ymin=-0.005
+      ymin=-0.003
       ymax=0.01
       plt.plot(x,bf_pp,linestyle='-',linewidth=3,color='r',label=type)
 
@@ -132,7 +132,7 @@ for ipanel in range(0,2):
       ax.set_yticks(np.arange(-0.5,0.5,0.005), minor=False)
       ax.set_yticks(np.arange(-0.5,0.5,0.001), minor=True)
       ax.set_yticklabels(np.arange(-0.5,0.5,0.005), minor=False, family='serif')
-      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%3.2f'))
+      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%3.3f'))
     
 
     plt.ylim(ymin,ymax)

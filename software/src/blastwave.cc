@@ -26,7 +26,6 @@ void CblastWave::GenerateParts(vector<CResInfo *> &resinfovec,vector<CHBTPart *>
 	int ipart0,nproducts,imother,nbodies,ibody,nparts0=resinfovec.size();
 	double mtot,Ti;
 	CResInfo *resinfo;
-	
 	for(ipart0=0;ipart0<nparts0;ipart0++){
 		nproducts=0;
 		resinfo=resinfovec[ipart0];

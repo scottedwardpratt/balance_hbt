@@ -1,4 +1,4 @@
-#project(balance_hbt CXX)
+project(balance_hbt)
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 set(GITHOME_MSU $ENV{GITHOME_MSU})
 
@@ -21,9 +21,16 @@ find_library(${GITHOME_MSU}/coral/software/lib coral)
 find_library(${GITHOME_MSU}/hp/alice/software/b3d2/lib b3d_alice)
 find_library(${GITHOME_MSU}/balance_hbt/software/lib balhbt)
 
+add_dependencies(extern_balhbt extern_b3d2 extern_coral extern_commonutils)
+
 #################################################
-
+set(SOURCE_FILES ./balance_hbt.cc)
 add_executable(balance_hbt ${CMAKE_CURRENT_SOURCE_DIR}/balance_hbt.cc)
-add_dependencies(balance_hbt extern_balhbt extern_b3d2 extern_coral extern_commonutils)
-target_link_libraries(balance_hbt ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
+target_link_libraries(balance_hbt ${GITHOME_MSU}/bal_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 
+#################################################
+set(SOURCE_FILES ./bwspectra.cc)
+add_executable(bwspectra ${CMAKE_CURRENT_SOURCE_DIR}/bwspectra.cc)
+target_link_libraries(bwspectra ${GITHOME_MSU}/bal_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
+
+#################################################
