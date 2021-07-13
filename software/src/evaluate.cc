@@ -4,7 +4,7 @@ using namespace std;
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,
 int id1,int id2,int id1prime,int id2prime){
-	double weight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime;
+	double weight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime,cfweight;
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
 
@@ -50,10 +50,68 @@ int id1,int id2,int id1prime,int id2prime){
 						pcount+=1;
 					for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
 						partprime=productprimevec[iprime][iprodprime];
-						if(acceptancebal->acceptance(partprime,effprime))
+						if(acceptancebal->acceptance(partprime,effprime)){
 							Increment(part,partprime,weight,eff*effprime);
+							if(abs(part->resinfo->code)==abs(partprime->resinfo->code)){
+								cfweight=1.0;
+								if(i==0 && iprime==0)
+									cfweight=psisquared00;
+								else if(i==0 && iprime==1)
+									cfweight=psisquared01;
+								else if(i==1 && iprime==0)
+									cfweight=psisquared10;
+								else if(i==1 && iprime==1)
+									cfweight=psisquared11;
+								IncrementCF(part,partprime,cfweight,eff*effprime);
+							}
+						}
 					}
 				}
+			}
+		}
+	}
+}
+
+void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency){
+	int pid,pidprime,iqinv;
+	double qinv;
+	pid=part->resinfo->code;
+	pidprime=partprime->resinfo->code;
+	if(abs(pid)!=abs(pidprime)){
+		printf("In CBF::IncrementCF, |pid| != |pidprime|, %d != %d\n",abs(pid),abs(pidprime));
+		exit(1);
+	}
+	qinv=Getqinv(part,partprime);
+	iqinv=lrint(floor(qinv)/DELQINV);
+	if(iqinv<NQINVBINS){
+		if(abs(pid)==211){
+			if(pid*pidprime<0){
+				CFqinv_pipluspiminus[iqinv]+=weight;
+				CF_DENOMqinv_pipluspiminus[iqinv]+=1.0;
+			}
+			else{
+				CFqinv_pipluspiplus[iqinv]+=weight;
+				CF_DENOMqinv_pipluspiplus[iqinv]+=1.0;
+			}
+		}
+		if(abs(pid)==321){
+			if(pid*pidprime<0){
+				CFqinv_KplusKminus[iqinv]+=weight;
+				CF_DENOMqinv_KplusKminus[iqinv]+=1.0;
+			}
+			else{
+				CFqinv_KplusKplus[iqinv]+=weight;
+				CF_DENOMqinv_KplusKplus[iqinv]+=1.0;
+			}
+		}
+		if(abs(pid)==2212){
+			if(pid*pidprime<0){
+				CFqinv_ppbar[iqinv]+=weight;
+				CF_DENOMqinv_ppbar[iqinv]+=1.0;
+			}
+			else{
+				CFqinv_pp[iqinv]+=weight;
+				CF_DENOMqinv_pp[iqinv]+=1.0;
 			}
 		}
 	}

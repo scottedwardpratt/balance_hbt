@@ -55,6 +55,19 @@ CBF::CBF(CparameterMap *parmapin){
 	DENOMqinv_Kp.resize(NQINVBINS);
 	DENOMqinv_pp.resize(NQINVBINS);
 	
+	CFqinv_pipluspiplus.resize(NQINVBINS);
+	CFqinv_pipluspiminus.resize(NQINVBINS);
+	CFqinv_KplusKplus.resize(NQINVBINS);
+	CFqinv_KplusKminus.resize(NQINVBINS);
+	CFqinv_pp.resize(NQINVBINS);
+	CFqinv_ppbar.resize(NQINVBINS);
+	CF_DENOMqinv_pipluspiplus.resize(NQINVBINS);
+	CF_DENOMqinv_pipluspiminus.resize(NQINVBINS);
+	CF_DENOMqinv_KplusKplus.resize(NQINVBINS);
+	CF_DENOMqinv_KplusKminus.resize(NQINVBINS);
+	CF_DENOMqinv_pp.resize(NQINVBINS);
+	CF_DENOMqinv_ppbar.resize(NQINVBINS);
+	
 	DELPHI=PI/double(NPHIBINS);
 	YMAX=DELY*NYBINS;
 	QINVMAX=DELQINV*NQINVBINS;
@@ -125,6 +138,20 @@ void CBF::WriteResults(int run_number){
 	sprintf(filename,"results/bf%d_hadcount.dat",run_number);
 	fptr=fopen(filename,"w");
 	fprintf(fptr,"%lld  %lld  %lld\n",picount,Kcount,pcount);
+	fclose(fptr);
+	
+	sprintf(filename,"results/cf%d_qinv.dat",run_number);
+	fptr=fopen(filename,"w");
+	for(int iqinv=0;iqinv<NQINVBINS;iqinv++){
+		fprintf(fptr,"%7.3f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f\n",
+		(iqinv+0.5)*DELQINV,
+		CFqinv_pipluspiplus[iqinv]/CF_DENOMqinv_pipluspiplus[iqinv],CF_DENOMqinv_pipluspiplus[iqinv],
+		CFqinv_pipluspiminus[iqinv]/CF_DENOMqinv_pipluspiminus[iqinv],CF_DENOMqinv_pipluspiminus[iqinv],
+		CFqinv_KplusKplus[iqinv]/CF_DENOMqinv_KplusKplus[iqinv],CF_DENOMqinv_KplusKplus[iqinv],
+		CFqinv_KplusKminus[iqinv]/CF_DENOMqinv_KplusKminus[iqinv],CF_DENOMqinv_KplusKminus[iqinv],
+		CFqinv_pp[iqinv]/CF_DENOMqinv_pp[iqinv],CF_DENOMqinv_pp[iqinv],
+		CFqinv_ppbar[iqinv]/CF_DENOMqinv_ppbar[iqinv],CF_DENOMqinv_ppbar[iqinv]);		
+	}
 	fclose(fptr);
 }
 

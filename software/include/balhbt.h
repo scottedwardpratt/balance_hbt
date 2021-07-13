@@ -165,6 +165,20 @@ public:
 	vector<double> DENOMqinv_Kp;
 	vector<double> DENOMqinv_pp;
 	
+	vector<double> CFqinv_pipluspiplus;
+	vector<double> CFqinv_pipluspiminus;
+	vector<double> CFqinv_KplusKplus;
+	vector<double> CFqinv_KplusKminus;
+	vector<double> CFqinv_pp;
+	vector<double> CFqinv_ppbar;
+	vector<double> CF_DENOMqinv_pipluspiplus;
+	vector<double> CF_DENOMqinv_pipluspiminus;
+	vector<double> CF_DENOMqinv_KplusKplus;
+	vector<double> CF_DENOMqinv_KplusKminus;
+	vector<double> CF_DENOMqinv_pp;
+	vector<double> CF_DENOMqinv_ppbar;
+	
+	
 	CBF(CparameterMap *parmapin);
 	CAcceptanceBal *acceptancebal;
 	void Zero();
@@ -172,6 +186,7 @@ public:
 	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,
 	int id1,int id2,int id1prime,int id2prime);
 	void Increment(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
+	void IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void WriteResults(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
