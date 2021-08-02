@@ -19,8 +19,6 @@ int id1,int id2,int id1prime,int id2prime){
 	psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
 	*/
 	
-	
-		
 	for(i=0;i<2;i++){
 		for(iprime=0;iprime<2;iprime++){
 			if(i==0 && iprime==0){
@@ -73,8 +71,9 @@ int id1,int id2,int id1prime,int id2prime){
 }
 
 void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency){
-	int pid,pidprime,iqinv;
-	double qinv,qout,qside,qlong,deleta,dely,delphi;
+	const double QDIRCUT=15.0;
+	int pid,pidprime,iqinv,iq;
+	double qinv,qout,qside,qlong,deleta,dely,delphi,qother;
 	pid=part->resinfo->code;
 	pidprime=partprime->resinfo->code;
 	if(abs(pid)!=abs(pidprime)){
@@ -83,8 +82,8 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 	}
 	Misc::outsidelong(part->p,partprime->p,qinv,qout,qside,qlong,deleta,dely,delphi);
 	
-	qinv=Getqinv(part,partprime);
-	iqinv=lrint(floor(qinv)/DELQINV);
+	//qinv=Getqinv(part,partprime);
+	iqinv=lrint(floor(qinv/DELQINV));
 	if(iqinv<NQINVBINS){
 		if(abs(pid)==211){
 			if(pid*pidprime<0){
@@ -114,6 +113,32 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 			else{
 				CFqinv_pp[iqinv]+=weight;
 				CF_DENOMqinv_pp[iqinv]+=1.0;
+			}
+		}
+	}
+	if(pid*pidprime>0 && abs(pid)==211 && abs(pidprime==211)){
+		qother=sqrt(qside*qside+qlong*qlong);
+		if(qother<QDIRCUT){
+			iq=lrint(floor(qout/DELQINV));
+			if(iq<NQINVBINS){
+				CFqout_pipluspiplus[iq]+=weight;
+				CF_DENOMqout_pipluspiplus[iq]+=1.0;
+			}
+		}
+		qother=sqrt(qout*qout+qlong*qlong);
+		if(qother<QDIRCUT){
+			iq=lrint(floor(qside/DELQINV));
+			if(iq<NQINVBINS){
+				CFqside_pipluspiplus[iq]+=weight;
+				CF_DENOMqside_pipluspiplus[iq]+=1.0;
+			}
+		}
+		qother=sqrt(qside*qside+qout*qout);
+		if(qother<QDIRCUT){
+			iq=lrint(floor(qlong/DELQINV));
+			if(iq<NQINVBINS){
+				CFqlong_pipluspiplus[iq]+=weight;
+				CF_DENOMqlong_pipluspiplus[iq]+=1.0;
 			}
 		}
 	}
@@ -149,7 +174,7 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight,double effi
 			dphi=fabs(dphi);
 			iphi=lrint(floor(dphi/DELPHI));
 			qinv=Getqinv(part,partprime);
-			iqinv=lrint(floor(qinv)/DELQINV);
+			iqinv=lrint(floor(qinv/DELQINV));
 			if(pid==211 && pidprime==211){
 				BFy_pipi[iy]-=qqprime*weight;
 				BFphi_pipi[iphi]-=qqprime*weight;
