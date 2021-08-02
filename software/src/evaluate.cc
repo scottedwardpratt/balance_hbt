@@ -73,16 +73,15 @@ int id1,int id2,int id1prime,int id2prime){
 void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency){
 	const double QDIRCUT=15.0;
 	int pid,pidprime,iqinv,iq;
-	double qinv,qout,qside,qlong,deleta,dely,delphi,qother;
+	double qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi,qother;
 	pid=part->resinfo->code;
 	pidprime=partprime->resinfo->code;
 	if(abs(pid)!=abs(pidprime)){
 		printf("In CBF::IncrementCF, |pid| != |pidprime|, %d != %d\n",abs(pid),abs(pidprime));
 		exit(1);
 	}
-	Misc::outsidelong(part->p,partprime->p,qinv,qout,qside,qlong,deleta,dely,delphi);
 	
-	//qinv=Getqinv(part,partprime);
+	qinv=Getqinv(part,partprime);
 	iqinv=lrint(floor(qinv/DELQINV));
 	if(iqinv<NQINVBINS){
 		if(abs(pid)==211){
@@ -117,6 +116,8 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 		}
 	}
 	if(pid*pidprime>0 && abs(pid)==211 && abs(pidprime==211)){
+		Misc::outsidelong_lcms(part->p,partprime->p,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi);
+		qout=qout_lcms;
 		qother=sqrt(qside*qside+qlong*qlong);
 		if(qother<QDIRCUT){
 			iq=lrint(floor(qout/DELQINV));
