@@ -74,13 +74,15 @@ int id1,int id2,int id1prime,int id2prime){
 
 void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency){
 	int pid,pidprime,iqinv;
-	double qinv;
+	double qinv,qout,qside,qlong,deleta,dely,delphi;
 	pid=part->resinfo->code;
 	pidprime=partprime->resinfo->code;
 	if(abs(pid)!=abs(pidprime)){
 		printf("In CBF::IncrementCF, |pid| != |pidprime|, %d != %d\n",abs(pid),abs(pidprime));
 		exit(1);
 	}
+	Misc::outsidelong(part->p,partprime->p,qinv,qout,qside,qlong,deleta,dely,delphi);
+	
 	qinv=Getqinv(part,partprime);
 	iqinv=lrint(floor(qinv)/DELQINV);
 	if(iqinv<NQINVBINS){
