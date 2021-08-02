@@ -68,6 +68,46 @@ CBF::CBF(CparameterMap *parmapin){
 	CF_DENOMqinv_pp.resize(NQINVBINS);
 	CF_DENOMqinv_ppbar.resize(NQINVBINS);
 	
+	CFqout_pipluspiplus.resize(NQINVBINS);
+	CFqout_pipluspiminus.resize(NQINVBINS);
+	CFqout_KplusKplus.resize(NQINVBINS);
+	CFqout_KplusKminus.resize(NQINVBINS);
+	CFqout_pp.resize(NQINVBINS);
+	CFqout_ppbar.resize(NQINVBINS);
+	CF_DENOMqout_pipluspiplus.resize(NQINVBINS);
+	CF_DENOMqout_pipluspiminus.resize(NQINVBINS);
+	CF_DENOMqout_KplusKplus.resize(NQINVBINS);
+	CF_DENOMqout_KplusKminus.resize(NQINVBINS);
+	CF_DENOMqout_pp.resize(NQINVBINS);
+	CF_DENOMqout_ppbar.resize(NQINVBINS);
+	
+	CFqside_pipluspiplus.resize(NQINVBINS);
+	CFqside_pipluspiminus.resize(NQINVBINS);
+	CFqside_KplusKplus.resize(NQINVBINS);
+	CFqside_KplusKminus.resize(NQINVBINS);
+	CFqside_pp.resize(NQINVBINS);
+	CFqside_ppbar.resize(NQINVBINS);
+	CF_DENOMqside_pipluspiplus.resize(NQINVBINS);
+	CF_DENOMqside_pipluspiminus.resize(NQINVBINS);
+	CF_DENOMqside_KplusKplus.resize(NQINVBINS);
+	CF_DENOMqside_KplusKminus.resize(NQINVBINS);
+	CF_DENOMqside_pp.resize(NQINVBINS);
+	CF_DENOMqside_ppbar.resize(NQINVBINS);
+	
+	CFqlong_pipluspiplus.resize(NQINVBINS);
+	CFqlong_pipluspiminus.resize(NQINVBINS);
+	CFqlong_KplusKplus.resize(NQINVBINS);
+	CFqlong_KplusKminus.resize(NQINVBINS);
+	CFqlong_pp.resize(NQINVBINS);
+	CFqlong_ppbar.resize(NQINVBINS);
+	CF_DENOMqlong_pipluspiplus.resize(NQINVBINS);
+	CF_DENOMqlong_pipluspiminus.resize(NQINVBINS);
+	CF_DENOMqlong_KplusKplus.resize(NQINVBINS);
+	CF_DENOMqlong_KplusKminus.resize(NQINVBINS);
+	CF_DENOMqlong_pp.resize(NQINVBINS);
+	CF_DENOMqlong_ppbar.resize(NQINVBINS);
+	
+	
 	DELPHI=PI/double(NPHIBINS);
 	YMAX=DELY*NYBINS;
 	QINVMAX=DELQINV*NQINVBINS;
@@ -91,6 +131,13 @@ void CBF::Zero(){
 	BFphi_Kp.assign(NPHIBINS,0.0);
 	BFphi_pp.assign(NPHIBINS,0.0);
 	
+	BFqinv_pipi.assign(NQINVBINS,0.0);
+	BFqinv_piK.assign(NQINVBINS,0.0);
+	BFqinv_pip.assign(NQINVBINS,0.0);
+	BFqinv_KK.assign(NQINVBINS,0.0);
+	BFqinv_Kp.assign(NQINVBINS,0.0);
+	BFqinv_pp.assign(NQINVBINS,0.0);
+	
 	DENOMy_pipi.assign(NYBINS,0.0);
 	DENOMy_piK.assign(NYBINS,0.0);
 	DENOMy_pip.assign(NYBINS,0.0);
@@ -104,6 +151,65 @@ void CBF::Zero(){
 	DENOMphi_KK.assign(NPHIBINS,0.0);
 	DENOMphi_Kp.assign(NPHIBINS,0.0);
 	DENOMphi_pp.assign(NPHIBINS,0.0);
+	
+	DENOMqinv_pipi.assign(NQINVBINS,0.0);
+	DENOMqinv_piK.assign(NQINVBINS,0.0);
+	DENOMqinv_pip.assign(NQINVBINS,0.0);
+	DENOMqinv_KK.assign(NQINVBINS,0.0);
+	DENOMqinv_Kp.assign(NQINVBINS,0.0);
+	DENOMqinv_pp.assign(NQINVBINS,0.0);
+	
+	CFqinv_pipluspiplus.assign(NQINVBINS,0.0);
+	CFqinv_pipluspiminus.assign(NQINVBINS,0.0);
+	CFqinv_KplusKplus.assign(NQINVBINS,0.0);
+	CFqinv_KplusKminus.assign(NQINVBINS,0.0);
+	CFqinv_pp.assign(NQINVBINS,0.0);
+	CFqinv_ppbar.assign(NQINVBINS,0.0);
+	CF_DENOMqinv_pipluspiplus.assign(NQINVBINS,0.0);
+	CF_DENOMqinv_pipluspiminus.assign(NQINVBINS,0.0);
+	CF_DENOMqinv_KplusKplus.assign(NQINVBINS,0.0);
+	CF_DENOMqinv_KplusKminus.assign(NQINVBINS,0.0);
+	CF_DENOMqinv_pp.assign(NQINVBINS,0.0);
+	CF_DENOMqinv_ppbar.assign(NQINVBINS,0.0);
+	
+	CFqout_pipluspiplus.assign(NQINVBINS,0.0);
+	CFqout_pipluspiminus.assign(NQINVBINS,0.0);
+	CFqout_KplusKplus.assign(NQINVBINS,0.0);
+	CFqout_KplusKminus.assign(NQINVBINS,0.0);
+	CFqout_pp.assign(NQINVBINS,0.0);
+	CFqout_ppbar.assign(NQINVBINS,0.0);
+	CF_DENOMqout_pipluspiplus.assign(NQINVBINS,0.0);
+	CF_DENOMqout_pipluspiminus.assign(NQINVBINS,0.0);
+	CF_DENOMqout_KplusKplus.assign(NQINVBINS,0.0);
+	CF_DENOMqout_KplusKminus.assign(NQINVBINS,0.0);
+	CF_DENOMqout_pp.assign(NQINVBINS,0.0);
+	CF_DENOMqout_ppbar.assign(NQINVBINS,0.0);
+	
+	CFqside_pipluspiplus.assign(NQINVBINS,0.0);
+	CFqside_pipluspiminus.assign(NQINVBINS,0.0);
+	CFqside_KplusKplus.assign(NQINVBINS,0.0);
+	CFqside_KplusKminus.assign(NQINVBINS,0.0);
+	CFqside_pp.assign(NQINVBINS,0.0);
+	CFqside_ppbar.assign(NQINVBINS,0.0);
+	CF_DENOMqside_pipluspiplus.assign(NQINVBINS,0.0);
+	CF_DENOMqside_pipluspiminus.assign(NQINVBINS,0.0);
+	CF_DENOMqside_KplusKplus.assign(NQINVBINS,0.0);
+	CF_DENOMqside_KplusKminus.assign(NQINVBINS,0.0);
+	CF_DENOMqside_pp.assign(NQINVBINS,0.0);
+	CF_DENOMqside_ppbar.assign(NQINVBINS,0.0);
+	
+	CFqlong_pipluspiplus.assign(NQINVBINS,0.0);
+	CFqlong_pipluspiminus.assign(NQINVBINS,0.0);
+	CFqlong_KplusKplus.assign(NQINVBINS,0.0);
+	CFqlong_KplusKminus.assign(NQINVBINS,0.0);
+	CFqlong_pp.assign(NQINVBINS,0.0);
+	CFqlong_ppbar.assign(NQINVBINS,0.0);
+	CF_DENOMqlong_pipluspiplus.assign(NQINVBINS,0.0);
+	CF_DENOMqlong_pipluspiminus.assign(NQINVBINS,0.0);
+	CF_DENOMqlong_KplusKplus.assign(NQINVBINS,0.0);
+	CF_DENOMqlong_KplusKminus.assign(NQINVBINS,0.0);
+	CF_DENOMqlong_pp.assign(NQINVBINS,0.0);
+	CF_DENOMqlong_ppbar.assign(NQINVBINS,0.0);
 	
 	picount=Kcount=pcount=0;
 	
