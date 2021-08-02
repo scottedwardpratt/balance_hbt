@@ -178,6 +178,44 @@ public:
 	vector<double> CF_DENOMqinv_pp;
 	vector<double> CF_DENOMqinv_ppbar;
 	
+	vector<double> CFqout_pipluspiplus;
+	vector<double> CFqout_pipluspiminus;
+	vector<double> CFqout_KplusKplus;
+	vector<double> CFqout_KplusKminus;
+	vector<double> CFqout_pp;
+	vector<double> CFqout_ppbar;
+	vector<double> CF_DENOMqout_pipluspiplus;
+	vector<double> CF_DENOMqout_pipluspiminus;
+	vector<double> CF_DENOMqout_KplusKplus;
+	vector<double> CF_DENOMqout_KplusKminus;
+	vector<double> CF_DENOMqout_pp;
+	vector<double> CF_DENOMqout_ppbar;
+	
+	vector<double> CFqside_pipluspiplus;
+	vector<double> CFqside_pipluspiminus;
+	vector<double> CFqside_KplusKplus;
+	vector<double> CFqside_KplusKminus;
+	vector<double> CFqside_pp;
+	vector<double> CFqside_ppbar;
+	vector<double> CF_DENOMqside_pipluspiplus;
+	vector<double> CF_DENOMqside_pipluspiminus;
+	vector<double> CF_DENOMqside_KplusKplus;
+	vector<double> CF_DENOMqside_KplusKminus;
+	vector<double> CF_DENOMqside_pp;
+	vector<double> CF_DENOMqside_ppbar;
+	
+	vector<double> CFqlong_pipluspiplus;
+	vector<double> CFqlong_pipluspiminus;
+	vector<double> CFqlong_KplusKplus;
+	vector<double> CFqlong_KplusKminus;
+	vector<double> CFqlong_pp;
+	vector<double> CFqlong_ppbar;
+	vector<double> CF_DENOMqlong_pipluspiplus;
+	vector<double> CF_DENOMqlong_pipluspiminus;
+	vector<double> CF_DENOMqlong_KplusKplus;
+	vector<double> CF_DENOMqlong_KplusKminus;
+	vector<double> CF_DENOMqlong_pp;
+	vector<double> CF_DENOMqlong_ppbar;
 	
 	CBF(CparameterMap *parmapin);
 	CAcceptanceBal *acceptancebal;
