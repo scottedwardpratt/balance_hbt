@@ -1,7 +1,8 @@
 #! /bin/bash
-make balance_hbt
-for ((i=0;i<12;i++))
+make balhbt
+rm logfiles/*.txt
+for ((i=0;i<24;i++))
 do
 	rm -f logfiles/balhbt${i}.txt;
-	echo 1000000000 | ./balance_hbt ${i} > logfiles/balhbt${i}.txt &
+	echo 1000000000 | ./balhbt ${i} > logfiles/balhbt${i}.txt &
 done
