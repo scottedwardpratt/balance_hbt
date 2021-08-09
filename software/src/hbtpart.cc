@@ -1,6 +1,8 @@
 #include "balhbt.h"
 using namespace std;
 
+CBalHBT *CHBTPart::balhbt=NULL;
+
 double CHBTPart::GetMass(){
 	return sqrt(p[0]*p[0]-p[1]*p[1]-p[2]*p[2]-p[3]*p[3]);
 }
@@ -43,4 +45,5 @@ void CHBTPart::Print(){
 	printf("p=(%g,%g,%g,%g)\n",p[0],p[1],p[2],p[3]);
 	printf("x=(%g,%g,%g,%g)\n",x[0],x[1],x[2],x[3]);
 	printf("p^2=%g\n",sqrt(p[0]*p[0]-p[1]*p[1]-p[2]*p[2]-p[3]*p[3]));
+	printf("eta=%g, y=%g, pt=%g\n",eta,y,pt);
 }

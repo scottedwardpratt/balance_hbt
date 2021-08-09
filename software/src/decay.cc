@@ -35,7 +35,7 @@ void CBalHBT::GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products){
 	for(idaughter=0;idaughter<ndaughters;idaughter++){
 		products[idaughter]->SetEtaYPt();
 		if(products[idaughter]->p[0]!=products[idaughter]->p[0]){
-			printf("In GetDecayProducts, p0=NaN!\n");
+			fprintf(logfile,"In GetDecayProducts, p0=NaN!\n");
 		}
 	}
 }
@@ -232,8 +232,8 @@ void CBalHBT::Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter){
 		Misc::lorentz(u,*p[ibody+1],pprime);
 		for(alpha=0;alpha<4;alpha++){
 			if(pprime[alpha]!=pprime[alpha]){
-				printf("In Decay, pprime is NaN!\n");
-				exit(1);
+				fprintf(logfile,"In Decay, pprime is NaN!\n");
+				exit(0);
 			}
 			daughter[ibody].p[alpha]=pprime[alpha];
 			daughter[ibody].x[alpha]=mother->x[alpha];

@@ -3,6 +3,11 @@
 
 using namespace std;
 
+CblastWave::CblastWave(CBalHBT *balhbtset){
+	balhbt=balhbtset;
+	CblastWave(balhbt->parmap,balhbt->randy,balhbt->reslist);
+}
+
 CblastWave::CblastWave(CparameterMap *parmapin,CRandy *randyset,CResList *reslistset){
 	parmap=parmapin;
 	randy=randyset;
@@ -150,11 +155,11 @@ void CblastWave::GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *
 					wmass=-1.0;
 			}while(wmass<0.0 || randy->ran()>wmass/wmaxmass);
 			if(wmass>wmaxmass){
-				printf("In  CB3D::Decay, wmass=%g > wmaxmass=%g\n",wmass,wmaxmass);
-				printf("kguess=%g, mguess=%g, mprime=%g, E1=%g, E2=%g, E1+E2=%g=?%g\n",kguess,mguess,mprime,
+				fprintf(balhbt->logfile,"In  CB3D::Decay, wmass=%g > wmaxmass=%g\n",wmass,wmaxmass);
+				fprintf(balhbt->logfile,"kguess=%g, mguess=%g, mprime=%g, E1=%g, E2=%g, E1+E2=%g=?%g\n",kguess,mguess,mprime,
 				sqrt(kguess*kguess+mguess*mguess),sqrt(kguess*kguess+mprime*mprime),
 				sqrt(kguess*kguess+mguess*mguess)+sqrt(kguess*kguess+mprime*mprime),mass[0]);
-				exit(1);
+				exit(0);
 			}
 			mass[ibody+1]=mguess;
 		}

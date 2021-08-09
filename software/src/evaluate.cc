@@ -77,8 +77,8 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 	pid=part->resinfo->code;
 	pidprime=partprime->resinfo->code;
 	if(abs(pid)!=abs(pidprime)){
-		printf("In CBF::IncrementCF, |pid| != |pidprime|, %d != %d\n",abs(pid),abs(pidprime));
-		exit(1);
+		fprintf(balhbt->logfile,"In CBF::IncrementCF, |pid| != |pidprime|, %d != %d\n",abs(pid),abs(pidprime));
+		exit(0);
 	}
 	
 	qinv=Getqinv(part,partprime);
@@ -154,15 +154,14 @@ void CBF::Increment(CHBTPart *part,CHBTPart *partprime,double weight,double effi
 	pid=abs(pid);
 	pidprime=abs(pidprime);
 	if((pid==211 || pid==321 || pid==2212) && (pidprime==211 || pidprime==321 || pidprime==2212)){
-		//qqprime=1.0;
 		y=atanh(part->p[3]/part->p[0]);
 		phi=atan2(part->p[2],part->p[1]);
 		yprime=atanh(partprime->p[3]/partprime->p[0]);
 		phiprime=atan2(partprime->p[2],partprime->p[1]);
 		dy=y-yprime;
-		if(dy<-YMAX)
+		while(dy<-YMAX)
 			dy+=2.0*YMAX;
-		if(dy>YMAX)
+		while(dy>YMAX)
 			dy-=2.0*YMAX;
 		dy=fabs(dy);
 		iy=lrint(floor(dy/DELY));

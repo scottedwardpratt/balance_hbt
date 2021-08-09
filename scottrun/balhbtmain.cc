@@ -5,44 +5,43 @@
 
 using namespace std;
 int main(int argc,char *argv[]){
-	int run_number;
-	if (argc != 2) {
-		printf("Usage: balance_hbt run_number\n");
+	int run_number,success=0;
+	double R,tau;
+	if (argc != 4) {
+		printf("Usage: balance_hbt tau R run_number\n");
 		exit(-1);
 	}
 	else{
-		run_number=atoi(argv[1]);
+		tau=atof(argv[1]);
+		R=atof(argv[2]);
+		run_number=atoi(argv[3]);
 	}
 	CparameterMap parmap;
 	parmap.ReadParsFromFile("parameters/respars.txt");
+	parmap.ReadParsFromFile("parameters/bfpars.txt");
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
 	CBalHBT *balhbt=new CBalHBT(&parmap,run_number);
 	
 	double Tchem=150.0,taumax=100.0,strangecontent,udcontent,balweight,balweightprime,nhadron0;
 	vector<vector<double>> bfnorm;
 	vector<CStableInfo *> stablevec;
-	unsigned int id,id1,id2,id1prime,id2prime,NID,i,iprod;
+	unsigned int id,id1,id2,id1prime,id2prime,i,iprod;
 	CHBTPart part1,part2,part1prime,part2prime;
-	long long int imc,NMC=10000;
-	printf("Enter NMC: ");
-	scanf("%lld",&NMC);
+	long long int imc,NMC;
 
 	balhbt->reslist->Tf=Tchem;
 	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,
 	balhbt->reslist->maxweightf,balhbt->reslist->chif,strangecontent,udcontent);
 	balhbt->reslist->FindFinalProducts(taumax);
 	balhbt->bw=new CblastWave(&parmap,balhbt->randy,balhbt->reslist);
+	balhbt->bw->tau=tau;
+	balhbt->bw->Rperp=R;
 	balhbt->GetStableInfo(balhbt->reslist,taumax,stablevec,bfnorm);
-	NID=stablevec.size();
 	balhbt->InitHBT(stablevec,"parameters/hbtpars.txt");
+	NMC=balhbt->parmap->getD("BF_NMC",100000);
 	nhadron0=CStableInfo::denstot;
 	
-	for(id1=0;id1<NID;id1++){
-		for(id2=0;id2<NID;id2++){
-			printf("%10.4f ",bfnorm[id1][id2]);
-		}
-		printf("\n");
-	}
+	
 	vector<CHBTPart *> partvec(2);
 	vector<CHBTPart *> partprimevec(2);
 	for(id=0;id<2;id++){
@@ -51,10 +50,10 @@ int main(int argc,char *argv[]){
 	}
 	vector<vector<CHBTPart *>> productvec(2);
 	vector<vector<CHBTPart *>> productprimevec(2);
+	fprintf(balhbt->logfile,"finished initialization\n");
+	fflush(balhbt->logfile);
 	
 	for(imc=0;imc<NMC;imc++){
-		if(imc%(NMC/10)==0)
-			printf("finished %ld percent\n",lrint(100.0*imc/double(NMC)));
 		balhbt->GetPart(stablevec,id1);
 		balhbt->GetPart(stablevec,id2);
 		balhbt->GetPart(stablevec,id1prime);
@@ -81,7 +80,6 @@ int main(int argc,char *argv[]){
 			partprimevec[1]->PartAntipart();
 			balweightprime=-balweightprime;
 		}
-		
 		balhbt->bw->GetXP(partvec);
 		balhbt->bw->GetXP(partprimevec);
 		
@@ -112,10 +110,13 @@ int main(int argc,char *argv[]){
 				delete productprimevec[i][iprod];
 			productprimevec[i].clear();
 		}
+		if((imc+1)%(NMC/10)==0){
+			fprintf(balhbt->logfile,"finished %ld percent\n",lrint(100.0*imc/double(NMC)));
+			fflush(balhbt->logfile);
+		}
 	}
 	balhbt->bf->WriteResults(run_number);
-	printf("net weight=%g =? 0\n",CBF::netweight);
-	printf("Npi=%lld, NK=%lld, Np=%lld\n",balhbt->bf->picount,balhbt->bf->Kcount,balhbt->bf->pcount);
-	
+	success=1;
+	printf("%d\n",success);
 	return 0;
 }

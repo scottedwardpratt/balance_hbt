@@ -1,9 +1,16 @@
 #include "balhbt.h"
 using namespace std;
 
+
+
 double CBF::netweight=0.0;
 
-CBF::CBF(CparameterMap *parmapin){
+CBF::CBF(CBalHBT *balhbtset){
+	balhbt=balhbtset;
+	CBF_init(balhbt->parmap);
+}
+
+void CBF::CBF_init(CparameterMap *parmapin){
 	parmap=parmapin;
 
 	NYBINS=parmap->getI("BF_NYBINS",20);
@@ -12,6 +19,7 @@ CBF::CBF(CparameterMap *parmapin){
 	DELQINV=parmap->getD("BF_DELQINV",5.0);
 	NQINVBINS=parmap->getI("BF_NQINVBINS",100);
 	acceptancebal=new CAcceptanceBal(parmap);
+	acceptancebal->balhbt=balhbt;
 	
 	BFy_pipi.resize(NYBINS);
 	BFy_piK.resize(NYBINS);
@@ -106,7 +114,6 @@ CBF::CBF(CparameterMap *parmapin){
 	CF_DENOMqlong_KplusKminus.resize(NQINVBINS);
 	CF_DENOMqlong_pp.resize(NQINVBINS);
 	CF_DENOMqlong_ppbar.resize(NQINVBINS);
-	
 	
 	DELPHI=PI/double(NPHIBINS);
 	YMAX=DELY*NYBINS;

@@ -2,17 +2,30 @@
 using namespace std;
 #include "balhbt.h"
 using namespace std;
+CBF *CBalHBT::bf=NULL;
 
-CBalHBT::CBalHBT(CparameterMap *parmapin,int run_number){
+CBalHBT::CBalHBT(CparameterMap *parmapin,int run_number_set){
+	run_number=run_number_set;
+	string logfilename="logfiles/balhbt"+to_string(run_number)+".txt";
+	logfile=fopen(logfilename.c_str(),"a");
 	parmap=parmapin;
+	CBalHBT::bf=new CBF(this);
 	reslist=new CResList(parmap);
 	randy=new CRandy(run_number);
-	bf=new CBF(parmap);
 	hbtcalc=new CHBTCalc(parmap);
 	bf->hbtcalc=hbtcalc;
 	bf->randy=randy;
+	bf->balhbt=this;
 	CResInfo::randy=randy;
 };
+
+CBalHBT::~CBalHBT(){
+	fclose(logfile);
+	delete reslist;
+	delete randy;
+	delete bf;
+	delete hbtcalc;
+}
 
 void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 	int NID=stablevec.size();
@@ -54,7 +67,6 @@ void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 				else if(fabs(info1->resinfo->spin-1.5)<1.0E-3)
 					symweight=0.375;
 				else{
-					printf("spin not recognized\n");
 					symweight=0.5;
 				}
 				hbtcalc->wf_same[id1][id2]=new CWaveFunction_generic(parsfilename,q1q2,info1->resinfo->mass,info2->resinfo->mass,symweight);

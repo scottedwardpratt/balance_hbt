@@ -27,12 +27,14 @@ class CBF;
 class CBalHBT{
 public:
 	int run_number;
+	FILE *logfile;
 	CBalHBT(CparameterMap *parmapin,int run_number);
+	~CBalHBT();
 	CparameterMap *parmap;
 	CResList *reslist;
 	CblastWave *bw;
 	CRandy *randy;
-	CBF *bf;
+	static CBF *bf;
 	CHBTCalc *hbtcalc;
 	void GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnormweight);
 	void GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products);
@@ -62,25 +64,8 @@ public:
 	void Print();
 	void PartAntipart();
 	void SetEtaYPt();
+	static CBalHBT *balhbt;
 };
-
-/*
-class Cacceptance{
-public:
-	CRandy *randy;
-	double ACCEPTANCE;
-	Cacceptance(double a){
-		ACCEPTANCE=a;
-		randy=new CRandy(1234);
-	}
-	bool Acceptance(CResInfo *resinfo){
-		if(randy->ran()<ACCEPTANCE)
-			return true;
-		else
-			return false;
-	}
-	void Acceptance(CHBTPart *part,bool &acceptQ,bool &acceptP,bool &acceptK,bool &acceptPi,bool &acceptB);
-};*/
 
 class CStableInfo{
 public:
@@ -97,11 +82,13 @@ class CblastWave{
 public:
 	CparameterMap *parmap;
 	CRandy *randy;
+	CBalHBT *balhbt;
 	double Tf,uperpmax,Rperp,etawidth,tau;
 	double Ybeam,sigmaR;
 	double sigma_eta;
 	CResList *reslist;
 	CblastWave(CparameterMap *parmapin,CRandy *randyset,CResList *reslistset);
+	CblastWave(CBalHBT *balhbtset);
 	void GenerateParts(vector<CResInfo *> &resinfovec,vector<CHBTPart *> &partvec);
 	void GetXP(vector<CHBTPart *> &partvec);
 	void GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *> &daughterpartvec);
@@ -121,6 +108,7 @@ public:
 class CBF{
 public:
 	CparameterMap *parmap;
+	CBalHBT *balhbt;
 	int NYBINS,NPHIBINS,NQINVBINS;
 	double DELPHI,DELY,YMAX,DELQINV,QINVMAX;
 	vector<double> BFy_pipi;
@@ -217,8 +205,9 @@ public:
 	vector<double> CF_DENOMqlong_pp;
 	vector<double> CF_DENOMqlong_ppbar;
 	
-	CBF(CparameterMap *parmapin);
-	CAcceptanceBal *acceptancebal;
+	void CBF_init(CparameterMap *parmapset);
+	CBF(CBalHBT *balhbtset);
+	static CAcceptanceBal *acceptancebal;
 	void Zero();
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,

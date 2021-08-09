@@ -1,5 +1,6 @@
 #include "balhbt.h"
 using namespace std;
+CAcceptanceBal *CBF::acceptancebal=NULL;
 
 CAcceptanceBal::CAcceptanceBal(CparameterMap *parmap){
 	ACCEPTANCE=parmap->getS("BF_ACCEPTANCE","STAR");
@@ -16,8 +17,8 @@ CAcceptanceBal::CAcceptanceBal(CparameterMap *parmap){
 		ptmin_p=200.0;
 	}
 	else{
-		printf("ACCEPTANCE not recognized\n");
-		exit(1);
+		fprintf(balhbt->logfile,"ACCEPTANCE not recognized in CAcceptanceBal::CAcceptanceBal()\n");
+		exit(0);
 	}
 }
 
