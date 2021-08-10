@@ -269,6 +269,7 @@ void CBF::WriteResults(int run_number){
 	
 	sprintf(filename,"results/cf%d_outsidelong.dat",run_number);
 	fptr=fopen(filename,"w");
+	fprintf(fptr,"#   q     Cout       Nout      Cside       Nside       Clong        Nlong\n");
 	for(int iq=0;iq<NQINVBINS;iq++){
 		fprintf(fptr,"%7.3f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f\n",
 		(iq+0.5)*DELQINV,
