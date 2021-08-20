@@ -53,5 +53,6 @@ int main(int argc,char *argv[]){
 	printf("hello\n");
 	double chi2=CalcChiSquared_pion(A);
 	printf("%g\n",chi2);
+	printf("%g %g %g\n", A, tau, R);
 	return 0;	
 }
