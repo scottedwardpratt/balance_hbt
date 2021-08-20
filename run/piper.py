@@ -7,5 +7,6 @@ y=str(11)
 
 subp=subprocess.Popen(['crap',x,y], stdout=PIPE,stderr=PIPE,universal_newlines=True)
 stdout,stderror = subp.communicate()
-print(stdout)
+#print(isinstance(stdout,str))
+#print(stdout)
 quit()
