@@ -1,6 +1,6 @@
 #! /bin/bash
 make balhbt
-NMC=1000000000
+NMC=1000000
 NPROC=12
 BW_TAU=$1
 BW_RPERP=$2

@@ -20,7 +20,6 @@ def chisquare(x0):
     print(split[length-1])
     return float(split[length-1])
     
-res = scipy.optimize.minimize(chisquare, x0, method='nelder-mead', options={'disp':True})
-print(res.x)
-print(res.nit)
+res = scipy.optimize.minimize(chisquare, x0, method='nelder-mead')
+#print(res.x)
 quit()
