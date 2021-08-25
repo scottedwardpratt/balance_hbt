@@ -64,6 +64,7 @@ public:
 	void Print();
 	void PartAntipart();
 	void SetEtaYPt();
+	void Setp0();
 	static CBalHBT *balhbt;
 };
 
@@ -216,6 +217,7 @@ public:
 	void IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void WriteResults(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
+	bool CHEAPPSISQUARED;
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
 	CHBTCalc *hbtcalc;
 	CRandy *randy;

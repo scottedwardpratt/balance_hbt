@@ -8,6 +8,7 @@ double CBF::netweight=0.0;
 CBF::CBF(CBalHBT *balhbtset){
 	balhbt=balhbtset;
 	CBF_init(balhbt->parmap);
+	CHEAPPSISQUARED=parmap->getB("BF_CHEAPPSISQUARED",false);
 }
 
 void CBF::CBF_init(CparameterMap *parmapin){
@@ -296,7 +297,7 @@ double CBF::Getqinv(CHBTPart *part,CHBTPart *partprime){
 }
 
 double CBF::CheapPsiSquared(CHBTPart *part,CHBTPart *partprime){
-	double answer,qinv,Rinv=4.0;
+	double answer,qinv,Rinv=20.0;
 	if(part->resinfo->code==partprime->resinfo->code){
 		qinv=Getqinv(part,partprime);
 		if(qinv<2000){

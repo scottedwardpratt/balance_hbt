@@ -112,6 +112,7 @@ void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 		randy->generate_boltzmann(part->resinfo->mass,Tf,p);
 		Misc::Boost(u,p,part->p);
 		part->SetEtaYPt();
+		part->Setp0();
 	}
 }
 

@@ -7,18 +7,19 @@ int id1,int id2,int id1prime,int id2prime){
 	double weight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime,cfweight;
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
+	if(CHEAPPSISQUARED){
+		psisquared00=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
+		psisquared01=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;
+		psisquared10=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
+		psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
 	
-	psisquared00=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0],id1,id1prime)-1.0;
-	psisquared01=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1],id1,id2prime)-1.0;
-	psisquared10=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0],id2,id1prime)-1.0;
-	psisquared11=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1],id2,id2prime)-1.0;
-	
-	/*
-	psisquared00=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
-	psisquared01=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;
-	psisquared10=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
-	psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
-	*/
+	}
+	else{
+		psisquared00=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0],id1,id1prime)-1.0;
+		psisquared01=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1],id1,id2prime)-1.0;
+		psisquared10=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0],id2,id1prime)-1.0;
+		psisquared11=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1],id2,id2prime)-1.0;
+	}
 	
 	for(i=0;i<2;i++){
 		for(iprime=0;iprime<2;iprime++){
@@ -117,7 +118,8 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 		}
 	}
 	if(pid*pidprime>0 && abs(pid)==211 && abs(pidprime==211)){
-		Misc::outsidelong_lcms(part->p,partprime->p,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi);
+		Misc::outsidelong_lcms(part->p,partprime->p,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi); // returns qout in pair frame, qout_lcms is in LCMS
+		qout=fabs(qout); qside=fabs(qside); qlong=fabs(qlong); qout_lcms=fabs(qout_lcms);
 		qout=qout_lcms;
 		qother=sqrt(qside*qside+qlong*qlong);
 		if(qother<QDIRCUT){
