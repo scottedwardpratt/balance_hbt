@@ -7,11 +7,12 @@ int id1,int id2,int id1prime,int id2prime){
 	double weight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime,cfweight;
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
-
+	
 	psisquared00=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0],id1,id1prime)-1.0;
 	psisquared01=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1],id1,id2prime)-1.0;
 	psisquared10=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0],id2,id1prime)-1.0;
 	psisquared11=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1],id2,id2prime)-1.0;
+	
 	/*
 	psisquared00=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
 	psisquared01=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;

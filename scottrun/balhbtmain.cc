@@ -18,7 +18,7 @@ int main(int argc,char *argv[]){
 	}
 	CparameterMap parmap;
 	parmap.ReadParsFromFile("parameters/respars.txt");
-	parmap.ReadParsFromFile("parameters/bfpars.txt");
+	parmap.ReadParsFromFile("parameters/bwpars.txt");
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
 	CBalHBT *balhbt=new CBalHBT(&parmap,run_number);
 	
@@ -28,7 +28,7 @@ int main(int argc,char *argv[]){
 	unsigned int id,id1,id2,id1prime,id2prime,i,iprod;
 	CHBTPart part1,part2,part1prime,part2prime;
 	long long int imc,NMC;
-
+	
 	balhbt->reslist->Tf=Tchem;
 	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,
 	balhbt->reslist->maxweightf,balhbt->reslist->chif,strangecontent,udcontent);
