@@ -4,7 +4,7 @@ using namespace std;
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,
 int id1,int id2,int id1prime,int id2prime){
-	double weight,cfweight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime;
+	double weight,cfweight=0.0,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime;
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
 	if(CHEAPPSISQUARED){
@@ -48,9 +48,18 @@ int id1,int id2,int id1prime,int id2prime){
 						partprime=productprimevec[iprime][iprodprime];
 						if(acceptancebal->acceptance(partprime,effprime)){
 							Increment(part,partprime,weight,eff*effprime);
-							cfweight=weight;
 							if(UseAllWFsForCF){
-								
+								cfweight=weight;
+							}
+							else{
+								if(i==0 && iprime==0)
+									cfweight=psisquared00;
+								if(i==0 && iprime==1)
+									cfweight=psisquared01;
+								if(i==1 && iprime==0)
+									cfweight=psisquared10;
+								if(i==1 && iprime==1)
+									cfweight=psisquared11;
 							}
 							if(abs(part->resinfo->code)==abs(partprime->resinfo->code)){
 								IncrementCF(part,partprime,cfweight,eff*effprime);
