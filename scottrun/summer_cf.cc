@@ -15,7 +15,7 @@ int main(int argc,char *argv[]){
 	int iq,irun;
 	FILE *fptr;
 	char filename[120],dummy[120];
-	double cout,cside,clong,cqinv,denomout,denomside,denomlong,denominv;
+	double cout,cside,clong,cinv,denomout,denomside,denomlong,denominv;
 	vector<double> q;
 	vector<double> cf_out,cf_side,cf_long,cf_inv;
 	vector<double> denom_out,denom_side,denom_long,denom_inv;
@@ -30,7 +30,7 @@ int main(int argc,char *argv[]){
 	denom_inv.resize(NQ);
 		
 	for(iq=0;iq<NQ;iq++){
-		cf_out[iq]=cf_side[iq]=cf_long[iq]=cf_inv[iq]=denom_out[iq]=denom_side[iq]=denom_long[iq]=denom_inv[iq]0.0;
+		cf_out[iq]=cf_side[iq]=cf_long[iq]=cf_inv[iq]=denom_out[iq]=denom_side[iq]=denom_long[iq]=denom_inv[iq]=0.0;
 	}
 	for(irun=0;irun<NRUNS;irun++){
 		sprintf(filename,"results/cf%d_outsidelong.dat",irun);
@@ -40,7 +40,7 @@ int main(int argc,char *argv[]){
 		for(iq=0;iq<NQ;iq++){
 			fscanf(fptr,"%lf",&q[iq]);
 			fscanf(fptr,"%lf %lf %lf %lf %lf %lf %lf %lf",
-			&cout,&denomout,&cside,&denomside,&clong,&denomlong,&cfinv,&denominv);
+			&cout,&denomout,&cside,&denomside,&clong,&denomlong,&cinv,&denominv);
 			if(cout!=cout)
 				cout=0.0;
 			if(cside!=cside)
@@ -79,7 +79,7 @@ int main(int argc,char *argv[]){
 			cf_long[iq]=0.0;
 			printf("denom_long[%d]=%g",iq,denom_long[iq]);
 		}
-		cf_inv[i]q=cf_inv[iq]/denom_inv[iq];
+		cf_inv[iq]=cf_inv[iq]/denom_inv[iq];
 		if(cf_inv[iq]!=cf_inv[iq]){
 			cf_inv[iq]=0.0;
 			printf("denom_inv[%d]=%g",iq,denom_inv[iq]);
