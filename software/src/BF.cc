@@ -1,14 +1,11 @@
 #include "balhbt.h"
 using namespace std;
 
-
-
-double CBF::netweight=0.0;
-
 CBF::CBF(CBalHBT *balhbtset){
 	balhbt=balhbtset;
 	CBF_init(balhbt->parmap);
 	CHEAPPSISQUARED=parmap->getB("BF_CHEAPPSISQUARED",false);
+	UseAllWFsForCF=partmap->getB("BF_USEALLWFSFORCF",true);
 }
 
 void CBF::CBF_init(CparameterMap *parmapin){
@@ -298,7 +295,7 @@ double CBF::Getqinv(CHBTPart *part,CHBTPart *partprime){
 
 double CBF::CheapPsiSquared(CHBTPart *part,CHBTPart *partprime){
 	double answer,qinv,Rinv=20.0;
-	if(part->resinfo->code==partprime->resinfo->code){
+	if(part->resinfo->code==partprime->resinfo->code && abs(part->resinfo->code)==211){
 		qinv=Getqinv(part,partprime);
 		if(qinv<2000){
 			answer=1.0+exp(-qinv*qinv*Rinv*Rinv/(HBARC*HBARC));

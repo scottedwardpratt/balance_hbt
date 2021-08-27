@@ -30,7 +30,8 @@ int main(int argc,char *argv[]){
 	long long int imc,NMC;
 	
 	balhbt->reslist->Tf=Tchem;
-	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,
+	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,
+	balhbt->reslist->nf,balhbt->reslist->densityf,
 	balhbt->reslist->maxweightf,balhbt->reslist->chif,strangecontent,udcontent);
 	balhbt->reslist->FindFinalProducts(taumax);
 	balhbt->bw=new CblastWave(&parmap,balhbt->randy,balhbt->reslist);

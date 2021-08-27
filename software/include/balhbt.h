@@ -110,6 +110,7 @@ class CBF{
 public:
 	CparameterMap *parmap;
 	CBalHBT *balhbt;
+	bool UseAllWFsForCF;
 	int NYBINS,NPHIBINS,NQINVBINS;
 	double DELPHI,DELY,YMAX,DELQINV,QINVMAX;
 	vector<double> BFy_pipi;
@@ -223,7 +224,6 @@ public:
 	CRandy *randy;
 	long long int picount,Kcount,pcount;
 	
-	static double netweight;
 };
 
 #endif

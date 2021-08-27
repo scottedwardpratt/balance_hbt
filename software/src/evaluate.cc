@@ -4,7 +4,7 @@ using namespace std;
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,
 int id1,int id2,int id1prime,int id2prime){
-	double weight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime,cfweight;
+	double weight,cfweight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime;
 	unsigned int i,iprime,iprod,iprodprime;
 	CHBTPart *part,*partprime;
 	if(CHEAPPSISQUARED){
@@ -25,19 +25,15 @@ int id1,int id2,int id1prime,int id2prime){
 		for(iprime=0;iprime<2;iprime++){
 			if(i==0 && iprime==0){
 				weight=psisquared00+psisquared01*balweightprime+psisquared10*balweight+psisquared11*balweight*balweightprime;
-				netweight+=weight*partvec[0]->resinfo->charge*partprimevec[0]->resinfo->charge;
 			}
 			else if(i==0 && iprime==1){
 				weight=psisquared01+psisquared00*balweightprime+psisquared11*balweight+psisquared10*balweight*balweightprime;
-				netweight+=weight*partvec[0]->resinfo->charge*partprimevec[1]->resinfo->charge;
 			}
 			else if(i==1 && iprime==0){
 				weight=psisquared10+psisquared11*balweightprime+psisquared00*balweight+psisquared01*balweight*balweightprime;
-				netweight+=weight*partvec[1]->resinfo->charge*partprimevec[0]->resinfo->charge;
 			}
 			else{
 				weight=psisquared11+psisquared10*balweightprime+psisquared01*balweight+psisquared00*balweight*balweightprime;
-				netweight+=weight*partvec[1]->resinfo->charge*partprimevec[1]->resinfo->charge;
 			}
 			for(iprod=0;iprod<productvec[i].size();iprod++){
 				part=productvec[i][iprod];
@@ -52,16 +48,11 @@ int id1,int id2,int id1prime,int id2prime){
 						partprime=productprimevec[iprime][iprodprime];
 						if(acceptancebal->acceptance(partprime,effprime)){
 							Increment(part,partprime,weight,eff*effprime);
+							cfweight=weight;
+							if(UseAllWFsForCF){
+								
+							}
 							if(abs(part->resinfo->code)==abs(partprime->resinfo->code)){
-								cfweight=1.0;
-								if(i==0 && iprime==0)
-									cfweight=psisquared00;
-								else if(i==0 && iprime==1)
-									cfweight=psisquared01;
-								else if(i==1 && iprime==0)
-									cfweight=psisquared10;
-								else if(i==1 && iprime==1)
-									cfweight=psisquared11;
 								IncrementCF(part,partprime,cfweight,eff*effprime);
 							}
 						}
