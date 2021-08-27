@@ -5,7 +5,7 @@ CBF::CBF(CBalHBT *balhbtset){
 	balhbt=balhbtset;
 	CBF_init(balhbt->parmap);
 	CHEAPPSISQUARED=parmap->getB("BF_CHEAPPSISQUARED",false);
-	UseAllWFsForCF=partmap->getB("BF_USEALLWFSFORCF",true);
+	UseAllWFsForCF=parmap->getB("BF_USEALLWFSFORCF",true);
 }
 
 void CBF::CBF_init(CparameterMap *parmapin){
