@@ -269,11 +269,12 @@ void CBF::WriteResults(int run_number){
 	fptr=fopen(filename,"w");
 	fprintf(fptr,"#   q     Cout       Nout      Cside       Nside       Clong        Nlong\n");
 	for(int iq=0;iq<NQINVBINS;iq++){
-		fprintf(fptr,"%7.3f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f\n",
+		fprintf(fptr,"%7.3f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f %12.9f\n",
 		(iq+0.5)*DELQINV,
 		CFqout_pipluspiplus[iq]/CF_DENOMqout_pipluspiplus[iq],CF_DENOMqout_pipluspiplus[iq],
 		CFqside_pipluspiplus[iq]/CF_DENOMqside_pipluspiplus[iq],CF_DENOMqside_pipluspiplus[iq],
-		CFqlong_pipluspiplus[iq]/CF_DENOMqlong_pipluspiplus[iq],CF_DENOMqlong_pipluspiplus[iq]);		
+		CFqlong_pipluspiplus[iq]/CF_DENOMqlong_pipluspiplus[iq],CF_DENOMqlong_pipluspiplus[iq],
+		CFqinv_pipluspiplus[iq]/CF_DENOMqinv_pipluspiplus[iq],CF_DENOMqinv_pipluspiplus[iq]);		
 	}
 	fclose(fptr);
 }

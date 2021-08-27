@@ -112,6 +112,11 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 		Misc::outsidelong_lcms(part->p,partprime->p,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi); // returns qout in pair frame, qout_lcms is in LCMS
 		qout=fabs(qout); qside=fabs(qside); qlong=fabs(qlong); qout_lcms=fabs(qout_lcms);
 		qout=qout_lcms;
+		iq=lrint(floor(qinv/DELQINV));
+		if(iq<NQINVBINS){
+			CFqinv_pipluspiplus[iq]+=weight;
+			CF_DENOMqinv_pipluspiplus[iq]+=weight;
+		}
 		qother=sqrt(qside*qside+qlong*qlong);
 		if(qother<QDIRCUT){
 			iq=lrint(floor(qout/DELQINV));
