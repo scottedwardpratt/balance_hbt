@@ -86,7 +86,7 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 	Misc::outsidelong_lcms(part->p,partprime->p,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi); // returns qout in pair frame, qout_lcms is in LCMS
 	dely=fabs(dely); delphi=fabs(delphi);
 	qout=fabs(qout); qside=fabs(qside); qlong=fabs(qlong); qout_lcms=fabs(qout_lcms);
-	printf("qout=%g, qout_lcms=%g\n",qout,qout_lcms);
+	//printf("qout=%g, qout_lcms=%g\n",qout,qout_lcms);
 	if(abs(pid)==211 && abs(pidprime)==211){
 		if(pid*pidprime>0)
 			cfarrays=CF_pipluspiplus;
