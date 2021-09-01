@@ -106,6 +106,18 @@ public:
 	CWaveFunction_classical *wf_classical;
 };
 
+class CCF_Arrays{
+public:
+	int NY,NPHI,NQ;
+	double DELY,DELPHI,DELQ;
+	CCF_Arrays(int NYset,double DELYset,int NPHIset,int NQset,double DELQset);
+	vector<double> cf_inv,denom_inv,cf_out,denom_out,cf_side,denom_side,cf_long,denom_long;
+	vector<double> cf_y,denom_y,cf_phi,denom_phi;
+	void Increment(double dely,double delphi,double qinv,double qout,double qside,double qlong,double weight);
+	void Zero();
+	void WriteResults(string dirname,int run_number);
+};
+
 class CBF{
 public:
 	CparameterMap *parmap;
@@ -113,99 +125,9 @@ public:
 	bool UseAllWFsForCF;
 	int NYBINS,NPHIBINS,NQINVBINS;
 	double DELPHI,DELY,YMAX,DELQINV,QINVMAX;
-	vector<double> BFy_pipi;
-	vector<double> BFy_piK;
-	vector<double> BFy_pip;
-	vector<double> BFy_KK;
-	vector<double> BFy_Kp;
-	vector<double> BFy_pp;
 	
-	vector<double> BFphi_pipi;
-	vector<double> BFphi_piK;
-	vector<double> BFphi_pip;
-	vector<double> BFphi_KK;
-	vector<double> BFphi_Kp;
-	vector<double> BFphi_pp;
-	
-	vector<double> BFqinv_pipi;
-	vector<double> BFqinv_piK;
-	vector<double> BFqinv_pip;
-	vector<double> BFqinv_KK;
-	vector<double> BFqinv_Kp;
-	vector<double> BFqinv_pp;
-	
-	vector<double> DENOMy_pipi;
-	vector<double> DENOMy_piK;
-	vector<double> DENOMy_pip;
-	vector<double> DENOMy_KK;
-	vector<double> DENOMy_Kp;
-	vector<double> DENOMy_pp;
-	
-	vector<double> DENOMphi_pipi;
-	vector<double> DENOMphi_piK;
-	vector<double> DENOMphi_pip;
-	vector<double> DENOMphi_KK;
-	vector<double> DENOMphi_Kp;
-	vector<double> DENOMphi_pp;
-	
-	vector<double> DENOMqinv_pipi;
-	vector<double> DENOMqinv_piK;
-	vector<double> DENOMqinv_pip;
-	vector<double> DENOMqinv_KK;
-	vector<double> DENOMqinv_Kp;
-	vector<double> DENOMqinv_pp;
-	
-	vector<double> CFqinv_pipluspiplus;
-	vector<double> CFqinv_pipluspiminus;
-	vector<double> CFqinv_KplusKplus;
-	vector<double> CFqinv_KplusKminus;
-	vector<double> CFqinv_pp;
-	vector<double> CFqinv_ppbar;
-	vector<double> CF_DENOMqinv_pipluspiplus;
-	vector<double> CF_DENOMqinv_pipluspiminus;
-	vector<double> CF_DENOMqinv_KplusKplus;
-	vector<double> CF_DENOMqinv_KplusKminus;
-	vector<double> CF_DENOMqinv_pp;
-	vector<double> CF_DENOMqinv_ppbar;
-	
-	vector<double> CFqout_pipluspiplus;
-	vector<double> CFqout_pipluspiminus;
-	vector<double> CFqout_KplusKplus;
-	vector<double> CFqout_KplusKminus;
-	vector<double> CFqout_pp;
-	vector<double> CFqout_ppbar;
-	vector<double> CF_DENOMqout_pipluspiplus;
-	vector<double> CF_DENOMqout_pipluspiminus;
-	vector<double> CF_DENOMqout_KplusKplus;
-	vector<double> CF_DENOMqout_KplusKminus;
-	vector<double> CF_DENOMqout_pp;
-	vector<double> CF_DENOMqout_ppbar;
-	
-	vector<double> CFqside_pipluspiplus;
-	vector<double> CFqside_pipluspiminus;
-	vector<double> CFqside_KplusKplus;
-	vector<double> CFqside_KplusKminus;
-	vector<double> CFqside_pp;
-	vector<double> CFqside_ppbar;
-	vector<double> CF_DENOMqside_pipluspiplus;
-	vector<double> CF_DENOMqside_pipluspiminus;
-	vector<double> CF_DENOMqside_KplusKplus;
-	vector<double> CF_DENOMqside_KplusKminus;
-	vector<double> CF_DENOMqside_pp;
-	vector<double> CF_DENOMqside_ppbar;
-	
-	vector<double> CFqlong_pipluspiplus;
-	vector<double> CFqlong_pipluspiminus;
-	vector<double> CFqlong_KplusKplus;
-	vector<double> CFqlong_KplusKminus;
-	vector<double> CFqlong_pp;
-	vector<double> CFqlong_ppbar;
-	vector<double> CF_DENOMqlong_pipluspiplus;
-	vector<double> CF_DENOMqlong_pipluspiminus;
-	vector<double> CF_DENOMqlong_KplusKplus;
-	vector<double> CF_DENOMqlong_KplusKminus;
-	vector<double> CF_DENOMqlong_pp;
-	vector<double> CF_DENOMqlong_ppbar;
+	CCF_Arrays *CF_pipluspiplus,*CF_pipluspiminus,*CF_KplusKplus,*CF_KplusKminus,*CF_pp,*CF_ppbar;
+	CCF_Arrays *CF_piplusp,*CF_pipluspbar,*CF_piplusKplus,*CF_piplusKminus,*CF_Kplusp,*CF_Kpluspbar;
 	
 	void CBF_init(CparameterMap *parmapset);
 	CBF(CBalHBT *balhbtset);
@@ -214,7 +136,6 @@ public:
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,
 	int id1,int id2,int id1prime,int id2prime);
-	void Increment(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void WriteResults(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
