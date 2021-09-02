@@ -42,7 +42,6 @@ int main(int argc,char *argv[]){
 	NMC=balhbt->parmap->getD("BF_NMC",100000);
 	nhadron0=CStableInfo::denstot;
 	
-	
 	vector<CHBTPart *> partvec(2);
 	vector<CHBTPart *> partprimevec(2);
 	for(id=0;id<2;id++){
@@ -92,10 +91,10 @@ int main(int argc,char *argv[]){
 		for(int anti=0;anti<2;anti++){
 			if(anti==1){
 				partvec[0]->PartAntipart();
-				partvec[1]->PartAntipart();
 				for(unsigned long int iprod=0;iprod<productvec[0].size();iprod++){
 					productvec[0][iprod]->PartAntipart();
 				}
+				partvec[1]->PartAntipart();
 				for(unsigned long int iprod=0;iprod<productvec[1].size();iprod++){
 					productvec[1][iprod]->PartAntipart();
 				}
@@ -117,6 +116,7 @@ int main(int argc,char *argv[]){
 		}
 	}
 	balhbt->bf->WriteResults(run_number);
+	fclose(balhbt->logfile);
 	success=1;
 	printf("%d\n",success);
 	return 0;

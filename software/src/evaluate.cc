@@ -81,17 +81,18 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 		fprintf(balhbt->logfile,"In CBF::IncrementCF, |pid| != |pidprime|, %d != %d\n",abs(pid),abs(pidprime));
 		exit(0);
 	}
-	weight=weight*efficiency;
+	//weight=weight*efficiency;
 	
 	Misc::outsidelong_lcms(part->p,partprime->p,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi); // returns qout in pair frame, qout_lcms is in LCMS
 	dely=fabs(dely); delphi=fabs(delphi);
 	qout=fabs(qout); qside=fabs(qside); qlong=fabs(qlong); qout_lcms=fabs(qout_lcms);
-	//printf("qout=%g, qout_lcms=%g\n",qout,qout_lcms);
+
 	if(abs(pid)==211 && abs(pidprime)==211){
 		if(pid*pidprime>0)
 			cfarrays=CF_pipluspiplus;
-		else
+		else{
 			cfarrays=CF_pipluspiminus;
+		}
 	}
 	else if(abs(pid)==211 && abs(pidprime)==321){
 		if(pid*pidprime>0)
@@ -118,6 +119,7 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 			cfarrays=CF_Kpluspbar;
 	}
 	else if(abs(pid)==2212 && abs(pidprime)==2212){
+		Ntest+=1;
 		if(pid*pidprime>0)
 			cfarrays=CF_pp;
 		else
@@ -126,7 +128,8 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 	else{
 		cfarrays=NULL;
 	}
-	cfarrays->Increment(dely,delphi,qinv,qout_lcms,qside,qlong,weight);
+	if(cfarrays!=NULL)
+		cfarrays->Increment(dely,delphi,qinv,qout_lcms,qside,qlong,weight);
 }
 
 

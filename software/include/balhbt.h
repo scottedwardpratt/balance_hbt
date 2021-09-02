@@ -115,6 +115,7 @@ public:
 	vector<double> cf_y,denom_y,cf_phi,denom_phi;
 	void Increment(double dely,double delphi,double qinv,double qout,double qside,double qlong,double weight);
 	void Zero();
+	void Print();
 	void WriteResults(string dirname,int run_number);
 };
 
@@ -143,7 +144,7 @@ public:
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
 	CHBTCalc *hbtcalc;
 	CRandy *randy;
-	long long int picount,Kcount,pcount;
+	long long int picount,Kcount,pcount,Ntest;
 	
 };
 
