@@ -101,51 +101,54 @@ int main(int argc,char *argv[]){
 		}
 		
 		sprintf(filename,"results/%s/cf_y.dat",pairname[ipair].c_str());
+		printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iy=0;iy<NY;iy++){
 			cf_y[iy]=cf_y[iy]/denom_y[iy];
 			if(cf_y[iy]!=cf_y[iy]){
 				cf_y[iy]=0.0;
-				printf("denom_y[%d]=%g",iq,denom_y[iq]);
+				printf("denom_y[%d]=%g\n",iq,denom_y[iq]);
 			}
 			fprintf(fptr,"%7.2f %12.8f  %12.8f\n",dely[iy],cf_y[iy],denom_y[iy]);
 		}
 		fclose(fptr);
 		
 		sprintf(filename,"results/%s/cf_phi.dat",pairname[ipair].c_str());
+		printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iphi=0;iphi<NPHI;iphi++){
 			cf_phi[iphi]=cf_phi[iphi]/denom_phi[iphi];
 			if(cf_phi[iphi]!=cf_phi[iphi]){
 				cf_phi[iphi]=0.0;
-				printf("denom_phi[%d]=%g",iphi,denom_phi[iphi]);
+				printf("denom_phi[%d]=%g\n",iphi,denom_phi[iphi]);
 			}
 			fprintf(fptr,"%7.2f %12.8f  %12.8f\n",delphi[iphi],cf_phi[iphi],denom_phi[iphi]);
 		}
 		fclose(fptr);
 
-		sprintf(filename,"results/cf_outsidelong.dat");
+		sprintf(filename,"results/%s/cf_outsidelong.dat",pairname[ipair].c_str());
+		printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iq=0;iq<NQ;iq++){
 			cf_out[iq]=cf_out[iq]/denom_out[iq];
 			if(cf_out[iq]!=cf_out[iq]){
 				cf_out[iq]=0.0;
-				printf("denom_out[%d]=%g",iq,denom_out[iq]);
+				printf("denom_out[%d]=%g\n",iq,denom_out[iq]);
 			}
 			cf_side[iq]=cf_side[iq]/denom_side[iq];
 			if(cf_side[iq]!=cf_side[iq]){
 				cf_side[iq]=0.0;
-				printf("denom_side[%d]=%g",iq,denom_side[iq]);
+				printf("denom_side[%d]=%g\n",iq,denom_side[iq]);
 			}
 			cf_long[iq]=cf_long[iq]/denom_long[iq];
 			if(cf_long[iq]!=cf_long[iq]){
 				cf_long[iq]=0.0;
-				printf("denom_long[%d]=%g",iq,denom_long[iq]);
+				printf("denom_long[%d]=%g\n",iq,denom_long[iq]);
 			}
 			cf_inv[iq]=cf_inv[iq]/denom_inv[iq];
 			if(cf_inv[iq]!=cf_inv[iq]){
 				cf_inv[iq]=0.0;
-				printf("denom_inv[%d]=%g",iq,denom_inv[iq]);
+				printf("denom_inv[%d]=%g\n",iq,denom_inv[iq]);
 			}
 			fprintf(fptr,"%7.2f %12.8f  %12.8f  %12.8f  %12.8f  %12.8f  %12.8f %12.8f %12.8f\n",q[iq],
 			cf_out[iq],denom_out[iq],cf_side[iq],denom_side[iq],cf_long[iq],denom_long[iq],cf_inv[iq],denom_inv[iq]);
