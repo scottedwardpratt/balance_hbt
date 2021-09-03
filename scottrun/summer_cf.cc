@@ -11,7 +11,7 @@ const double HBARC=197.3269602;
 using namespace std;
 
 int main(int argc,char *argv[]){
-	const int NRUNS=24,NQ=100,NY=50,NPHI=18;
+	const int NRUNS=24,NQ=100,NY=20,NPHI=18;
 	int iq,irun,ipair,iy,iphi;
 	FILE *fptr;
 	char filename[120],dummy[120];
@@ -107,7 +107,6 @@ int main(int argc,char *argv[]){
 			cf_y[iy]=cf_y[iy]/denom_y[iy];
 			if(cf_y[iy]!=cf_y[iy]){
 				cf_y[iy]=0.0;
-				printf("denom_y[%d]=%g\n",iq,denom_y[iq]);
 			}
 			fprintf(fptr,"%7.2f %12.8f  %12.8f\n",dely[iy],cf_y[iy],denom_y[iy]);
 		}
@@ -120,7 +119,6 @@ int main(int argc,char *argv[]){
 			cf_phi[iphi]=cf_phi[iphi]/denom_phi[iphi];
 			if(cf_phi[iphi]!=cf_phi[iphi]){
 				cf_phi[iphi]=0.0;
-				printf("denom_phi[%d]=%g\n",iphi,denom_phi[iphi]);
 			}
 			fprintf(fptr,"%7.2f %12.8f  %12.8f\n",delphi[iphi],cf_phi[iphi],denom_phi[iphi]);
 		}
@@ -133,22 +131,18 @@ int main(int argc,char *argv[]){
 			cf_out[iq]=cf_out[iq]/denom_out[iq];
 			if(cf_out[iq]!=cf_out[iq]){
 				cf_out[iq]=0.0;
-				printf("denom_out[%d]=%g\n",iq,denom_out[iq]);
 			}
 			cf_side[iq]=cf_side[iq]/denom_side[iq];
 			if(cf_side[iq]!=cf_side[iq]){
 				cf_side[iq]=0.0;
-				printf("denom_side[%d]=%g\n",iq,denom_side[iq]);
 			}
 			cf_long[iq]=cf_long[iq]/denom_long[iq];
 			if(cf_long[iq]!=cf_long[iq]){
 				cf_long[iq]=0.0;
-				printf("denom_long[%d]=%g\n",iq,denom_long[iq]);
 			}
 			cf_inv[iq]=cf_inv[iq]/denom_inv[iq];
 			if(cf_inv[iq]!=cf_inv[iq]){
 				cf_inv[iq]=0.0;
-				printf("denom_inv[%d]=%g\n",iq,denom_inv[iq]);
 			}
 			fprintf(fptr,"%7.2f %12.8f  %12.8f  %12.8f  %12.8f  %12.8f  %12.8f %12.8f %12.8f\n",q[iq],
 			cf_out[iq],denom_out[iq],cf_side[iq],denom_side[iq],cf_long[iq],denom_long[iq],cf_inv[iq],denom_inv[iq]);
