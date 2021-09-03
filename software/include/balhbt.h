@@ -125,7 +125,7 @@ public:
 	CBalHBT *balhbt;
 	bool UseAllWFsForCF;
 	int NYBINS,NPHIBINS,NQINVBINS;
-	double DELPHI,DELY,YMAX,DELQINV,QINVMAX;
+	double DELPHI,DELY,DELQINV,QINVMAX;
 	
 	CCF_Arrays *CF_pipluspiplus,*CF_pipluspiminus,*CF_KplusKplus,*CF_KplusKminus,*CF_pp,*CF_ppbar;
 	CCF_Arrays *CF_piplusp,*CF_pipluspbar,*CF_piplusKplus,*CF_piplusKminus,*CF_Kplusp,*CF_Kpluspbar;

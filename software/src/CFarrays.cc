@@ -81,7 +81,6 @@ void CCF_Arrays::Print(){
 	printf("-----------\n");
 }
 
-
 void CCF_Arrays::WriteResults(string dirname,int run_number){
 	FILE *fptr;
 	double delq,dely,delphi;

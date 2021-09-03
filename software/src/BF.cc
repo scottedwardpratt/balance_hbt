@@ -33,7 +33,6 @@ void CBF::CBF_init(CparameterMap *parmapin){
 	CF_ppbar=new CCF_Arrays(NYBINS,DELY,NPHIBINS,NQINVBINS,DELQINV);
 	
 	DELPHI=180.0/double(NPHIBINS);
-	YMAX=DELY*NYBINS;
 	QINVMAX=DELQINV*NQINVBINS;
 	Zero();
 }

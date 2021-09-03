@@ -64,7 +64,7 @@ bool CAcceptanceBal::acceptance(CHBTPart *part,double &efficiency){
 	efficiency=0.0;
 	if(abspid!=211 && abspid!=321 && abspid!=2212)
 		return false;
-	else if(abs(part->eta)<etamax)
+	else if(fabs(part->eta)>etamax)
 		return false;
 	else if(abspid==211 && part->pt<ptmin_pi)
 		return false;

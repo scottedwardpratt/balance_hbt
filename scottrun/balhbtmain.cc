@@ -80,6 +80,7 @@ int main(int argc,char *argv[]){
 			partprimevec[1]->PartAntipart();
 			balweightprime=-balweightprime;
 		}
+		
 		balhbt->bw->GetXP(partvec);
 		balhbt->bw->GetXP(partprimevec);
 		
