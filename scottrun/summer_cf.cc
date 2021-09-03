@@ -67,7 +67,7 @@ int main(int argc,char *argv[]){
 				fscanf(fptr,"%lf %lf",&cphi,&denomphi);
 				if(cphi!=cphi)
 					cphi=0.0;
-				cf_phi[iphi]+=cy*denomphi;
+				cf_phi[iphi]+=cphi*denomphi;
 				denom_phi[iphi]+=denomphi;
 			}
 			fclose(fptr);
