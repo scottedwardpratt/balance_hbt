@@ -41,7 +41,6 @@ int main(int argc,char *argv[]){
 	balhbt->InitHBT(stablevec,"parameters/hbtpars.txt");
 	NMC=balhbt->parmap->getD("BF_NMC",100000);
 	nhadron0=CStableInfo::denstot;
-	printf("nhadron0=%g\n",nhadron0);
 	
 	vector<CHBTPart *> partvec(2);
 	vector<CHBTPart *> partprimevec(2);
