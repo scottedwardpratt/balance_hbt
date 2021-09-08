@@ -5,7 +5,7 @@ using namespace std;
 
 CblastWave::CblastWave(CBalHBT *balhbtset){
 	balhbt=balhbtset;
-	CblastWave(balhbt->parmap,balhbt->randy,balhbt->reslist);
+	CblastWave(&balhbt->parmap,balhbt->randy,balhbt->reslist);
 }
 
 CblastWave::CblastWave(CparameterMap *parmapin,CRandy *randyset,CResList *reslistset){

@@ -4,19 +4,39 @@ using namespace std;
 using namespace std;
 CBF *CBalHBT::bf=NULL;
 
-CBalHBT::CBalHBT(CparameterMap *parmapin,int run_number_set){
+CBalHBT::CBalHBT(int run_number_set){
+	double strangecontent,udcontent;
 	run_number=run_number_set;
 	string logfilename="logfiles/balhbt"+to_string(run_number)+".txt";
 	logfile=fopen(logfilename.c_str(),"a");
-	parmap=parmapin;
+	parmap.ReadParsFromFile("parameters/respars.txt");
+	parmap.ReadParsFromFile("parameters/bwpars.txt");
+	parmap.ReadParsFromFile("parameters/bfpars.txt");
+	NMC=parmap.getI("BF_NMC",1000000);
+	
 	CBalHBT::bf=new CBF(this);
-	reslist=new CResList(parmap);
+	reslist=new CResList(&parmap);
 	randy=new CRandy(run_number);
-	hbtcalc=new CHBTCalc(parmap);
+	hbtcalc=new CHBTCalc(&parmap);
 	bf->hbtcalc=hbtcalc;
 	bf->randy=randy;
 	bf->balhbt=this;
 	CResInfo::randy=randy;
+	
+	Tchem=parmap.getD("BF_TCHEM",150.0);
+	taumax=parmap.getD("BF_TAUMAX",100.0);
+	reslist->Tf=Tchem;
+	reslist->CalcEoSandChiandQdens(reslist->Tf,reslist->Pf,reslist->epsilonf,
+	reslist->nf,reslist->densityf,
+	reslist->maxweightf,reslist->chif,strangecontent,udcontent);
+	reslist->FindFinalProducts(taumax);
+	bw=new CblastWave(&parmap,randy,reslist);
+	GetStableInfo(reslist,taumax,stablevec,bfnorm);
+	nhadron0=CStableInfo::denstot;
+	InitHBT(stablevec,"parameters/hbtpars.txt");
+	fprintf(logfile,"finished initialization\n");
+	fflush(logfile);
+	
 };
 
 CBalHBT::~CBalHBT(){
@@ -75,4 +95,90 @@ void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 	}
 	hbtcalc->wf_pp=new CWaveFunction_pp_schrod(parsfilename);
 	hbtcalc->wf_classical=new CWaveFunction_classical();
+}
+
+void CBalHBT::CalcCFs(){
+	unsigned int imc,id,id1,id2,i,iprod,id1prime,id2prime;
+	double balweight,balweightprime;
+	vector<CHBTPart *> partvec(2);
+	vector<CHBTPart *> partprimevec(2);
+	vector<vector<CHBTPart *>> productvec(2);
+	vector<vector<CHBTPart *>> productprimevec(2);
+	for(id=0;id<2;id++){
+		partvec[id]=new CHBTPart();
+		partprimevec[id]=new CHBTPart();
+	}
+	printf("NMC=%lld\n",NMC);
+	for(imc=0;imc<NMC;imc++){
+		GetPart(stablevec,id1);
+		GetPart(stablevec,id2);
+		GetPart(stablevec,id1prime);
+		GetPart(stablevec,id2prime);
+		balweight=-bfnorm[id1][id2]*nhadron0*0.5;
+		balweightprime=-bfnorm[id1prime][id2prime]*nhadron0*0.5;
+		partvec[0]->resinfo=stablevec[id1]->resinfo;
+		partvec[1]->resinfo=stablevec[id2]->resinfo;
+		partprimevec[0]->resinfo=stablevec[id1prime]->resinfo;
+		partprimevec[1]->resinfo=stablevec[id2prime]->resinfo;
+		if(randy->ran()<0.5){
+			partvec[0]->PartAntipart();
+			balweight=-balweight;
+		}
+		if(randy->ran()<0.5){
+			partvec[1]->PartAntipart();
+			balweight=-balweight;
+		}
+		if(randy->ran()<0.5){
+			partprimevec[0]->PartAntipart();
+			balweightprime=-balweightprime;
+		}
+		if(randy->ran()<0.5){
+			partprimevec[1]->PartAntipart();
+			balweightprime=-balweightprime;
+		}
+		
+		bw->GetXP(partvec);
+		bw->GetXP(partprimevec);
+		
+		GetDecayProducts(partvec[0],productvec[0]);
+		GetDecayProducts(partvec[1],productvec[1]);
+		GetDecayProducts(partprimevec[0],productprimevec[0]);
+		GetDecayProducts(partprimevec[1],productprimevec[1]);
+		
+		for(int anti=0;anti<2;anti++){
+			if(anti==1){
+				partvec[0]->PartAntipart();
+				for(unsigned long int iprod=0;iprod<productvec[0].size();iprod++){
+					productvec[0][iprod]->PartAntipart();
+				}
+				partvec[1]->PartAntipart();
+				for(unsigned long int iprod=0;iprod<productvec[1].size();iprod++){
+					productvec[1][iprod]->PartAntipart();
+				}
+			}
+			bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight,balweightprime,id1,id2,id1prime,id2prime);
+		}
+		
+		for(i=0;i<2;i++){
+			for(iprod=0;iprod<productvec[i].size();iprod++)
+				delete productvec[i][iprod];
+			productvec[i].clear();
+			for(iprod=0;iprod<productprimevec[i].size();iprod++)
+				delete productprimevec[i][iprod];
+			productprimevec[i].clear();
+		}
+		if((imc+1)%(NMC/10)==0){
+			fprintf(logfile,"finished %ld percent\n",lrint(100.0*imc/double(NMC)));
+			fflush(logfile);
+		}
+	}
+	
+	for(id=0;id<2;id++){
+		delete partvec[id];
+		delete partprimevec[id];
+	}
+	partvec.clear();
+	partprimevec.clear();
+	bf->WriteResults(run_number);
+	fclose(logfile);
 }

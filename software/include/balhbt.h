@@ -27,10 +27,14 @@ class CBF;
 class CBalHBT{
 public:
 	int run_number;
+	long long int NMC;
+	double nhadron0,Tchem,taumax;
+	vector<vector<double>> bfnorm;
+	vector<CStableInfo *> stablevec;
 	FILE *logfile;
-	CBalHBT(CparameterMap *parmapin,int run_number);
+	CBalHBT(int run_number);
 	~CBalHBT();
-	CparameterMap *parmap;
+	CparameterMap parmap;
 	CResList *reslist;
 	CblastWave *bw;
 	CRandy *randy;
@@ -42,6 +46,7 @@ public:
 	void Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter);
 	void GetPart(vector<CStableInfo *> &stablevec,unsigned int &id);
 	void InitHBT(vector<CStableInfo *> &stablevec,string hbtparsfilename);
+	void CalcCFs();
 	void WriteResults(string dirname);
 };
 

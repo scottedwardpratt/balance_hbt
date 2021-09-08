@@ -3,7 +3,7 @@ using namespace std;
 
 CBF::CBF(CBalHBT *balhbtset){
 	balhbt=balhbtset;
-	CBF_init(balhbt->parmap);
+	CBF_init(&balhbt->parmap);
 	CHEAPPSISQUARED=parmap->getB("BF_CHEAPPSISQUARED",false);
 	UseAllWFsForCF=parmap->getB("BF_USEALLWFSFORCF",true);
 }
