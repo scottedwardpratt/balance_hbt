@@ -33,10 +33,9 @@ CBalHBT::CBalHBT(int run_number_set){
 	bw=new CblastWave(&parmap,randy,reslist);
 	GetStableInfo(reslist,taumax,stablevec,bfnorm);
 	nhadron0=CStableInfo::denstot;
-	InitHBT(stablevec,"parameters/hbtpars.txt");
-	fprintf(logfile,"finished initialization\n");
+	fprintf(logfile,"Initialized blast wave, resonance and decay info for balhbt\n");
 	fflush(logfile);
-	
+	InitHBT(stablevec,"parameters/hbtpars.txt");
 };
 
 CBalHBT::~CBalHBT(){
@@ -95,6 +94,8 @@ void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 	}
 	hbtcalc->wf_pp=new CWaveFunction_pp_schrod(parsfilename);
 	hbtcalc->wf_classical=new CWaveFunction_classical();
+	fprintf(logfile,"Initialized Wave Functions for HBT\n");
+	fflush(logfile);
 }
 
 void CBalHBT::CalcCFs(){
@@ -108,7 +109,6 @@ void CBalHBT::CalcCFs(){
 		partvec[id]=new CHBTPart();
 		partprimevec[id]=new CHBTPart();
 	}
-	printf("NMC=%lld\n",NMC);
 	for(imc=0;imc<NMC;imc++){
 		GetPart(stablevec,id1);
 		GetPart(stablevec,id2);
