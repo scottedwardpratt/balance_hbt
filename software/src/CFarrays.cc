@@ -32,31 +32,28 @@ void CCF_Arrays::Zero(){
 }
 
 void CCF_Arrays::Increment(double dely,double delphi,double qinv,double qout,double qside,double qlong,double weight){
-	double QDIRCUT=15.0,qother;
+	double QDIRCUT=15.0;
 	int iq,iy,iphi;
 	iq=lrint(floor(qinv/DELQ));
 	if(iq<NQ){
 		cf_inv[iq]+=weight;
 		denom_inv[iq]+=1.0;
 	}
-	qother=sqrt(qside*qside+qlong*qlong);
-	if(qother<QDIRCUT){
+	if(fabs(qside)<QDIRCUT && fabs(qlong)<QDIRCUT){
 		iq=lrint(floor(qout/DELQ));
 		if(iq<NQ){
 			cf_out[iq]+=weight;
 			denom_out[iq]+=1.0;
 		}
 	}
-	qother=sqrt(qout*qout+qlong*qlong);
-	if(qother<QDIRCUT){
+	if(fabs(qout)<QDIRCUT && fabs(qlong)<QDIRCUT){
 		iq=lrint(floor(qside/DELQ));
 		if(iq<NQ){
 			cf_side[iq]+=weight;
 			denom_side[iq]+=1.0;
 		}
 	}
-	qother=sqrt(qside*qside+qout*qout);
-	if(qother<QDIRCUT){
+	if(fabs(qout)<QDIRCUT && fabs(qside)<QDIRCUT){
 		iq=lrint(floor(qlong/DELQ));
 		if(iq<NQ){
 			cf_long[iq]+=weight;
