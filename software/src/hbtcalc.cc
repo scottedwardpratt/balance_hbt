@@ -31,6 +31,10 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 	qmag=sqrt(-q2);
 	r2=r2-Pdotr*Pdotr/P2;
 	rmag=sqrt(-r2);
+	if(part->resinfo->baryon!=0)
+		printf("r=(%g,%g,%g,%g)\n",part->x[0],part->x[1],part->x[2],part->x[3]);
+	if(partprime->resinfo->baryon!=0)
+		printf("r=(%g,%g,%g,%g)\n",partprime->x[0],partprime->x[1],partprime->x[2],partprime->x[3]);
 	qdotr=qdotr-(Pdotr*Pdotq)/P2;
 	ctheta=-qdotr/(qmag*rmag);
 	if(q1q2>0){

@@ -2,7 +2,8 @@
 using namespace std;
 
 void CBalHBT::GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products){
-	int idaughter,ndaughters;
+	int idaughter,ndaughters,alpha;
+	double tau,mass;
 	for(int iproduct=0;iproduct<int(products.size());iproduct++){
 		delete products[iproduct];
 	}
@@ -14,6 +15,11 @@ void CBalHBT::GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products){
 	if(part->resinfo->decay){
 		for(idaughter=0;idaughter<ndaughters;idaughter++){
 			daughter[idaughter].resinfo=dresinfo[idaughter];
+		}
+		tau=HBARC/part->resinfo->width;
+		mass=part->GetMass();
+		for(alpha=0;alpha<4;alpha++){
+			part->x[alpha]+=part->p[alpha]*tau/mass;
 		}
 		Decay(part,ndaughters,daughter);
 	}
@@ -227,7 +233,8 @@ void CBalHBT::Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter){
 	}
 
 	/* Boost the new particles */
-	for(alpha=0;alpha<4;alpha++) u[alpha]=mother->p[alpha]/mass[0];
+	for(alpha=0;alpha<4;alpha++)
+		u[alpha]=mother->p[alpha]/mass[0];
 	for(ibody=0;ibody<nbodies;ibody++){
 		Misc::lorentz(u,*p[ibody+1],pprime);
 		for(alpha=0;alpha<4;alpha++){
