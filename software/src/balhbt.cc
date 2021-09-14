@@ -13,6 +13,8 @@ CBalHBT::CBalHBT(int run_number_set){
 	parmap.ReadParsFromFile("parameters/bwpars.txt");
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
 	NMC=parmap.getI("BF_NMC",1000000);
+	BARYONSONLY=parmap.getB("BF_BARYONSONLY",false); // only baryons (for pp correlations)
+	STRANGEONLY=parmap.getB("BF_STRANGEONLY",false); // only strange particles (for KK correlations)
 	
 	CBalHBT::bf=new CBF(this);
 	reslist=new CResList(&parmap);
@@ -114,6 +116,26 @@ void CBalHBT::CalcCFs(){
 		GetPart(stablevec,id2);
 		GetPart(stablevec,id1prime);
 		GetPart(stablevec,id2prime);
+		if(BARYONSONLY){
+			while(stablevec[id1]->resinfo->baryon==0 && stablevec[id2]->resinfo->baryon==0){
+				GetPart(stablevec,id1);
+				GetPart(stablevec,id2);
+			} 
+			while(stablevec[id1prime]->resinfo->baryon==0 && stablevec[id2prime]->resinfo->baryon==0){
+				GetPart(stablevec,id1prime);
+				GetPart(stablevec,id2prime);
+			}
+		}
+		else if(STRANGEONLY){
+			while(stablevec[id1]->resinfo->strange==0 && stablevec[id2]->resinfo->strange==0){
+				GetPart(stablevec,id1);
+				GetPart(stablevec,id2);
+			}
+			while(stablevec[id1prime]->resinfo->strange==0 && stablevec[id2prime]->resinfo->strange==0){
+				GetPart(stablevec,id1prime);
+				GetPart(stablevec,id2prime);
+			}
+		}
 		balweight=-bfnorm[id1][id2]*nhadron0*0.5;
 		balweightprime=-bfnorm[id1prime][id2prime]*nhadron0*0.5;
 		partvec[0]->resinfo=stablevec[id1]->resinfo;

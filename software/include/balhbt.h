@@ -29,6 +29,7 @@ public:
 	int run_number;
 	long long int NMC;
 	double nhadron0,Tchem,taumax;
+	bool STRANGEONLY,BARYONSONLY;
 	vector<vector<double>> bfnorm;
 	vector<CStableInfo *> stablevec;
 	FILE *logfile;

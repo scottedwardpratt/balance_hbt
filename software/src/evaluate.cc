@@ -12,7 +12,6 @@ int id1,int id2,int id1prime,int id2prime){
 		psisquared01=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;
 		psisquared10=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
 		psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
-	
 	}
 	else{
 		psisquared00=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0],id1,id1prime)-1.0;
