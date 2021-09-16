@@ -5,17 +5,30 @@ using namespace std;
 CBF *CBalHBT::bf=NULL;
 
 CBalHBT::CBalHBT(int run_number_set){
-	double strangecontent,udcontent;
 	run_number=run_number_set;
-	string logfilename="logfiles/balhbt"+to_string(run_number)+".txt";
-	logfile=fopen(logfilename.c_str(),"a");
 	parmap.ReadParsFromFile("parameters/respars.txt");
 	parmap.ReadParsFromFile("parameters/bwpars.txt");
 	parmap.ReadParsFromFile("parameters/bfpars.txt");
+}
+
+CBalHBT::CBalHBT(int run_number_set,double BW_T,double BW_UPERP){
+	run_number=run_number_set;
+	parmap.ReadParsFromFile("parameters/bwpars.txt");
+	parmap.ReadParsFromFile("parameters/respars.txt");
+	parmap.ReadParsFromFile("parameters/bfpars.txt");
+	parmap.set("BW_T",BW_T);
+	parmap.set("BW_UPERP",BW_UPERP);
+}
+
+void CBalHBT::Init(){
+	double strangecontent,udcontent;
+	string logfilename="logfiles/balhbt"+to_string(run_number)+".txt";
+	logfile=fopen(logfilename.c_str(),"a");
+	
 	NMC=parmap.getI("BF_NMC",1000000);
 	BARYONSONLY=parmap.getB("BF_BARYONSONLY",false); // only baryons (for pp correlations)
 	STRANGEONLY=parmap.getB("BF_STRANGEONLY",false); // only strange particles (for KK correlations)
-	
+	Tchem=parmap.getD("BF_TCHEM",150.0);
 	CBalHBT::bf=new CBF(this);
 	reslist=new CResList(&parmap);
 	randy=new CRandy(run_number);
@@ -24,8 +37,7 @@ CBalHBT::CBalHBT(int run_number_set){
 	bf->randy=randy;
 	bf->balhbt=this;
 	CResInfo::randy=randy;
-	
-	Tchem=parmap.getD("BF_TCHEM",150.0);
+	//
 	taumax=parmap.getD("BF_TAUMAX",100.0);
 	reslist->Tf=Tchem;
 	reslist->CalcEoSandChiandQdens(reslist->Tf,reslist->Pf,reslist->epsilonf,

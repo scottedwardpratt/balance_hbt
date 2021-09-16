@@ -34,6 +34,8 @@ public:
 	vector<CStableInfo *> stablevec;
 	FILE *logfile;
 	CBalHBT(int run_number);
+	CBalHBT(int run_number,double BW_T,double BW_UPERP);
+	void Init();
 	~CBalHBT();
 	CparameterMap parmap;
 	CResList *reslist;

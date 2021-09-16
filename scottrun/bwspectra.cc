@@ -9,7 +9,6 @@ void WriteSpectra(vector<double> &spectra,string filename){
 	unsigned int ipt,Nspectra=spectra.size();
 	double pt;
 	FILE *fptr;
-	printf("What's happening?\n");
 	fptr=fopen(filename.c_str(),"w");
 	for(ipt=0;ipt<Nspectra;ipt++){
 		if(ipt<15){
@@ -70,28 +69,21 @@ double  CalcChiSquared_p(vector<double> &spectra_p,vector<double> &error_p){
 
 int main(int argc,char *argv[]){
 	int run_number=0;
-	double A,TF,UPERP;
+	double A,BW_T,BW_UPERP;
 	if (argc != 4) {
-		printf("Usage: balance_hbt A TF UPERP\n");
+		printf("Usage: bwspectra A TF UPERP\n");
 		exit(-1);
 	}
 	else{
 		A=atof(argv[1]);
-		TF=atof(argv[2]);
-		UPERP=atof(argv[3]);
+		BW_T=atof(argv[2]);
+		BW_UPERP=atof(argv[3]);
 	}
-	CparameterMap parmap;
-	parmap.ReadParsFromFile("parameters/respars.txt");
-	parmap.ReadParsFromFile("parameters/bfpars.txt");
-	parmap.ReadParsFromFile("parameters/bwpars.txt");
-	parmap.set("BW_T",TF);
-	parmap.set("BW_UPERP",UPERP);
-	CBalHBT *balhbt=new CBalHBT(&parmap,run_number);
-	
-	double Tchem=150.0,taumax=100.0,strangecontent,udcontent,pt;
+	CBalHBT *balhbt=new CBalHBT(run_number,BW_T,BW_UPERP);
+	balhbt->Init();
+	double pt;
 	double ptbar_pi=0.0,ptbar_K=0.0,ptbar_p=0.0;
 	vector<vector<double>> bfnorm;
-	vector<CStableInfo *> stablevec;
 	unsigned int id,id1,i,iprod,ipt,Nspectra=20;
 	long long unsigned int NK=0,Np=0,Npi=0;
 	vector<double> spectra_pi,spectra_K,spectra_p;
@@ -108,15 +100,7 @@ int main(int argc,char *argv[]){
 	}
 	CHBTPart *part;
 	long long int imc,pid;
-	int NMC=parmap.getI("BW_NMC",10000);
-
-	balhbt->reslist->Tf=Tchem;
-	balhbt->reslist->CalcEoSandChiandQdens(balhbt->reslist->Tf,balhbt->reslist->Pf,balhbt->reslist->epsilonf,balhbt->reslist->nf,balhbt->reslist->densityf,
-	balhbt->reslist->maxweightf,balhbt->reslist->chif,strangecontent,udcontent);
-	balhbt->reslist->FindFinalProducts(taumax);
-	balhbt->bw=new CblastWave(&parmap,balhbt->randy,balhbt->reslist);
-	balhbt->GetStableInfo(balhbt->reslist,taumax,stablevec,bfnorm);
-	//balhbt->InitHBT(stablevec,"parameters/hbtpars.txt");
+	long long int NMC=balhbt->parmap.getI("BW_NMC_SPECTRA",100000);
 	
 	vector<CHBTPart *> partvec(1);
 	for(id=0;id<1;id++){
@@ -125,12 +109,11 @@ int main(int argc,char *argv[]){
 	vector<vector<CHBTPart *>> productvec(1);
 	
 	for(imc=0;imc<NMC;imc++){
-		balhbt->GetPart(stablevec,id1);
-		partvec[0]->resinfo=stablevec[id1]->resinfo;
+		balhbt->GetPart(balhbt->stablevec,id1);
+		partvec[0]->resinfo=balhbt->stablevec[id1]->resinfo;
 		if(balhbt->randy->ran()<0.5){
 			partvec[0]->PartAntipart();
 		}
-		
 		balhbt->bw->GetXP(partvec);
 		balhbt->GetDecayProducts(partvec[0],productvec[0]);
 		
@@ -199,7 +182,6 @@ int main(int argc,char *argv[]){
 	//WriteSpectra(spectra_pi,"spectra/spectra_pi.txt");
 	//WriteSpectra(spectra_K,"spectra/spectra_K.txt");
 	WriteSpectra(spectra_p,"spectra/spectra_p.txt");
-	printf("howdy doody\n");
 	double chi2=CalcChiSquared_p(spectra_p,error_p);
 	printf("%g\n",chi2);	
 		

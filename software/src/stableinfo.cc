@@ -59,7 +59,6 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 		}
 		CStableInfo::denstot+=2.0*stablevec[id2]->density;
 	}
-
 }
 
 void CBalHBT::GetPart(vector<CStableInfo *> &stablevec,unsigned int &id){

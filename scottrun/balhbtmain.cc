@@ -17,9 +17,9 @@ int main(int argc,char *argv[]){
 		run_number=atoi(argv[3]);
 	}
 	CBalHBT *balhbt=new CBalHBT(run_number);
+	balhbt->Init();
 	balhbt->bw->tau=tau;
 	balhbt->bw->Rperp=R;
-	
 	balhbt->CalcCFs();
 	
 	success=1;
