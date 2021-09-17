@@ -51,3 +51,21 @@ void CHBTPart::Print(){
 	printf("p^2=%g\n",sqrt(p[0]*p[0]-p[1]*p[1]-p[2]*p[2]-p[3]*p[3]));
 	printf("eta=%g, y=%g, pt=%g\n",eta,y,pt);
 }
+
+double CHBTPart::GetDCA(){
+	// returns distance of closest approach in cm
+	int alpha;
+	FourVector y;
+	double x2=0.0,pdotx=0.0,p2=0.0,dca=0.0;
+	for(alpha=1;alpha<4;alpha++){
+		pdotx+=p[alpha]*x[alpha];
+		x2+=x[alpha]*x[alpha];
+		p2+=p[alpha]*p[alpha];
+	}
+	for(alpha=0;alpha<4;alpha++){
+		y[alpha]=x[alpha]-pdotx*p[alpha]/p2;
+		dca+=y[alpha]*y[alpha];
+	}
+	dca=sqrt(dca)*1.0E-13;
+	return dca;
+}

@@ -129,29 +129,31 @@ int main(int argc,char *argv[]){
 		for(i=0;i<1;i++){
 			for(iprod=0;iprod<productvec[i].size();iprod++){
 				part=productvec[i][iprod];
-				pid=abs(part->resinfo->code);
-				if(pid==211 || pid==2212 || pid==321){
-					pt=sqrt(part->p[1]*part->p[1]+part->p[2]*part->p[2]);
-					ipt=GetIPt_PHENIX(pt);
-					if(ipt>=0){
-						if(pid==211){
-							if(ipt<Nspectra)
-								spectra_pi[ipt]+=1;
-							ptbar_pi+=pt;
-							Npi+=1;
+				if(balhbt->acceptance_spectra(part,efficiency)){
+					pid=abs(part->resinfo->code);
+					if(pid==211 || pid==2212 || pid==321){
+						pt=sqrt(part->p[1]*part->p[1]+part->p[2]*part->p[2]);
+						ipt=GetIPt_PHENIX(pt);
+						if(ipt>=0){
+							if(pid==211){
+								if(ipt<Nspectra)
+									spectra_pi[ipt]+=1;
+								ptbar_pi+=pt;
+								Npi+=1;
+							}
+							if(pid==321){
+								if(ipt<Nspectra)
+									spectra_K[ipt]+=1;	
+								ptbar_K+=pt;
+								NK+=1;
+							}	
+							if(pid==2212){
+								if(ipt<Nspectra)
+									spectra_p[ipt]+=1;
+								ptbar_p+=pt;
+								Np+=1;
+							}				
 						}
-						if(pid==321){
-							if(ipt<Nspectra)
-								spectra_K[ipt]+=1;	
-							ptbar_K+=pt;
-							NK+=1;
-						}	
-						if(pid==2212){
-							if(ipt<Nspectra)
-								spectra_p[ipt]+=1;
-							ptbar_p+=pt;
-							Np+=1;
-						}				
 					}
 				}
 				delete part;

@@ -62,6 +62,9 @@ bool CAcceptanceBal::acceptance(CHBTPart *part,double &efficiency){
 	bool accept=false;
 	int abspid=abs(part->resinfo->code);
 	efficiency=0.0;
+	double dca=part->GetDCA();
+	if(dca>3.0)
+		return false;
 	if(abspid!=211 && abspid!=321 && abspid!=2212)
 		return false;
 	else if(fabs(part->eta)>etamax)
@@ -76,5 +79,13 @@ bool CAcceptanceBal::acceptance(CHBTPart *part,double &efficiency){
 		efficiency=1.0;
 		accept=true;
 	}
+	return accept;
+}
+
+bool CAcceptanceBal::acceptance_spectra(CHBTPart *part,double &efficiency){
+	bool accept=false;
+	double dca=part->GetDCA();
+	if(fabs(part->y)<0.5 && fabs(dca)<0.001)
+		accept=true;
 	return accept;
 }

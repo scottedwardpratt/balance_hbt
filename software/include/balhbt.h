@@ -74,6 +74,7 @@ public:
 	void SetEtaYPt();
 	void Setp0();
 	static CBalHBT *balhbt;
+	double GetDCA();
 };
 
 class CStableInfo{
