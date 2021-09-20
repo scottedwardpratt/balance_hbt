@@ -69,7 +69,7 @@ double  CalcChiSquared_p(vector<double> &spectra_p,vector<double> &error_p){
 
 int main(int argc,char *argv[]){
 	int run_number=0;
-	double A,BW_T,BW_UPERP;
+	double A,BW_T,BW_UPERP,efficiency;
 	if (argc != 4) {
 		printf("Usage: bwspectra A TF UPERP\n");
 		exit(-1);
@@ -129,7 +129,7 @@ int main(int argc,char *argv[]){
 		for(i=0;i<1;i++){
 			for(iprod=0;iprod<productvec[i].size();iprod++){
 				part=productvec[i][iprod];
-				if(balhbt->acceptance_spectra(part,efficiency)){
+				if(CBF::acceptancebal->acceptance_spectra(part,efficiency)){
 					pid=abs(part->resinfo->code);
 					if(pid==211 || pid==2212 || pid==321){
 						pt=sqrt(part->p[1]*part->p[1]+part->p[2]*part->p[2]);

@@ -18,7 +18,6 @@
 using namespace std;
 
 class CHBTPart;
-class Cacceptance;
 class CStableInfo;
 class CblastWave;
 class CHBTCalc;
