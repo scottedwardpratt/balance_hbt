@@ -30,9 +30,7 @@ void CBalHBT::Init(){
 	STRANGEONLY=parmap.getB("BF_STRANGEONLY",false); // only strange particles (for KK correlations)
 	Tchem=parmap.getD("BF_TCHEM",150.0);
 	CBalHBT::bf=new CBF(this);
-	printf("check 1\n");
 	reslist=new CResList(&parmap);
-	printf("check 2\n");
 	randy=new CRandy(run_number);
 	hbtcalc=new CHBTCalc(&parmap);
 	bf->hbtcalc=hbtcalc;
