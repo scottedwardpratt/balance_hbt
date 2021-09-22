@@ -114,7 +114,7 @@ void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 		u[1]=u[2]=0.0;
 		u[3]=sinh(eta);
 		u[0]=cosh(eta);
-		Misc::Boost(u,p,part->p);
+		Misc::Boost(u,p,part->p); // Boost along beam
 		part->SetEtaYPt();
 		part->Setp0();
 	}
