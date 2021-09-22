@@ -160,8 +160,8 @@ int main(int argc,char *argv[]){
 			}
 			productvec[i].clear();
 		}
-		//if((imc+1)%(NMC/10)==0)
-		//	printf("finished %ld percent\n",lrint(100.0*imc/double(NMC)));
+		if((imc+1)%(NMC/10)==0)
+			printf("finished %ld percent\n",lrint(100.0*imc/double(NMC)));
 	}
 	for(ipt=0;ipt<20;ipt++){
 		error_pi[ipt]=sqrt(spectra_pi[ipt]);
@@ -178,11 +178,11 @@ int main(int argc,char *argv[]){
 	ptbar_K=ptbar_K/double(NK);
 	ptbar_p=ptbar_p/double(Np);
 	
-	//printf("Npi=%llu, NK=%llu, Np=%llu\n",Npi,NK,Np);
-	//printf("ptbar_pi=%g, ptbar_K=%g, ptbar_p=%g\n",ptbar_pi,ptbar_K,ptbar_p);
+	printf("Npi=%llu, NK=%llu, Np=%llu\n",Npi,NK,Np);
+	printf("ptbar_pi=%g, ptbar_K=%g, ptbar_p=%g\n",ptbar_pi,ptbar_K,ptbar_p);
 	
-	//WriteSpectra(spectra_pi,"spectra/spectra_pi.txt");
-	//WriteSpectra(spectra_K,"spectra/spectra_K.txt");
+	WriteSpectra(spectra_pi,"spectra/spectra_pi.txt");
+	WriteSpectra(spectra_K,"spectra/spectra_K.txt");
 	WriteSpectra(spectra_p,"spectra/spectra_p.txt");
 	double chi2=CalcChiSquared_p(spectra_p,error_p);
 	printf("%g\n",chi2);	
