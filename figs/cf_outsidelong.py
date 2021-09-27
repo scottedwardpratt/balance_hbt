@@ -100,6 +100,7 @@ for jpanel in range(0,4):
   plt.xlim(xmin,xmax)
   plt.ylim(ymin,ymax)
 
+#plt.legend()
   
 plt.savefig('cf_outlongside.pdf',format='pdf')
 os.system('open -a Preview cf_outlongside.pdf')
