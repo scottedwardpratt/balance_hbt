@@ -5,67 +5,90 @@
 
 using namespace std;
 
-void WriteSpectra(vector<double> &spectra,string filename){
+void WriteSpectra(vector<double> &spectra,string filename,double normfactor){
 	unsigned int ipt,Nspectra=spectra.size();
 	double pt;
 	FILE *fptr;
 	fptr=fopen(filename.c_str(),"w");
 	for(ipt=0;ipt<Nspectra;ipt++){
-		if(ipt<15){
-			pt=500+(ipt+0.5)*100.0;
+		if(ipt<20){
+			pt=(ipt+0.5)*100.0;
 		}
 		else{
-			pt=2000+(ipt-15+0.5)*200.0;
+			pt=2000+(ipt-20+0.5)*200.0;
 		}
-		fprintf(fptr,"%4.0f %g\n",pt,spectra[ipt]);
+		fprintf(fptr,"%4.0f %g\n",pt,normfactor*spectra[ipt]);
 	}
 	fclose(fptr);
 }
 
 int GetIPt_PHENIX(double pt){
 	int ipt=-1;
-	if(pt>500 && pt<20000){
-		ipt=floorl(pt/100)-5;
+	if(pt<2000){
+		ipt=floorl(pt/100.0);
 	}
-	if(pt>=2.0 && pt<3.0){
-		ipt=floorl(pt/200)-10+5;
+	if(pt>=2000.0){
+		ipt=20+floorl((pt-2000)/200.0);
 	}
 	return ipt;
 }
 
 double GetPTDPTDY_PHENIX(int ipt){
 	double ptdptdy,ptplus,ptminus;
-	if(ipt<15){
-		ptminus=500.0+100.0*ipt;
+	if(ipt<20){
+		ptminus=ipt*100.0;
 		ptplus=ptminus+100.0;
 		ptdptdy=PI*(ptplus*ptplus-ptminus*ptminus);
 	}
-	else if(ipt>=15 && ipt<20){
-		ptminus=2000.0+(ipt-15)*200.0;
+	else{
+		ptminus=2000.0+(ipt-20)*200.0;
 		ptplus=ptminus+200.0;
 		ptdptdy=PI*(ptplus*ptplus-ptminus*ptminus);
-	}
-	else{
-		printf("ipt is out of range, =%d\n",ipt);
-		exit(1);
 	}
 	return ptdptdy;
 }
 
-double  CalcChiSquared_p(vector<double> &spectra_p,vector<double> &error_p){
-	FILE *fptr=fopen("phenix_data/phenix_proton.txt","r");
+double  CalcChiSquared(vector<double> &spectra,vector<double> &error,string exp_filename,double &normfactor){
+	FILE *fptr=fopen(exp_filename.c_str(),"r");
 	//char dummy[120];
-	double ptbar,ptlow,pthigh,spectra_phenix,stathigh,statlow,syshigh,syslow,sigma2,chi2=0.0;
+	bool exists[30]={false};
+	double sigma2[30]={0.0},spectra_phenix[30];
+	double ptbar,ptlow,pthigh,stathigh,statlow,syshigh,syslow,chi2=0.0,dchi2;
+	double norm_exp=0.0,norm=0.0,ptdptdy,sp;
+	double meanpt=0.0,meanpt_exp=0.0;
 	int ipt;
-	for(ipt=0;ipt<20;ipt++){
-		fscanf(fptr,"%lf %lf %lf %lf %lf %lf %lf %lf",&ptbar,&ptlow,&pthigh,&spectra_phenix,&stathigh,&statlow,&syshigh,&syslow);
-		sigma2=0.25*(stathigh-statlow)*(stathigh-statlow)+0.25*(syshigh-syslow)*(syshigh-syslow);
-		sigma2+=error_p[ipt]*error_p[ipt];
-		//printf("pt=%g, phenix_spectra=%g, bw_spectra=%g, sigam2=%g\n",ptbar,spectra_phenix,spectra_p[ipt],sigma2);
-		chi2+=pow(spectra_p[ipt]-spectra_phenix,2)/sigma2;
+	do{
+		fscanf(fptr,"%lf %lf %lf %lf %lf %lf %lf %lf",&ptbar,&ptlow,&pthigh,&sp,&stathigh,&statlow,&syshigh,&syslow);
+		if(!feof(fptr)){
+			if(ptbar<2.0){
+				ipt=GetIPt_PHENIX(ptbar*1000.0);
+				spectra_phenix[ipt]=sp;
+				exists[ipt]=true;
+				sigma2[ipt]=0.25*(stathigh-statlow)*(stathigh-statlow)+0.25*(syshigh-syslow)*(syshigh-syslow);
+				sigma2[ipt]+=error[ipt]*error[ipt];
+				ptdptdy=GetPTDPTDY_PHENIX(ipt);
+				norm_exp+=spectra_phenix[ipt]*ptdptdy;
+				meanpt_exp+=spectra_phenix[ipt]*ptdptdy*ptbar;
+				norm+=spectra[ipt]*ptdptdy;
+				meanpt+=spectra[ipt]*ptdptdy*ptbar;
+			}
+		}
+	}while(!feof(fptr));
+	normfactor=norm_exp/norm;
+	meanpt=meanpt/norm;
+	meanpt_exp=meanpt_exp/norm_exp;
+	printf("normalization factor=%g, <pt>=%g, phenix <pt>=%g\n",norm_exp/norm,meanpt,meanpt_exp);
+	for(ipt=0;ipt<30;ipt++){
+		if(exists[ipt]){
+			//printf("pt=%g, phenix_spectra=%g, bw_spectra=%g, sigma2=%g\n",ptbar,spectra_phenix[ipt],spectra[ipt],sigma2);
+			dchi2=pow(spectra[ipt]*normfactor-spectra_phenix[ipt],2)/sigma2[ipt];
+			chi2+=dchi2;
+		}
 	}
+	fclose(fptr);
 	return chi2;
 }
+
 
 int main(int argc,char *argv[]){
 	int run_number=0;
@@ -84,7 +107,7 @@ int main(int argc,char *argv[]){
 	double pt;
 	double ptbar_pi=0.0,ptbar_K=0.0,ptbar_p=0.0;
 	vector<vector<double>> bfnorm;
-	unsigned int id,id1,i,iprod,ipt,Nspectra=20;
+	unsigned int id,id1,i,iprod,ipt,Nspectra=30;
 	long long unsigned int NK=0,Np=0,Npi=0;
 	vector<double> spectra_pi,spectra_K,spectra_p;
 	vector<double> error_pi,error_K,error_p;
@@ -134,22 +157,19 @@ int main(int argc,char *argv[]){
 					if(pid==211 || pid==2212 || pid==321){
 						pt=sqrt(part->p[1]*part->p[1]+part->p[2]*part->p[2]);
 						ipt=GetIPt_PHENIX(pt);
-						if(ipt>=0){
+						if(ipt<Nspectra){
 							if(pid==211){
-								if(ipt<Nspectra)
-									spectra_pi[ipt]+=1;
+								spectra_pi[ipt]+=1;
 								ptbar_pi+=pt;
 								Npi+=1;
 							}
 							if(pid==321){
-								if(ipt<Nspectra)
-									spectra_K[ipt]+=1;	
+								spectra_K[ipt]+=1;	
 								ptbar_K+=pt;
 								NK+=1;
 							}	
 							if(pid==2212){
-								if(ipt<Nspectra)
-									spectra_p[ipt]+=1;
+								spectra_p[ipt]+=1;
 								ptbar_p+=pt;
 								Np+=1;
 							}				
@@ -163,7 +183,7 @@ int main(int argc,char *argv[]){
 		if((imc+1)%(NMC/10)==0)
 			printf("finished %ld percent\n",lrint(100.0*imc/double(NMC)));
 	}
-	for(ipt=0;ipt<20;ipt++){
+	for(ipt=0;ipt<Nspectra;ipt++){
 		error_pi[ipt]=sqrt(spectra_pi[ipt]);
 		error_K[ipt]=sqrt(spectra_K[ipt]);
 		error_p[ipt]=sqrt(spectra_p[ipt]);
@@ -181,11 +201,18 @@ int main(int argc,char *argv[]){
 	printf("Npi=%llu, NK=%llu, Np=%llu\n",Npi,NK,Np);
 	printf("ptbar_pi=%g, ptbar_K=%g, ptbar_p=%g\n",ptbar_pi,ptbar_K,ptbar_p);
 	
-	WriteSpectra(spectra_pi,"spectra/spectra_pi.txt");
-	WriteSpectra(spectra_K,"spectra/spectra_K.txt");
-	WriteSpectra(spectra_p,"spectra/spectra_p.txt");
-	double chi2=CalcChiSquared_p(spectra_p,error_p);
-	printf("%g\n",chi2);	
+	double chi2_pi,chi2_K,chi2_p,chi2,norm_pi,norm_K,norm_p;
+	
+	chi2_pi=CalcChiSquared(spectra_pi,error_pi,"../run/phenix_data/phenix_pion.txt",norm_pi);
+	chi2_K=CalcChiSquared(spectra_K,error_K,"../run/phenix_data/phenix_kaon.txt",norm_K);
+	chi2_p=CalcChiSquared(spectra_p,error_p,"../run/phenix_data/phenix_proton.txt",norm_p);
+	chi2=chi2_pi+chi2_K+chi2_p;
+	
+	WriteSpectra(spectra_pi,"spectra/spectra_pi.txt",norm_pi);
+	WriteSpectra(spectra_K,"spectra/spectra_K.txt",norm_K);
+	WriteSpectra(spectra_p,"spectra/spectra_p.txt",norm_p);
+	
+	printf("%g      %g %g %g\n",chi2,chi2_pi,chi2_K,chi2_p);	
 		
 	return 0;
 }
