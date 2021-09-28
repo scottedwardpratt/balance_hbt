@@ -93,14 +93,14 @@ double  CalcChiSquared(vector<double> &spectra,vector<double> &error,string exp_
 int main(int argc,char *argv[]){
 	int run_number=0;
 	double A,BW_T,BW_UPERP,efficiency;
-	if (argc != 4) {
-		printf("Usage: bwspectra A TF UPERP\n");
+	if (argc != 3) {
+		printf("Usage: bwspectra TF UPERP\n");
 		exit(-1);
 	}
 	else{
-		A=atof(argv[1]);
-		BW_T=atof(argv[2]);
-		BW_UPERP=atof(argv[3]);
+		A=1.0;
+		BW_T=atof(argv[1]);
+		BW_UPERP=atof(argv[2]);
 	}
 	CBalHBT *balhbt=new CBalHBT(run_number,BW_T,BW_UPERP);
 	balhbt->Init();
