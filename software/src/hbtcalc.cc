@@ -1,5 +1,5 @@
 #include "balhbt.h"
-using namespace std;
+//using namespace std;
 
 CHBTCalc::CHBTCalc(CparameterMap *parmapin){
 	parmap=parmapin;

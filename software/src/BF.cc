@@ -1,5 +1,5 @@
 #include "balhbt.h"
-using namespace std;
+//using namespace std;
 
 CBF::CBF(CBalHBT *balhbtset){
 	balhbt=balhbtset;
@@ -34,6 +34,7 @@ void CBF::CBF_init(CparameterMap *parmapin){
 	
 	DELPHI=180.0/double(NPHIBINS);
 	QINVMAX=DELQINV*NQINVBINS;
+	NETWEIGHTsame=NETWEIGHTopp=0.0;
 	Zero();
 }
 

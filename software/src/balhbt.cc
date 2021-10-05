@@ -1,7 +1,5 @@
 #include "balhbt.h"
-using namespace std;
-#include "balhbt.h"
-using namespace std;
+//using namespace std;
 CBF *CBalHBT::bf=NULL;
 
 CBalHBT::CBalHBT(int run_number_set){
@@ -46,7 +44,6 @@ void CBalHBT::Init(){
 	reslist->FindFinalProducts(taumax);
 	bw=new CblastWave(&parmap,randy,reslist);
 	GetStableInfo(reslist,taumax,stablevec,bfnorm);
-	nhadron0=CStableInfo::denstot;
 	fprintf(logfile,"Initialized blast wave, resonance and decay info for balhbt\n");
 	fflush(logfile);
 	InitHBT(stablevec,"parameters/hbtpars.txt");
@@ -113,7 +110,8 @@ void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 }
 
 void CBalHBT::CalcCFs(){
-	unsigned int imc,id,id1,id2,i,iprod,id1prime,id2prime;
+	long long unsigned int imc;
+	unsigned int id,id1,id2,i,iprod,id1prime,id2prime;
 	double balweight,balweightprime;
 	vector<CHBTPart *> partvec(2);
 	vector<CHBTPart *> partprimevec(2);
@@ -124,6 +122,7 @@ void CBalHBT::CalcCFs(){
 		partprimevec[id]=new CHBTPart();
 	}
 	for(imc=0;imc<NMC;imc++){
+		printf("check in\n");
 		GetPart(stablevec,id1);
 		GetPart(stablevec,id2);
 		GetPart(stablevec,id1prime);
@@ -148,8 +147,8 @@ void CBalHBT::CalcCFs(){
 				GetPart(stablevec,id2prime);
 			}
 		}
-		balweight=-bfnorm[id1][id2]*nhadron0*0.5;
-		balweightprime=-bfnorm[id1prime][id2prime]*nhadron0*0.5;
+		balweight=-bfnorm[id1][id2]*0.5;
+		balweightprime=-bfnorm[id1prime][id2prime]*0.5;
 		partvec[0]->resinfo=stablevec[id1]->resinfo;
 		partvec[1]->resinfo=stablevec[id2]->resinfo;
 		partprimevec[0]->resinfo=stablevec[id1prime]->resinfo;
@@ -173,11 +172,14 @@ void CBalHBT::CalcCFs(){
 		
 		bw->GetXP(partvec);
 		bw->GetXP(partprimevec);
+		printf("check got XP\n");
 		
 		GetDecayProducts(partvec[0],productvec[0]);
 		GetDecayProducts(partvec[1],productvec[1]);
 		GetDecayProducts(partprimevec[0],productprimevec[0]);
 		GetDecayProducts(partprimevec[1],productprimevec[1]);
+		
+		printf("check decayed\n");
 		
 		for(int anti=0;anti<2;anti++){
 			if(anti==1){
@@ -190,7 +192,7 @@ void CBalHBT::CalcCFs(){
 					productvec[1][iprod]->PartAntipart();
 				}
 			}
-			bf->Evaluate(partvec,productvec,partprimevec,productprimevec,balweight,balweightprime,id1,id2,id1prime,id2prime);
+			bf->Evaluate(partvec,productvec,partprimevec,productprimevec,bfnorm,id1,id2,id1prime,id2prime);
 		}
 		
 		for(i=0;i<2;i++){
@@ -205,6 +207,7 @@ void CBalHBT::CalcCFs(){
 			fprintf(logfile,"finished %ld percent\n",lrint(100.0*imc/double(NMC)));
 			fflush(logfile);
 		}
+		printf("imc=%llu\n",imc);
 	}
 	
 	for(id=0;id<2;id++){

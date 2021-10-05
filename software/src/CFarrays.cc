@@ -1,5 +1,5 @@
 #include "balhbt.h"
-using namespace std;
+//using namespace std;
 
 CCF_Arrays::CCF_Arrays(int NYset,double DELYset,int NPHIset,int NQset,double DELQset){
 	NY=NYset;

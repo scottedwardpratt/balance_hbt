@@ -1,5 +1,5 @@
 #include "balhbt.h"
-using namespace std;
+//using namespace std;
 double CStableInfo::denstot=0.0;
 
 void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnorm){
@@ -12,7 +12,8 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 		resinfo=rpos->second;
 		id=0;
 		if(!resinfo->decay || (HBARC/resinfo->width) > 100.0){
-			if(resinfo->code!=22 && resinfo->code>0 && (resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0)){
+			//if(resinfo->code!=22 && resinfo->code>0 && (resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0)){
+			if(resinfo->code!=22 && resinfo->code>0){
 				stableinfo=new CStableInfo(resinfo);
 				stablevec.push_back(stableinfo);
 			}
@@ -20,6 +21,7 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 		}
 	}
 	NID=stablevec.size();
+	printf("NID=%d\n",NID);
 	bfnorm.resize(NID);
 	for(id1=0;id1<NID;id1++){
 		bfnorm[id1].resize(NID);
@@ -47,17 +49,24 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 		}
 	}
 	
-	double netcharge,netbaryon,netstrange;
 	CStableInfo::denstot=0.0;
 	for(id2=0;id2<NID;id2++){
+		CStableInfo::denstot+=2.0*stablevec[id2]->density;
+		/*
+		double netcharge,netbaryon,netstrange;
 		netcharge=netbaryon=netstrange=0.0;
 		for(id1=0;id1<NID;id1++){
-			netcharge+=bfnorm[id1][id2]*stablevec[id1]->resinfo->charge;
-			netbaryon+=bfnorm[id1][id2]*stablevec[id1]->resinfo->baryon;
-			netstrange+=bfnorm[id1][id2]*stablevec[id1]->resinfo->strange;
-			bfnorm[id1][id2]=bfnorm[id1][id2]/stablevec[id1]->density;
+		netcharge+=bfnorm[id1][id2]*stablevec[id1]->resinfo->charge;
+		netbaryon+=bfnorm[id1][id2]*stablevec[id1]->resinfo->baryon;
+		netstrange+=bfnorm[id1][id2]*stablevec[id1]->resinfo->strange;
 		}
-		CStableInfo::denstot+=2.0*stablevec[id2]->density;
+		printf("netcharge=%8.6f=?%d, netbaryon=%8.6f=?%d, netstrange=%8.6f=?%d\n",netcharge,stablevec[id2]->resinfo->charge,
+		netbaryon,stablevec[id2]->resinfo->baryon,netstrange,stablevec[id2]->resinfo->strange);*/
+	}
+	for(id2=0;id2<NID;id2++){
+		for(id1=0;id1<NID;id1++){
+			bfnorm[id1][id2]=bfnorm[id1][id2]*CStableInfo::denstot/(2.0*stablevec[id1]->density);
+		}
 	}
 }
 

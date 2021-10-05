@@ -8,10 +8,12 @@ void CBalHBT::GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products){
 		delete products[iproduct];
 	}
 	products.clear();
+	printf("check Decaying %d\n",part->resinfo->code);
 	
 	array<CResInfo *,5> dresinfo;
 	array<CHBTPart,5> daughter;
 	GetDecayResInfo(part->resinfo,ndaughters,dresinfo);
+	printf("check C, ndaughters=%d\n",ndaughters);
 	if(part->resinfo->decay){
 		for(idaughter=0;idaughter<ndaughters;idaughter++){
 			daughter[idaughter].resinfo=dresinfo[idaughter];
@@ -21,7 +23,9 @@ void CBalHBT::GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products){
 		for(alpha=0;alpha<4;alpha++){
 			part->x[alpha]+=part->p[alpha]*tau/mass;
 		}
+		printf("Check D, mass=%g\n",mass);
 		Decay(part,ndaughters,daughter);
+		printf("Check E\n");
 	}
 	else{
 		ndaughters=1;
@@ -161,10 +165,13 @@ void CBalHBT::Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter){
 	}
 	/* FOUR-BODY DECAYS */
 	else if(nbodies==4){
+		printf("check 4 body decay\n");
+		printf("masses=%g:  %g, %g, %g, %g, sum=%g\n",mass[0],mass[1],mass[2],mass[3],mass[4],mass[1]+mass[2]+mass[3]+mass[4]);
 		kprimemax2=Misc::triangle(mass[0]-mass[3]-mass[4],mass[1],mass[2]);
 		kprimemax=sqrt(kprimemax2);
 		qprimemax2=Misc::triangle(mass[0]-mass[1]-mass[2],mass[3],mass[4]);
 		qprimemax=sqrt(qprimemax2);
+		printf("qprimemax=%g, kprimemax=%g\n",qprimemax,kprimemax);
 		
 		ppmax=sqrt(Misc::triangle(mass[0],mass[1]+mass[2],mass[3]+mass[4]));
 		e1max=sqrt(pow(mass[1],2)+ppmax*ppmax);
@@ -172,6 +179,7 @@ void CBalHBT::Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter){
 		e3max=sqrt(pow(mass[3],2)+ppmax*ppmax);
 		e4max=sqrt(pow(mass[4],2)+ppmax*ppmax);
 		wmax=ppmax*pow(e1max+e2max,2)*pow(e3max+e4max,2)/((mass[1]+mass[2])*(mass[3]+mass[4]));
+		printf("ppmax=%g, wmax=%g\n",ppmax,wmax);
 		
 		do{
 			TRY_AGAIN_4:
@@ -192,7 +200,8 @@ void CBalHBT::Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter){
 			e3prime=sqrt(qprimemag2+mass[3]*mass[3]);
 			e4prime=sqrt(qprimemag2+mass[4]*mass[4]);
 			
-			if(e1prime+e2prime+e3prime+e4prime>mass[0]) goto TRY_AGAIN_4;
+			if(e1prime+e2prime+e3prime+e4prime>mass[0])
+				goto TRY_AGAIN_4;
 
 			ppmag=Misc::triangle(mass[0],e1prime+e2prime,e3prime+e4prime);
 			if(ppmag>0){
@@ -228,7 +237,9 @@ void CBalHBT::Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter){
 
 				weight=ppmag*pow((*p[1])[0]+(*p[2])[0],2)*pow((*p[3])[0]+(*p[4])[0],2)/((e1prime+e2prime)*(e3prime+e4prime));
 			}
-			else weight=0.0;
+			else
+				weight=0.0;
+			printf("weight=%g, wmax=%g\n",weight,wmax);
 		} while(randy->ran()>weight/wmax);
 	}
 

@@ -26,8 +26,8 @@ class CBF;
 class CBalHBT{
 public:
 	int run_number;
-	long long int NMC;
-	double nhadron0,Tchem,taumax;
+	long long unsigned int NMC;
+	double Tchem,taumax;
 	bool STRANGEONLY,BARYONSONLY;
 	vector<vector<double>> bfnorm;
 	vector<CStableInfo *> stablevec;
@@ -134,6 +134,7 @@ public:
 	bool UseAllWFsForCF;
 	int NYBINS,NPHIBINS,NQINVBINS;
 	double DELPHI,DELY,DELQINV,QINVMAX;
+	double NETWEIGHTsame,NETWEIGHTopp;
 	
 	CCF_Arrays *CF_pipluspiplus,*CF_pipluspiminus,*CF_KplusKplus,*CF_KplusKminus,*CF_pp,*CF_ppbar;
 	CCF_Arrays *CF_piplusp,*CF_pipluspbar,*CF_piplusKplus,*CF_piplusKminus,*CF_Kplusp,*CF_Kpluspbar;
@@ -143,8 +144,8 @@ public:
 	static CAcceptanceBal *acceptancebal;
 	void Zero();
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,
-	int id1,int id2,int id1prime,int id2prime);
+	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,
+	vector<vector<double>> &bfnorm,unsigned int id0,unsigned int id1,unsigned int id0prime,unsigned int id1prime);
 	void IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void WriteResults(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);

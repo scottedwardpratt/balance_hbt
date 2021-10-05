@@ -1,5 +1,5 @@
 #include "balhbt.h"
-using namespace std;
+//using namespace std;
 CAcceptanceBal *CBF::acceptancebal=NULL;
 
 CAcceptanceBal::CAcceptanceBal(CparameterMap *parmap){

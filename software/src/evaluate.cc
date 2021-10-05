@@ -1,38 +1,81 @@
 #include "balhbt.h"
-using namespace std;
+//using namespace std;
 
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,double balweight,double balweightprime,
-int id1,int id2,int id1prime,int id2prime){
-	double weight,cfweight=0.0,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime;
+vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,
+vector<vector<double>> &bfnorm,unsigned int id0,unsigned int id1,unsigned int id0prime,unsigned int id1prime){
+	double weight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime;
+	vector<vector<double>> psisquared(2, vector<double>(2));
 	unsigned int i,iprime,iprod,iprodprime;
+	int Q,Qprime,i0,i1,i0prime,i1prime;
 	CHBTPart *part,*partprime;
 	if(CHEAPPSISQUARED){
-		psisquared00=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
-		psisquared01=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;
-		psisquared10=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
-		psisquared11=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
+		psisquared[0][0]=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
+		psisquared[0][1]=CheapPsiSquared(partvec[0],partprimevec[1])-1.0;
+		psisquared[1][0]=CheapPsiSquared(partvec[1],partprimevec[0])-1.0;
+		psisquared[1][1]=CheapPsiSquared(partvec[1],partprimevec[1])-1.0;
 	}
 	else{
-		psisquared00=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0],id1,id1prime)-1.0;
-		psisquared01=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1],id1,id2prime)-1.0;
-		psisquared10=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0],id2,id1prime)-1.0;
-		psisquared11=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1],id2,id2prime)-1.0;
+		psisquared[0][0]=hbtcalc->GetPsiSquared(partvec[0],partprimevec[0],id0,id0prime)-1.0;
+		psisquared[0][1]=hbtcalc->GetPsiSquared(partvec[0],partprimevec[1],id0,id1prime)-1.0;
+		psisquared[1][0]=hbtcalc->GetPsiSquared(partvec[1],partprimevec[0],id1,id0prime)-1.0;
+		psisquared[1][1]=hbtcalc->GetPsiSquared(partvec[1],partprimevec[1],id1,id1prime)-1.0;
 	}
 	
 	for(i=0;i<2;i++){
 		for(iprime=0;iprime<2;iprime++){
 			if(i==0 && iprime==0){
-				weight=psisquared00+psisquared01*balweightprime+psisquared10*balweight+psisquared11*balweight*balweightprime;
+				psisquared00=psisquared[0][0];
+				psisquared01=psisquared[0][1];
+				psisquared10=psisquared[1][0];
+				psisquared11=psisquared[1][1];
+				i0=id0;
+				i1=id1;
+				i0prime=id0prime;
+				i1prime=id1prime;
 			}
 			else if(i==0 && iprime==1){
-				weight=psisquared01+psisquared00*balweightprime+psisquared11*balweight+psisquared10*balweight*balweightprime;
+				psisquared00=psisquared[0][1];
+				psisquared01=psisquared[0][0];
+				psisquared10=psisquared[1][1];
+				psisquared11=psisquared[1][0];
+				i0=id0;
+				i1=id1;
+				i0prime=id1prime;
+				i1prime=id0prime;
 			}
-			else if(i==1 && iprime==0){
-				weight=psisquared10+psisquared11*balweightprime+psisquared00*balweight+psisquared01*balweight*balweightprime;
+			if(i==1 && iprime==0){
+				psisquared00=psisquared[1][0];
+				psisquared01=psisquared[1][1];
+				psisquared10=psisquared[0][0];
+				psisquared11=psisquared[0][1];
+				i0=id1;
+				i1=id0;
+				i0prime=id0prime;
+				i1prime=id1prime;
 			}
 			else{
-				weight=psisquared11+psisquared10*balweightprime+psisquared01*balweight+psisquared00*balweight*balweightprime;
+				psisquared00=psisquared[1][1];
+				psisquared01=psisquared[1][0];
+				psisquared10=psisquared[0][1];
+				psisquared11=psisquared[0][0];
+				i0=id1;
+				i1=id0;
+				i0prime=id1prime;
+				i1prime=id0prime;
+			}
+			if(UseAllWFsForCF)
+				weight=psisquared00+psisquared01*bfnorm[i1prime][i0prime]+psisquared10*bfnorm[i1][i0]
+					+psisquared11*bfnorm[i1][i0]*bfnorm[i1prime][i0prime];
+			else
+				weight=psisquared00;
+			Q=partvec[i]->resinfo->charge;
+			Qprime=partprimevec[iprime]->resinfo->charge;
+			if(Q*Qprime==1){
+				NETWEIGHTsame+=weight;
+			}
+			if(Q*Qprime==-1){
+				NETWEIGHTopp+=weight;
 			}
 			for(iprod=0;iprod<productvec[i].size();iprod++){
 				part=productvec[i][iprod];
@@ -46,21 +89,8 @@ int id1,int id2,int id1prime,int id2prime){
 					for(iprodprime=0;iprodprime<productprimevec[iprime].size();iprodprime++){
 						partprime=productprimevec[iprime][iprodprime];
 						if(acceptancebal->acceptance(partprime,effprime)){
-							if(UseAllWFsForCF){
-								cfweight=weight;
-							}
-							else{
-								if(i==0 && iprime==0)
-									cfweight=psisquared00;
-								if(i==0 && iprime==1)
-									cfweight=psisquared01;
-								if(i==1 && iprime==0)
-									cfweight=psisquared10;
-								if(i==1 && iprime==1)
-									cfweight=psisquared11;
-							}
 							if(abs(part->resinfo->code)==abs(partprime->resinfo->code)){
-								IncrementCF(part,partprime,cfweight,eff*effprime);
+								IncrementCF(part,partprime,weight,eff*effprime);
 							}
 						}
 					}
