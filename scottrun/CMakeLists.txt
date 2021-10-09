@@ -41,4 +41,10 @@ add_executable(protonsonly ${CMAKE_CURRENT_SOURCE_DIR}/protonsonly.cc)
 add_dependencies(protonsonly extern_balhbt extern_b3d2 extern_coral extern_commonutils)
 target_link_libraries(protonsonly ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 
+##################################################################################################
+set(SOURCE_FILES ./decaytest.cc)
+add_executable(decaytest ${CMAKE_CURRENT_SOURCE_DIR}/decaytest.cc)
+add_dependencies(decaytest extern_balhbt extern_b3d2 extern_coral extern_commonutils)
+target_link_libraries(decaytest ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
+
 #################################################

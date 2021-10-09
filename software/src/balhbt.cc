@@ -30,6 +30,7 @@ void CBalHBT::Init(){
 	CBalHBT::bf=new CBF(this);
 	reslist=new CResList(&parmap);
 	randy=new CRandy(run_number);
+	decay_nbody=new CDecay_NBody(randy);
 	hbtcalc=new CHBTCalc(&parmap);
 	bf->hbtcalc=hbtcalc;
 	bf->randy=randy;
@@ -122,7 +123,6 @@ void CBalHBT::CalcCFs(){
 		partprimevec[id]=new CHBTPart();
 	}
 	for(imc=0;imc<NMC;imc++){
-		printf("check in\n");
 		GetPart(stablevec,id1);
 		GetPart(stablevec,id2);
 		GetPart(stablevec,id1prime);
@@ -172,14 +172,11 @@ void CBalHBT::CalcCFs(){
 		
 		bw->GetXP(partvec);
 		bw->GetXP(partprimevec);
-		printf("check got XP\n");
 		
 		GetDecayProducts(partvec[0],productvec[0]);
 		GetDecayProducts(partvec[1],productvec[1]);
 		GetDecayProducts(partprimevec[0],productprimevec[0]);
 		GetDecayProducts(partprimevec[1],productprimevec[1]);
-		
-		printf("check decayed\n");
 		
 		for(int anti=0;anti<2;anti++){
 			if(anti==1){

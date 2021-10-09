@@ -13,6 +13,7 @@
 #include "coral.h"
 #include "constants.h"
 #include "acceptancebal.h"
+#include "decay_nbody.h"
 #include <list>
 
 using namespace std;
@@ -40,6 +41,7 @@ public:
 	CResList *reslist;
 	CblastWave *bw;
 	CRandy *randy;
+	CDecay_NBody *decay_nbody;
 	static CBF *bf;
 	CHBTCalc *hbtcalc;
 	void GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnormweight);
