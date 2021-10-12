@@ -47,7 +47,7 @@ public:
 	void GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *> &stablevec,vector<vector<double>> &bfnormweight);
 	void GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products);
 	void GetDecayResInfo(CResInfo *resinfo0,int &ndaughters,array<CResInfo *,5> &daughter);
-	void Decay(CHBTPart *mother,int &nbodies,array<CHBTPart,5> &daughter);
+	void Decay(CHBTPart *mother,int &nbodies,vector<CHBTPart *> &daughter);
 	void GetPart(vector<CStableInfo *> &stablevec,unsigned int &id);
 	void InitHBT(vector<CStableInfo *> &stablevec,string hbtparsfilename);
 	void CalcCFs();

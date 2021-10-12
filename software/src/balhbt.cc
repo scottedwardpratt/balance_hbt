@@ -47,7 +47,9 @@ void CBalHBT::Init(){
 	GetStableInfo(reslist,taumax,stablevec,bfnorm);
 	fprintf(logfile,"Initialized blast wave, resonance and decay info for balhbt\n");
 	fflush(logfile);
-	InitHBT(stablevec,"parameters/hbtpars.txt");
+	bool SPECTRA_ONLY=parmap.getB("BF_SPECTRA_ONLY",false);
+	if(!SPECTRA_ONLY)
+		InitHBT(stablevec,"parameters/hbtpars.txt");
 };
 
 CBalHBT::~CBalHBT(){
@@ -204,7 +206,6 @@ void CBalHBT::CalcCFs(){
 			fprintf(logfile,"finished %ld percent\n",lrint(100.0*imc/double(NMC)));
 			fflush(logfile);
 		}
-		printf("imc=%llu\n",imc);
 	}
 	
 	for(id=0;id<2;id++){

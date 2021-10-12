@@ -10,8 +10,7 @@ using namespace std;
 
 int main(int argc,char *argv[]){
 	long long unsigned int im,NM=100000;
-	int nbodies=3,iq,NQ=1,ibody,alpha;
-	FourVector P={0,0,0,0};
+	int nbodies=3,iq,NQ=1,ibody;
 	printf("Enter nbodies: ");
 	scanf("%d",&nbodies);
 	printf("Enter NM: ");
@@ -25,8 +24,17 @@ int main(int argc,char *argv[]){
 	for (im=0;im<NM;im++){
 		msum=0.0;
 		for(ibody=1;ibody<=nbodies;ibody++){
-			masses[ibody]=(0.9999*masses[0]-msum)*pow(randy->ran(),4);
+			if(randy->ran()<0.5){
+				masses[ibody]=0.0;
+			}
+			else{
+				masses[ibody]=randy->ran();
+			}
 			msum+=masses[ibody];
+		}
+		double mtarget=masses[0]*randy->ran();
+		for(ibody=1;ibody<=nbodies;ibody++){
+			masses[ibody]=mtarget*masses[ibody]/msum;
 		}
 		//sort(masses.rbegin(),masses.rend());
 		//masses[0]=0.0;
@@ -35,6 +43,9 @@ int main(int argc,char *argv[]){
 		decay.SetMasses(nbodies,masses);
 		for(iq=0;iq<NQ;iq++){
 			decay.GenerateMomenta(p);
+			/*
+			FourVector P={0,0,0,0};
+			int alpha;
 			for(alpha=0;alpha<4;alpha++)
 				P[alpha]=0.0;
 			for(ibody=0;ibody<nbodies;ibody++){
@@ -43,6 +54,7 @@ int main(int argc,char *argv[]){
 				}
 			}
 			printf("P=(%g,%g,%g,%g)\n",P[0],P[1],P[2],P[3]);
+			*/
 		}
 	}
 	printf("wmaxmax=%g\n",decay.wmaxmax);

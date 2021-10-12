@@ -103,6 +103,7 @@ int main(int argc,char *argv[]){
 		BW_UPERP=atof(argv[2]);
 	}
 	CBalHBT *balhbt=new CBalHBT(run_number,BW_T,BW_UPERP);
+	balhbt->parmap.set("BF_SPECTRA_ONLY",true);
 	balhbt->Init();
 	double pt;
 	double ptbar_pi=0.0,ptbar_K=0.0,ptbar_p=0.0;
@@ -157,22 +158,23 @@ int main(int argc,char *argv[]){
 					if(pid==211 || pid==2212 || pid==321){
 						pt=sqrt(part->p[1]*part->p[1]+part->p[2]*part->p[2]);
 						ipt=GetIPt_PHENIX(pt);
-						if(ipt<Nspectra){
-							if(pid==211){
+						if(pid==211){
+							ptbar_pi+=pt;
+							Npi+=1;
+							if(ipt<Nspectra)
 								spectra_pi[ipt]+=1;
-								ptbar_pi+=pt;
-								Npi+=1;
-							}
-							if(pid==321){
-								spectra_K[ipt]+=1;	
-								ptbar_K+=pt;
-								NK+=1;
-							}	
-							if(pid==2212){
+						}
+						else if(pid==321){
+							ptbar_K+=pt;
+							NK+=1;
+							if(ipt<Nspectra)
+								spectra_K[ipt]+=1;
+						}
+						else if(pid==2212){
+							ptbar_p+=pt;
+							Np+=1;
+							if(ipt<Nspectra)
 								spectra_p[ipt]+=1;
-								ptbar_p+=pt;
-								Np+=1;
-							}				
 						}
 					}
 				}

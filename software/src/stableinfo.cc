@@ -21,7 +21,6 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 		}
 	}
 	NID=stablevec.size();
-	printf("NID=%d\n",NID);
 	bfnorm.resize(NID);
 	for(id1=0;id1<NID;id1++){
 		bfnorm[id1].resize(NID);
