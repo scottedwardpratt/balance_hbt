@@ -50,7 +50,13 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 	
 	CStableInfo::denstot=0.0;
 	for(id2=0;id2<NID;id2++){
-		CStableInfo::denstot+=2.0*stablevec[id2]->density;
+		resinfo=stablevec[id2]->resinfo;
+		if(resinfo->code>0 && resinfo->code!=22){
+			if(resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0)
+				CStableInfo::denstot+=2.0*stablevec[id2]->density;
+			else
+				CStableInfo::denstot+=stablevec[id2]->density;
+		}
 		/*
 		double netcharge,netbaryon,netstrange;
 		netcharge=netbaryon=netstrange=0.0;
@@ -64,20 +70,41 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 	}
 	for(id2=0;id2<NID;id2++){
 		for(id1=0;id1<NID;id1++){
-			bfnorm[id1][id2]=bfnorm[id1][id2]*CStableInfo::denstot/(2.0*stablevec[id1]->density);
+			resinfo=stablevec[id2]->resinfo;
+			if(resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0)
+				bfnorm[id1][id2]=bfnorm[id1][id2]*CStableInfo::denstot/(2.0*stablevec[id1]->density);
+			else
+				bfnorm[id1][id2]=0.0;
 		}
 	}
 }
 
 void CBalHBT::GetPart(vector<CStableInfo *> &stablevec,unsigned int &id){
 	id=0;
+	CResInfo *resinfo;
 	double denstarget=CStableInfo::denstot*CResInfo::randy->ran();
 	if(denstarget>CStableInfo::denstot){
 		fprintf(logfile,"CStableInfo::denstot=%g, denstarget=%g\n",CStableInfo::denstot,denstarget);
+		exit(1);
 	}
-	double netdens=2.0*stablevec[id]->density;
+	double netdens=0.0;
+	resinfo=stablevec[id]->resinfo;
+	if(resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0)
+		netdens+=2.0*stablevec[id]->density;
+	else
+		netdens+=stablevec[id]->density;
 	while(denstarget>netdens){
 		id+=1;
-		netdens+=2.0*stablevec[id]->density;
+		resinfo=stablevec[id]->resinfo;
+		if(resinfo->q[0]!=0 || resinfo->q[1]!=0 || resinfo->q[2]!=0)
+			netdens+=2.0*stablevec[id]->density;
+		else
+			netdens+=stablevec[id]->density;
+		if(netdens>CStableInfo::denstot){
+			fprintf(logfile,"YIKES: id=%d, NID=%ld\n",id,stablevec.size());
+			fprintf(logfile,"id=%d: pid=%d, density=%g, CStableInfo::denstot=%g, netdens=%g\n",id,resinfo->code,stablevec[id]->density,CStableInfo::denstot,netdens);
+			exit(1);
+		}
 	}
+	
 }

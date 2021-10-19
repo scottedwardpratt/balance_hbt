@@ -107,6 +107,7 @@ void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 		eta=etabar+sigma_eta*randy->ran_gauss();
 		part->x[0]=tau*cosh(eta);
 		part->x[3]=tau*sinh(eta);
+		//printf("inside GetXP, x=(%g,%g,%g,%g)\n",part->x[0],part->x[1],part->x[2],part->x[3]);
 		// Boost outward
 		u[1]=uperpmax*part->x[1]/Rperp;
 		u[2]=uperpmax*part->x[2]/Rperp;
@@ -118,7 +119,6 @@ void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 		u[0]=cosh(eta);
 		Misc::Boost(u,p,part->p); // Boost along beam
 		part->SetEtaYPt();
-		//printf("pt=%g\n",part->pt);
 	}
 }
 

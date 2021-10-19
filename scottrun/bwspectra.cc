@@ -77,7 +77,7 @@ double  CalcChiSquared(vector<double> &spectra,vector<double> &error,string exp_
 	normfactor=norm_exp/norm;
 	meanpt=meanpt/norm;
 	meanpt_exp=meanpt_exp/norm_exp;
-	printf("normalization factor=%g, <pt>=%g, phenix <pt>=%g\n",norm_exp/norm,meanpt,meanpt_exp);
+	//printf("normalization factor=%g, <pt>=%g, phenix <pt>=%g\n",norm_exp/norm,meanpt,meanpt_exp);
 	for(ipt=0;ipt<30;ipt++){
 		if(exists[ipt]){
 			//printf("pt=%g, phenix_spectra=%g, bw_spectra=%g, sigma2=%g\n",ptbar,spectra_phenix[ipt],spectra[ipt],sigma2);
@@ -139,16 +139,22 @@ int main(int argc,char *argv[]){
 			partvec[0]->PartAntipart();
 		}
 		balhbt->bw->GetXP(partvec);
+		//for(unsigned int i=0;i<partvec.size();i++){
+		//	if(partvec[i]->resinfo->decay)
+		//		printf("--------\npartvec[%d].y=%g\n",i,partvec[i]->y);
+		//}
 		balhbt->GetDecayProducts(partvec[0],productvec[0]);
 		
-		for(int anti=0;anti<2;anti++){
-			if(anti==1){
-				partvec[0]->PartAntipart();
-				for(unsigned long int iprod=0;iprod<productvec[0].size();iprod++){
-					productvec[0][iprod]->PartAntipart();
-				}
+		
+		if(balhbt->randy->ran()<0.5){
+			partvec[0]->PartAntipart();
+			for(unsigned long int iprod=0;iprod<productvec[0].size();iprod++){
+				productvec[0][iprod]->PartAntipart();
+				//if(partvec[0]->resinfo->decay)
+				//	printf("productvec[%ld].y=%g\n",iprod,productvec[iprod]->y);
 			}
 		}
+
 		
 		for(i=0;i<1;i++){
 			for(iprod=0;iprod<productvec[i].size();iprod++){
@@ -182,8 +188,8 @@ int main(int argc,char *argv[]){
 			}
 			productvec[i].clear();
 		}
-		if((imc+1)%(NMC/10)==0)
-			printf("finished %ld percent\n",lrint(100.0*imc/double(NMC)));
+		//if((imc+1)%(NMC/10)==0)
+		//	printf("finished %ld percent\n",lrint(100.0*imc/double(NMC)));
 	}
 	for(ipt=0;ipt<Nspectra;ipt++){
 		error_pi[ipt]=sqrt(spectra_pi[ipt]);
@@ -200,8 +206,8 @@ int main(int argc,char *argv[]){
 	ptbar_K=ptbar_K/double(NK);
 	ptbar_p=ptbar_p/double(Np);
 	
-	printf("Npi=%llu, NK=%llu, Np=%llu\n",Npi,NK,Np);
-	printf("ptbar_pi=%g, ptbar_K=%g, ptbar_p=%g\n",ptbar_pi,ptbar_K,ptbar_p);
+	//printf("Npi=%llu, NK=%llu, Np=%llu\n",Npi,NK,Np);
+	//printf("ptbar_pi=%g, ptbar_K=%g, ptbar_p=%g\n",ptbar_pi,ptbar_K,ptbar_p);
 	
 	double chi2_pi,chi2_K,chi2_p,chi2,norm_pi,norm_K,norm_p;
 	
@@ -214,7 +220,8 @@ int main(int argc,char *argv[]){
 	WriteSpectra(spectra_K,"spectra/spectra_K.txt",norm_K);
 	WriteSpectra(spectra_p,"spectra/spectra_p.txt",norm_p);
 	
-	printf("%g      %g %g %g\n",chi2,chi2_pi,chi2_K,chi2_p);	
+	//printf("%g      %g %g %g\n",chi2,chi2_pi,chi2_K,chi2_p);	
+	printf("%g\n",chi2);	
 		
 	return 0;
 }

@@ -63,18 +63,21 @@ bool CAcceptanceBal::acceptance(CHBTPart *part,double &efficiency){
 	int abspid=abs(part->resinfo->code);
 	efficiency=0.0;
 	double dca=part->GetDCA();
-	if(dca>3.0)
+	if(dca>3.0){
 		return false;
+	}
 	if(abspid!=211 && abspid!=321 && abspid!=2212)
 		return false;
-	else if(fabs(part->eta)>etamax)
+	else if(fabs(part->eta)>etamax){
 		return false;
+	}
 	else if(abspid==211 && part->pt<ptmin_pi)
 		return false;
 	else if(abspid==321 && part->pt<ptmin_K)
 		return false;
-	else if(abspid==2212 && part->pt<ptmin_p)
+	else if(abspid==2212 && part->pt<ptmin_p){
 		return false;
+	}
 	else{
 		efficiency=1.0;
 		accept=true;
