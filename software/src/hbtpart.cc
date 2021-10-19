@@ -10,10 +10,11 @@ void CHBTPart::Copy(CHBTPart *part){
 	int alpha;
 	for(alpha=0;alpha<4;alpha++){
 		p[alpha]=part->p[alpha];
-		p[alpha]=part->p[alpha];
+		x[alpha]=part->x[alpha];
 	}
 	eta=part->eta;
 	y=part->y;
+	pt=part->pt;
 	resinfo=part->resinfo;
 }
 
