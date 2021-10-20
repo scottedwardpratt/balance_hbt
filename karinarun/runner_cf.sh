@@ -1,7 +1,7 @@
 #! /bin/bash
 make balhbt
-NMC=1000000
-NPROC=12
+NMC=100000000
+NPROC=24
 BW_TAU=$1
 BW_RPERP=$2
 for ((i=0;i<${NPROC};i++))
