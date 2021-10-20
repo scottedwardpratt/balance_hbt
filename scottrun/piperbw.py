@@ -1,7 +1,5 @@
-#!/usr/bin/env python
 import subprocess
 from subprocess import Popen, PIPE
-
 import numpy as np
 import math
 import scipy 

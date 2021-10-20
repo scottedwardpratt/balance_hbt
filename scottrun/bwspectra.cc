@@ -48,7 +48,8 @@ double GetPTDPTDY_PHENIX(int ipt){
 	return ptdptdy;
 }
 
-double  CalcChiSquared(vector<double> &spectra,vector<double> &error,string exp_filename,double &normfactor){
+double  CalcChiSquared(vector<double> &spectra,vector<double> &error,string exp_filename,double &normfactor,double ptmax){
+	ptmax=ptmax/1000.0;
 	FILE *fptr=fopen(exp_filename.c_str(),"r");
 	//char dummy[120];
 	bool exists[30]={false};
@@ -60,7 +61,7 @@ double  CalcChiSquared(vector<double> &spectra,vector<double> &error,string exp_
 	do{
 		fscanf(fptr,"%lf %lf %lf %lf %lf %lf %lf %lf",&ptbar,&ptlow,&pthigh,&sp,&stathigh,&statlow,&syshigh,&syslow);
 		if(!feof(fptr)){
-			if(ptbar<2.0){
+			if(ptbar<ptmax+0.00001){
 				ipt=GetIPt_PHENIX(ptbar*1000.0);
 				spectra_phenix[ipt]=sp;
 				exists[ipt]=true;
@@ -92,6 +93,7 @@ double  CalcChiSquared(vector<double> &spectra,vector<double> &error,string exp_
 
 int main(int argc,char *argv[]){
 	int run_number=0;
+	double ptmax_p=1800.0,ptmax_K=1500.0,ptmax_pi=1200.0;
 	double A,BW_T,BW_UPERP,efficiency;
 	if (argc != 3) {
 		printf("Usage: bwspectra TF UPERP\n");
@@ -211,9 +213,9 @@ int main(int argc,char *argv[]){
 	
 	double chi2_pi,chi2_K,chi2_p,chi2,norm_pi,norm_K,norm_p;
 	
-	chi2_pi=CalcChiSquared(spectra_pi,error_pi,"../run/phenix_data/phenix_pion.txt",norm_pi);
-	chi2_K=CalcChiSquared(spectra_K,error_K,"../run/phenix_data/phenix_kaon.txt",norm_K);
-	chi2_p=CalcChiSquared(spectra_p,error_p,"../run/phenix_data/phenix_proton.txt",norm_p);
+	chi2_pi=CalcChiSquared(spectra_pi,error_pi,"../run/phenix_data/phenix_pion.txt",norm_pi,ptmax_pi);
+	chi2_K=CalcChiSquared(spectra_K,error_K,"../run/phenix_data/phenix_kaon.txt",norm_K,ptmax_K);
+	chi2_p=CalcChiSquared(spectra_p,error_p,"../run/phenix_data/phenix_proton.txt",norm_p,ptmax_p);
 	chi2=chi2_pi+chi2_K+chi2_p;
 	
 	WriteSpectra(spectra_pi,"spectra/spectra_pi.txt",norm_pi);
