@@ -53,3 +53,7 @@ add_executable(spectratester ${CMAKE_CURRENT_SOURCE_DIR}/spectratester.cc)
 add_dependencies(spectratester extern_commonutils)
 target_link_libraries(spectratester ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 #################################################
+set(SOURCE_FILES ./chisquare.cc)
+add_executable(chisquare ${CMAKE_CURRENT_SOURCE_DIR}/chisquare.cc)
+add_dependencies(chisquare extern_balhbt extern_b3d2 extern_coral extern_commonutils)
+target_link_libraries(chisquare ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
