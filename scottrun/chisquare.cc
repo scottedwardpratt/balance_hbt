@@ -9,51 +9,53 @@
 #include <stdlib.h>
 
 
-double  CalcChiSquared_pion(double A){
+double  CalcChiSquared_pion(double &A){
 	FILE *fptr=fopen("results/pipluspiplus/cf_outsidelong.dat","r");
 	FILE *fptr1=fopen("cf_exp.dat","r");
-	double q,q1,cfout,cfout1,cfside1,cflong1,numout,cfside,numside,cflong,numlong,errorout, errorside, errorlong, cf, N, chiout=0.0,chiside=0.0,chilong=0.0;
+	const int NPT=21;
+	double q,q1,numout,numside,numlong,cf,N,chiout=0.0,chiside=0.0,chilong=0.0,numer,denom;
+	vector<double> cfout1(NPT),cfout(NPT),errorout(NPT),cfside1(NPT),cfside(NPT),errorside(NPT),cflong1(NPT),cflong(NPT),errorlong(NPT);
 	int ipt;
-	for(ipt=1;ipt<22;ipt++){
-		fscanf(fptr,"%lf %lf %lf %lf %lf %lf %lf %lf %lf",&q,&cfout,&numout,&cfside,&numside,&cflong,&numlong, &cf, &N);
-		fscanf(fptr1,"%lf %lf %lf %lf",&q1,&cfout1,&cfside1,&cflong1);
-		errorout=1.0/sqrt(numout);
-		errorside=1.0/sqrt(numside);
-		errorlong=1.0/sqrt(numlong);
-		
-		chiout+=pow(1+A*cfout-cfout1,2)/errorout;
-		chiside+=pow(1+A*cfside-cfside1,2)/errorside;
-		chilong+=pow(1+A*cflong-cflong1,2)/errorlong;
-		
+	numer=denom=0.0;
+	for(ipt=0;ipt<NPT;ipt++){
+		fscanf(fptr,"%lf %lf %lf %lf %lf %lf %lf %lf %lf",&q,&cfout[ipt],&numout,&cfside[ipt],&numside,&cflong[ipt],&numlong, &cf, &N);
+		fscanf(fptr1,"%lf %lf %lf %lf",&q1,&cfout1[ipt],&cfside1[ipt],&cflong1[ipt]);
+		cfout1[ipt]-=1.0;
+		cfside[ipt]-=1.0;
+		cflong[ipt]-=1.0;
+		errorout[ipt]=1.0/double(numout);
+		errorside[ipt]=1.0/double(numside);
+		errorlong[ipt]=1.0/double(numlong);
+		numer+=cfout1[ipt]*cfout[ipt]/errorout[ipt]
+			+cfside1[ipt]*cfside[ipt]/errorside[ipt]+cflong1[ipt]*cflong[ipt]/errorlong[ipt];
+		denom+=cfout[ipt]*cfout[ipt]/errorout[ipt]
+			+cfside[ipt]*cfside[ipt]/errorside[ipt]+cflong[ipt]*cflong[ipt]/errorlong[ipt];
+	}
+	A=numer/denom;
+	for(ipt=0;ipt<NPT;ipt++){
+		chiout+=pow(A*cfout[ipt]-cfout1[ipt],2)/errorout[ipt];
+		chiside+=pow(A*cfside[ipt]-cfside1[ipt],2)/errorside[ipt];
+		chilong+=pow(A*cflong[ipt]-cflong1[ipt],2)/errorlong[ipt];
 	}
 	return chiout+chiside+chilong;
 }
 
 int main(int argc,char *argv[]){
 	double A, tau, R;
-	if (argc != 4) {
-		printf("Usage: balance_hbt A tau R\n");
+	if (argc != 2) {
+		printf("Usage: balance_hbt tau R\n");
 		exit(-1);
 	}
 	else{
-		A=atof(argv[1]);
-		tau=atof(argv[2]);
-		R=atof(argv[3]);
+		tau=atof(argv[1]);
+		R=atof(argv[2]);
 	}
-//	CparameterMap parmap;
-//	parmap.ReadParsFromFile("parameters/bwpars.txt");
-//	parmap.set("BW_TAU",tau);
-//	parmap.set("BW_RPERP",R);
 	
-    string scriptCommand = "runner_cf.sh";
-
-    // Loop through and add all the arguments.
-    for (int i = 2; i < argc; i++){
-        scriptCommand = scriptCommand + " " + argv[i];	
-    }	
-	system(scriptCommand.c_str());
+	char scriptCommand[200];
+	sprintf(scriptCommand,"runner_cf.sh %g %g",tau,R);
+	system(scriptCommand);
 	double chi2=CalcChiSquared_pion(A);
-	printf("%04.2f\n",chi2);
+	printf("%g %g \n",chi2,A);
 	
 	return 0;	
 }

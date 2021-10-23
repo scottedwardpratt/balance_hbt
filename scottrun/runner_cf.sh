@@ -11,5 +11,5 @@ do
 done
 wait
 
-./summer.exe
+./summer_cf
 wait
