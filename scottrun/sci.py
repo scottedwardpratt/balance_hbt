@@ -8,7 +8,7 @@ import scipy
 from scipy import optimize
 
 
-x0 = np.empty(3, dtype=float)
+x0 = np.empty(2, dtype=float)
 x0[0]=10.98130514 #14.79443084    #tau
 x0[1]=6.74439321 #12.33820392    #R
 
