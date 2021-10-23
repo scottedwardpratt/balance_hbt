@@ -7,8 +7,8 @@ using namespace std;
 int main(int argc,char *argv[]){
 	int run_number,success=0;
 	double R,tau;
-	if (argc != 3) {
-		printf("Usage: balance_hbt tau R run_number\n");
+	if (argc != 4) {
+		printf("Usage: balhbt tau R run_number\n");
 		exit(-1);
 	}
 	else{

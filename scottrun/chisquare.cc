@@ -42,7 +42,7 @@ double  CalcChiSquared_pion(double &A){
 
 int main(int argc,char *argv[]){
 	double A, tau, R;
-	if (argc != 2) {
+	if (argc != 3) {
 		printf("Usage: balance_hbt tau R\n");
 		exit(-1);
 	}
