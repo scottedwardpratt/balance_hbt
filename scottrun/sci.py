@@ -17,7 +17,7 @@ def chisquare(x0):
     subp=subprocess.Popen(['chisquare', str(x0[0]), str(x0[1])], stdout=PIPE,stderr=PIPE,universal_newlines=True)
     stdout,stderror = subp.communicate()
     split = stdout.split()
-    length=len(split)
+    length=len(split)-1
     print(x0[0])
     print(x0[1])
     print(split[length-1])
