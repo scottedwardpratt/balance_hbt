@@ -8,7 +8,6 @@
 #include "parametermap.h"
 #include <stdlib.h>
 
-
 double  CalcChiSquared_pion(double &A){
 	FILE *fptr=fopen("results/pipluspiplus/cf_outsidelong.dat","r");
 	FILE *fptr1=fopen("cf_exp.dat","r");

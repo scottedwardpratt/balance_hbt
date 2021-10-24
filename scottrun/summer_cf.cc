@@ -45,7 +45,7 @@ int main(int argc,char *argv[]){
 		for(irun=0;irun<NRUNS;irun++){
 			
 			sprintf(filename,"results/%s/cf%d_y.dat",pairname[ipair].c_str(),irun);
-			printf("will read from %s\n",filename);
+			//printf("will read from %s\n",filename);
 			fptr=fopen(filename,"r");
 			fgets(dummy,120,fptr);
 			for(iq=0;iq<NQ;iq++){
@@ -59,7 +59,7 @@ int main(int argc,char *argv[]){
 			fclose(fptr);
 			
 			sprintf(filename,"results/%s/cf%d_phi.dat",pairname[ipair].c_str(),irun);
-			printf("will read from %s\n",filename);
+			//printf("will read from %s\n",filename);
 			fptr=fopen(filename,"r");
 			fgets(dummy,120,fptr);
 			for(iphi=0;iphi<NPHI;iphi++){
@@ -73,7 +73,7 @@ int main(int argc,char *argv[]){
 			fclose(fptr);
 			
 			sprintf(filename,"results/%s/cf%d_outsidelong.dat",pairname[ipair].c_str(),irun);
-			printf("will read from %s\n",filename);
+			//printf("will read from %s\n",filename);
 			fptr=fopen(filename,"r");
 			fgets(dummy,120,fptr);
 			for(iq=0;iq<NQ;iq++){
@@ -101,7 +101,7 @@ int main(int argc,char *argv[]){
 		}
 		
 		sprintf(filename,"results/%s/cf_y.dat",pairname[ipair].c_str());
-		printf("will write to %s\n",filename);
+		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iy=0;iy<NY;iy++){
 			cf_y[iy]=cf_y[iy]/denom_y[iy];
@@ -113,7 +113,7 @@ int main(int argc,char *argv[]){
 		fclose(fptr);
 		
 		sprintf(filename,"results/%s/cf_phi.dat",pairname[ipair].c_str());
-		printf("will write to %s\n",filename);
+		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iphi=0;iphi<NPHI;iphi++){
 			cf_phi[iphi]=cf_phi[iphi]/denom_phi[iphi];
@@ -125,7 +125,7 @@ int main(int argc,char *argv[]){
 		fclose(fptr);
 
 		sprintf(filename,"results/%s/cf_outsidelong.dat",pairname[ipair].c_str());
-		printf("will write to %s\n",filename);
+		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iq=0;iq<NQ;iq++){
 			cf_out[iq]=cf_out[iq]/denom_out[iq];
