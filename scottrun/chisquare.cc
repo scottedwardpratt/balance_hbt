@@ -20,8 +20,8 @@ double  CalcChiSquared_pion(double &A){
 		fscanf(fptr,"%lf %lf %lf %lf %lf %lf %lf %lf %lf",&q,&cfout[ipt],&numout,&cfside[ipt],&numside,&cflong[ipt],&numlong, &cf, &N);
 		fscanf(fptr1,"%lf %lf %lf %lf",&q1,&cfout1[ipt],&cfside1[ipt],&cflong1[ipt]);
 		cfout1[ipt]-=1.0;
-		cfside[ipt]-=1.0;
-		cflong[ipt]-=1.0;
+		cfside1[ipt]-=1.0;
+		cflong1[ipt]-=1.0;
 		errorout[ipt]=1.0/double(numout);
 		errorside[ipt]=1.0/double(numside);
 		errorlong[ipt]=1.0/double(numlong);

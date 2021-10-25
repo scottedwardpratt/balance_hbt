@@ -20,7 +20,6 @@ def chisquare(x0):
     length=len(split)-1
     print(x0[0])
     print(x0[1])
-    print('split=',split)
     print(split[length])
     return float(split[length])
     
