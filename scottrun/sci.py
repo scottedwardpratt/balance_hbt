@@ -20,9 +20,8 @@ def chisquare(x0):
     length=len(split)-1
     print(x0[0])
     print(x0[1])
-    print('split=',split)
-    print(split[length-1])
-    return float(split[length-1])
+    print(split[length])
+    return float(split[length])
     
 res = scipy.optimize.minimize(chisquare, x0, method='powell', options={'disp': True, 'maxiter': 100, 'maxfev': 100})
 print(res.x)
