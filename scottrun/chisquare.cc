@@ -54,7 +54,7 @@ int main(int argc,char *argv[]){
 	sprintf(scriptCommand,"runner_cf.sh %g %g",tau,R);
 	system(scriptCommand);
 	double chi2=CalcChiSquared_pion(A);
-	printf("%g\n",chi2);
+	printf("%g %g\n",A,chi2);
 	
 	return 0;	
 }

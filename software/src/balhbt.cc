@@ -29,7 +29,7 @@ void CBalHBT::Init(){
 	Tchem=parmap.getD("BF_TCHEM",150.0);
 	CBalHBT::bf=new CBF(this);
 	reslist=new CResList(&parmap);
-	randy=new CRandy(run_number);
+	randy=new CRandy(run_number-time(NULL));
 	decay_nbody=new CDecay_NBody(randy);
 	hbtcalc=new CHBTCalc(&parmap);
 	bf->hbtcalc=hbtcalc;
