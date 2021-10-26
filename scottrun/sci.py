@@ -20,14 +20,15 @@ def chisquare(x0):
    stdout,stderror = subp.communicate()
    split = stdout.split()
    length=len(split)-1
-   write(logfile,"tau=",x0[0])
-   write(logfile,"R=",x0[1])
-   write(logfile,"chi^2=",split[length])
+   logfile.write("tau=%f, " % x0[0])
+   logfile.write("R=%f, " % x0[1])
+   logfile.write("chi^2=%f\n" % float(split[length]))
    logfile.flush()
    return float(split[length])
 
     
 res = scipy.optimize.minimize(chisquare, x0, method='powell', options={'disp': True, 'maxiter': 100, 'maxfev': 100})
-write(logfile,"best values=",res.x)
+logfile.write("best values=")
+logfile.write(res.x)
 logfile.close()
 quit()
