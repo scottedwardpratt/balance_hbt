@@ -40,11 +40,19 @@ cfall_side=results[3]
 cfall_long=results[5]
 cfall_qinv=results[7]
 
-ymin=-0.1
-ymax=0.5
+expresults = np.loadtxt('cf_exp.dat',skiprows=0,unpack=True)
+qexp=0.5*expresults[0]*1000.0
+cfexp_out=expresults[1]-1.0
+cfexp_side=expresults[2]-1.0
+cfexp_long=expresults[3]-1.0
+
+ymin=-0.02
+ymax=0.05
 xmin=0
 xmax=100.0
 height=0.224
+
+A=0.615
 
 for jpanel in range(0,4):
   ax = fig.add_axes([0.08,0.08+jpanel*height,0.90,height])
@@ -59,14 +67,17 @@ for jpanel in range(0,4):
     type='qinv'
 
   if jpanel==0:
-    plt.plot(q,cf1wf_out,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(q,cfall_out,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cf1wf_out,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cfall_out,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+    #plt.plot(qexp,cfexp_out,linestyle='-',linewidth=3,color='g',markersize=6,marker='o',label=type)
   if jpanel==1:
-    plt.plot(q,cf1wf_side,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(q,cfall_side,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cf1wf_side,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cfall_side,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+    #plt.plot(qexp,cfexp_side,linestyle='-',linewidth=3,color='g',markersize=6,marker='o',label=type)
   if jpanel==2:
-    plt.plot(q,cf1wf_long,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(q,cfall_long,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cf1wf_long,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cfall_long,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+    #plt.plot(qexp,cfexp_long,linestyle='-',linewidth=3,color='g',markersize=6,marker='o',label=type)
   if jpanel==3:
     plt.plot(q,cf1wf_qinv,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
     plt.plot(q,cfall_qinv,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
