@@ -30,8 +30,13 @@ def chisquare(x0):
    return float(chi2)
 
     
-res = scipy.optimize.minimize(chisquare, x0, method='powell', options={'disp': True, 'maxiter': 100, 'maxfev': 100})
-logfile.write("sci.py finishing happily\n")
-logfile.write(res.x)
+res = scipy.optimize.minimize(chisquare, x0, method='powell', options={'disp': True, 'maxiter': 3, 'maxfev': 40})
+logfile.write("tau=%f," % res.x[0])
+logfile.write("R=%f\n" % res.x[1])
+logfile.write("sci.py calculating best values\n")
+x0[0]=res.x[0]
+x0[1]=res.x[1]
+chisquare(x0)
+logfile.flush()
 logfile.close()
 quit()
