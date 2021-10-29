@@ -1,8 +1,8 @@
 #! /bin/bash
 make balhbt
 NPROC=24
-BW_TAU=$1
-BW_RPERP=$2
+BW_TAU=13.4
+BW_RPERP=13.4
 for ((i=0;i<${NPROC};i++))
 do
 	rm -f logfiles/balhbt${i}.txt;
