@@ -67,7 +67,6 @@ vector<vector<double>> &bfnorm,unsigned int id0,unsigned int id1,unsigned int id
 			if(UseAllWFsForCF){
 				weight=psisquared00+psisquared01*bfnorm[i1prime][i0prime]+psisquared10*bfnorm[i1][i0]
 					+psisquared11*bfnorm[i1][i0]*bfnorm[i1prime][i0prime];
-				printf("weight=%g, weight00=%g\n",weight,psisquared00);
 			}
 			else
 				weight=psisquared00;
