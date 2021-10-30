@@ -23,7 +23,7 @@ void CBalHBT::Init(){
 	string logfilename="logfiles/balhbt"+to_string(run_number)+".txt";
 	logfile=fopen(logfilename.c_str(),"a");
 	
-	NMC=parmap.getI("BF_NMC",1000000);
+	NMC=parmap.getLongI("BF_NMC",1000000);
 	BARYONSONLY=parmap.getB("BF_BARYONSONLY",false); // only baryons (for pp correlations)
 	STRANGEONLY=parmap.getB("BF_STRANGEONLY",false); // only strange particles (for KK correlations)
 	Tchem=parmap.getD("BF_TCHEM",150.0);
