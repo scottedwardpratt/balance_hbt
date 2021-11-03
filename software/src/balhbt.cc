@@ -199,7 +199,7 @@ void CBalHBT::CalcCFs(){
 					productvec[1][iprod]->PartAntipart();
 				}
 			}
-			bf->Evaluate(partvec,productvec,partprimevec,productprimevec,bfnorm,id1,id2,id1prime,id2prime);
+			bf->Evaluate(partvec,productvec,partprimevec,productprimevec,id1,id2,id1prime,id2prime,balweight,balweightprime);
 		}
 		
 		for(i=0;i<2;i++){
