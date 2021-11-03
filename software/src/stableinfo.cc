@@ -75,6 +75,8 @@ void CBalHBT::GetStableInfo(CResList *reslist,double taumax,vector<CStableInfo *
 				bfnorm[id1][id2]=bfnorm[id1][id2]*CStableInfo::denstot/(2.0*stablevec[id1]->density);
 			else
 				bfnorm[id1][id2]=0.0;
+			//printf("(%d,%d): bfnorm[%d][%d]=%g, bfnorm[%d][%d]=%g \n",stablevec[id1]->resinfo->code,stablevec[id2]->resinfo->code,
+			//id1,id2,bfnorm[id1][id2],id2,id1,bfnorm[id2][id1]);
 		}
 	}
 }

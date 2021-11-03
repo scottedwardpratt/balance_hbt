@@ -8,26 +8,23 @@ from matplotlib.ticker import ScalarFormatter
 sformatter=ScalarFormatter(useOffset=True,useMathText=True)
 sformatter.set_scientific(True)
 sformatter.set_powerlimits((-4,3))
-
-#plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+plt.ticklabel_format(style='sci', axis='y')
 
 font = {'family' : 'serif',
         'weight' : 'normal',
         'size'   : 14}
 plt.rc('font', **font)
 plt.rc('text', usetex=False)
-plt.figure(figsize=(9,9))
+plt.figure(figsize=(10,15))
 fig = plt.figure(1)
 
-x0=0.12
-width=0.5*(1.0-x0-0.1)
-y0=0.08
+x0=0.14
+width=(0.97-x0)
+y0=0.1
 height=(1.0-y0-0.04)/3.0
 
 xmin=0.0
 xmax=2.0
-ymin=-0.1
-ymax=0.2
 
 dNdY_pi=500.0
 dNdY_K=100.0
@@ -81,58 +78,67 @@ x=results[0]
 cfallwfs_ppbar=results[1]
 bfallwfs_pp=dNdY_p*(cfallwfs_ppbar-cfallwfs_pp)
 
-
 for jpanel in range(0,3):
-  ax = fig.add_axes([0.08,0.08+jpanel*height,0.90,height])
-  plt.plot([xmin,xmax],[0,0],linestyle='dashed',color='grey')
-  if jpanel==0:
-    type='$\pi\pi$'
-  if jpanel==1:
-    type='$KK$'
-  if jpanel==2:
-    type='$pp$'
-    
-  if jpanel==0:
-    plt.plot(x,bfdirect_pipi,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(x,bfallwfs_pipi,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-  if jpanel==1:
-    plt.plot(x,100*bfdirect_KK,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(x,100*bfallwfs_KK,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-  if jpanel==2:
-    plt.plot(x,100*bfdirect_pp,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(x,100*bfallwfs_pp,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+   ax = fig.add_axes([x0,y0+jpanel*height,width,height])
+   #ax.tick_params(axis='both', which='major', labelsize=14)
+   plt.plot([xmin,xmax],[0,0],linestyle='dashed',color='grey')
 
-  ax.tick_params(axis='both', which='major', labelsize=14)
+   if jpanel==0:
+      type='$\pi\pi$'
+      plt.plot(x,bfdirect_pipi,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
+      plt.plot(x,bfallwfs_pipi,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+      ymin=-0.1
+      ymax=0.2
+      ax.set_yticks(np.arange(-0.2,0.4,0.05),minor=False)
+      ax.set_yticklabels(np.arange(-0.2,0.4,0.05),minor=False)
+      ax.set_yticks(np.arange(-0.2,0.4,0.01),minor=True)
+      plt.xlabel('$\Delta y$', fontsize=24, weight='normal')
+      plt.xlim(xmin,xmax)
+      plt.ylim(ymin,ymax)
+      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+   if jpanel==1:
+      type='$KK$'
+      ymin=-0.01
+      ymax=0.03
+      plt.plot(x,bfdirect_KK,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
+      plt.plot(x,bfallwfs_KK,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+      ax.set_yticks(np.arange(-0.1,0.2,0.02),minor=False)
+      ax.set_yticklabels(np.arange(-0.10,0.2,0.02),minor=False)
+      ax.set_yticks(np.arange(-0.10,0.2,0.01),minor=True)
+      plt.xlim(xmin,xmax)
+      plt.ylim(ymin,ymax)
+      plt.ylabel('$B(y)$')
+      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+   if jpanel==2:
+     type='$pp$'
+     ymin=-0.01
+     ymax=0.03
+     plt.plot(x,bfdirect_pp,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
+     plt.plot(x,bfallwfs_pp,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+     ax.set_yticks(np.arange(-0.1,0.2,0.02),minor=False)
+     ax.set_yticklabels(np.arange(-0.10,0.2,0.02),minor=False)
+     ax.set_yticks(np.arange(-0.10,0.2,0.01),minor=True)
+     plt.xlim(xmin,xmax)
+     plt.ylim(ymin,ymax)
+     plt.ylabel(None)
+     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+     
+   ax.set_xticks(np.arange(xmin,xmax,0.2), minor=False)
+   ax.set_xticks(np.arange(xmin,xmax,0.1), minor=True)
+   if jpanel==0:
+      ax.set_xticklabels(np.arange(xmin,xmax,0.2), minor=False, family='serif')
+      ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
+   else:
+      ax.set_xticklabels([])
 
-  ax.set_xticks(np.arange(xmin,xmax,10), minor=False)
-  ax.set_xticks(np.arange(xmin,xmax,20), minor=True)
-  if jpanel==0:
-    ax.set_xticklabels(np.arange(xmin,xmax,10), minor=False, family='serif')
-  else:
-    ax.set_xticklabels([])
-
-  if jpanel==0:
-    text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
-  if jpanel==1:
-    text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
-  if jpanel==2:
-    text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
-  if jpanel==3:
-    text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')  
-
-  if jpanel==0:
-    plt.xlabel('$\Delta y$', fontsize=24, weight='normal')
-  else:
-    plt.xlabel(None)
-  if jpanel==1:
-    plt.ylabel('$B(\Delta y)$',fontsize=24)
-  else:
-    plt.ylabel(None)
-  plt.xlim(xmin,xmax)
-  plt.ylim(ymin,ymax)
-
-
-
+   if jpanel==0:
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
+   if jpanel==1:
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
+   if jpanel==2:
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
+   if jpanel==3:
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right') 
   
 plt.savefig('bf_y.pdf',format='pdf')
 os.system('open -a Preview bf_y.pdf')

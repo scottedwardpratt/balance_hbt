@@ -2,12 +2,11 @@
 //using namespace std;
 
 void CBF::Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,
-vector<vector<double>> &bfnorm,unsigned int id0,unsigned int id1,unsigned int id0prime,unsigned int id1prime){
+vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,int id0,int id1,int id0prime,int id1prime,double balweight,double balweightprime){
 	double weight,psisquared00,psisquared01,psisquared10,psisquared11,eff,effprime;
 	vector<vector<double>> psisquared(2, vector<double>(2));
 	unsigned int i,iprime,iprod,iprodprime;
-	int Q,Qprime,i0,i1,i0prime,i1prime;
+	int Q,Qprime;
 	CHBTPart *part,*partprime;
 	if(CHEAPPSISQUARED){
 		psisquared[0][0]=CheapPsiSquared(partvec[0],partprimevec[0])-1.0;
@@ -29,44 +28,28 @@ vector<vector<double>> &bfnorm,unsigned int id0,unsigned int id1,unsigned int id
 				psisquared01=psisquared[0][1];
 				psisquared10=psisquared[1][0];
 				psisquared11=psisquared[1][1];
-				i0=id0;
-				i1=id1;
-				i0prime=id0prime;
-				i1prime=id1prime;
 			}
 			else if(i==0 && iprime==1){
 				psisquared00=psisquared[0][1];
 				psisquared01=psisquared[0][0];
 				psisquared10=psisquared[1][1];
 				psisquared11=psisquared[1][0];
-				i0=id0;
-				i1=id1;
-				i0prime=id1prime;
-				i1prime=id0prime;
 			}
 			if(i==1 && iprime==0){
 				psisquared00=psisquared[1][0];
 				psisquared01=psisquared[1][1];
 				psisquared10=psisquared[0][0];
 				psisquared11=psisquared[0][1];
-				i0=id1;
-				i1=id0;
-				i0prime=id0prime;
-				i1prime=id1prime;
 			}
 			else{
 				psisquared00=psisquared[1][1];
 				psisquared01=psisquared[1][0];
 				psisquared10=psisquared[0][1];
 				psisquared11=psisquared[0][0];
-				i0=id1;
-				i1=id0;
-				i0prime=id1prime;
-				i1prime=id0prime;
 			}
 			if(UseAllWFsForCF){
-				weight=psisquared00+psisquared01*bfnorm[i1prime][i0prime]+psisquared10*bfnorm[i1][i0]
-					+psisquared11*bfnorm[i1][i0]*bfnorm[i1prime][i0prime];
+				weight=psisquared00+psisquared01*balweightprime+psisquared10*balweight
+					+psisquared11*balweight*balweightprime;
 			}
 			else
 				weight=psisquared00;

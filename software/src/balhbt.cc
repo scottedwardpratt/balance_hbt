@@ -129,6 +129,7 @@ void CBalHBT::CalcCFs(){
 		GetPart(stablevec,id2);
 		GetPart(stablevec,id1prime);
 		GetPart(stablevec,id2prime);
+		
 		if(BARYONSONLY){
 			while(stablevec[id1]->resinfo->baryon==0 && stablevec[id2]->resinfo->baryon==0){
 				GetPart(stablevec,id1);
@@ -149,12 +150,14 @@ void CBalHBT::CalcCFs(){
 				GetPart(stablevec,id2prime);
 			}
 		}
+		
 		balweight=-bfnorm[id1][id2]*0.5;
 		balweightprime=-bfnorm[id1prime][id2prime]*0.5;
 		partvec[0]->resinfo=stablevec[id1]->resinfo;
 		partvec[1]->resinfo=stablevec[id2]->resinfo;
 		partprimevec[0]->resinfo=stablevec[id1prime]->resinfo;
 		partprimevec[1]->resinfo=stablevec[id2prime]->resinfo;
+		
 		if(randy->ran()<0.5){
 			partvec[0]->PartAntipart();
 			balweight=-balweight;
@@ -180,6 +183,12 @@ void CBalHBT::CalcCFs(){
 		GetDecayProducts(partprimevec[0],productprimevec[0]);
 		GetDecayProducts(partprimevec[1],productprimevec[1]);
 		
+		//printf("%d,%d\n",partvec[0]->resinfo->code,partvec[1]->resinfo->code);
+		//printf("%d,%d\n",partprimevec[0]->resinfo->code,partprimevec[1]->resinfo->code);
+		bf->Evaluate(partvec,productvec,partprimevec,productprimevec,id1,id2,id1prime,id2prime,balweight,balweightprime);
+		//printf("-------------\n");
+		
+		/*
 		for(int anti=0;anti<2;anti++){
 			if(anti==1){
 				partvec[0]->PartAntipart();
@@ -193,6 +202,7 @@ void CBalHBT::CalcCFs(){
 			}
 			bf->Evaluate(partvec,productvec,partprimevec,productprimevec,bfnorm,id1,id2,id1prime,id2prime);
 		}
+		*/
 		
 		for(i=0;i<2;i++){
 			for(iprod=0;iprod<productvec[i].size();iprod++)

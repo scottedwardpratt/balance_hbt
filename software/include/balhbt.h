@@ -146,8 +146,7 @@ public:
 	static CAcceptanceBal *acceptancebal;
 	void Zero();
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
-	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,
-	vector<vector<double>> &bfnorm,unsigned int id0,unsigned int id1,unsigned int id0prime,unsigned int id1prime);
+	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,int id0,int id1,int id0prime,int id1prime,double balweight,double balweightprime);
 	void IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void WriteResults(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
