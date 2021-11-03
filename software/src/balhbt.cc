@@ -188,7 +188,6 @@ void CBalHBT::CalcCFs(){
 		bf->Evaluate(partvec,productvec,partprimevec,productprimevec,id1,id2,id1prime,id2prime,balweight,balweightprime);
 		//printf("-------------\n");
 		
-		/*
 		for(int anti=0;anti<2;anti++){
 			if(anti==1){
 				partvec[0]->PartAntipart();
@@ -202,7 +201,6 @@ void CBalHBT::CalcCFs(){
 			}
 			bf->Evaluate(partvec,productvec,partprimevec,productprimevec,bfnorm,id1,id2,id1prime,id2prime);
 		}
-		*/
 		
 		for(i=0;i<2;i++){
 			for(iprod=0;iprod<productvec[i].size();iprod++)
