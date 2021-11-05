@@ -97,6 +97,8 @@ void CBalHBT::InitHBT(vector<CStableInfo *> &stablevec,string parsfilename){
 					symweight=1.0;
 				else if(fabs(info1->resinfo->spin-0.5)<1.0E-3)
 					symweight=0.25;
+				else if(fabs(info1->resinfo->spin-1.0)<1.0E-3)
+					symweight=0.6666667;
 				else if(fabs(info1->resinfo->spin-1.5)<1.0E-3)
 					symweight=0.375;
 				else{

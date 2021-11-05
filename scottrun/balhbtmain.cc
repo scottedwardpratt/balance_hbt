@@ -18,7 +18,7 @@ int main(int argc,char *argv[]){
 	}
 	CBalHBT *balhbt=new CBalHBT(run_number);
 	balhbt->Init();
-	//printf("Initialization finished\n");
+	printf("Initialization finished\n");
 	balhbt->bw->tau=tau;
 	balhbt->bw->Rperp=R;
 	balhbt->CalcCFs();
