@@ -40,7 +40,7 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 	qdotr=qdotr-(Pdotr*Pdotq)/P2;
 	ctheta=-qdotr/(qmag*rmag);
 	if(qmag>500.0){
-		psisquared=wf_classical->CalcPsiSquared(qmag,rmag,ctheta,part->resinfo->charge,partprime->resinfo->charge,q1q2);
+		psisquared=wf_classical->CalcPsiSquared(qmag,rmag,ctheta,part->resinfo->mass,partprime->resinfo->mass,q1q2);
 	}
 	else{
 		if(q1q2>0){
@@ -68,8 +68,5 @@ double CHBTCalc::GetPsiSquared(CHBTPart *part,CHBTPart *partprime,int id,int idp
 				psisquared=1.0;
 		}
 	}
-	//if(abs(pid)==211 && pid==pidprime){
-	//	printf("qmag=%g, rmag=%g, psi^2=%g\n",qmag,rmag,psisquared);
-	//}
 	return psisquared;
 }
