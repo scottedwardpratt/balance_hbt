@@ -82,7 +82,7 @@ void CCF_Arrays::Print(){
 
 void CCF_Arrays::WriteResults(string dirname,int run_number){
 	FILE *fptr;
-	double delq,dely,delphi,sigme;
+	double delq,dely,delphi,sigma;
 	string filename;
 	string command;
 	command="mkdir -p "+dirname;
