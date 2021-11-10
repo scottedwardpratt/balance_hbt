@@ -18,7 +18,6 @@ int main(int argc,char *argv[]){
 	string pairname[12]={"pipluspiplus","pipluspiminus","piplusKplus","piplusKminus","piplusp","pipluspbar",
 	"KplusKplus","KplusKminus","Kplusp","Kpluspbar","pp","ppbar"};
 	double cy,cphi,cout,cside,clong,cinv,denomy,denomphi,denomout,denomside,denomlong,denominv;
-	double errory,errorphi;
 	vector<double> q,dely,delphi;
 	vector<double> cf_y,cf_phi,error_y,error_phi,cf_out,cf_side,cf_long,cf_inv;
 	vector<double> denom_y,denom_phi,denom_out,denom_side,denom_long,denom_inv;
@@ -59,7 +58,7 @@ int main(int argc,char *argv[]){
 			fgets(dummy,120,fptr);
 			for(iy=0;iy<NY;iy++){
 				fscanf(fptr,"%lf",&dely[iy]);
-				fscanf(fptr,"%lf %lf %lf",&cy,&denomy,&errory);
+				fscanf(fptr,"%lf %lf",&cy,&denomy);
 				if(cy!=cy)
 					cy=0.0;
 				cf_y[iy]+=cy*denomy;
@@ -74,7 +73,7 @@ int main(int argc,char *argv[]){
 			fgets(dummy,120,fptr);
 			for(iphi=0;iphi<NPHI;iphi++){
 				fscanf(fptr,"%lf",&delphi[iphi]);
-				fscanf(fptr,"%lf %lf %lf",&cphi,&denomphi,&errorphi);
+				fscanf(fptr,"%lf %lf",&cphi,&denomphi);
 				if(cphi!=cphi)
 					cphi=0.0;
 				cf_phi[iphi]+=cphi*denomphi;
