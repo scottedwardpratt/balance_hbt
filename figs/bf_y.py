@@ -32,11 +32,11 @@ dNdY_p=50.0
 
 #--------PIONS--------
 
-results = np.loadtxt('../scottrun/results_direct/pipluspiplus/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_direct2/pipluspiplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_pipluspiplus=results[1]
 Npi=results[2]
-results = np.loadtxt('../scottrun/results_direct/pipluspiminus/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_direct2/pipluspiminus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_pipluspiminus=results[1]
 Npi=Npi+results[2]
@@ -53,42 +53,42 @@ bfallwfs_pipi=dNdY_pi*(cfallwfs_pipluspiminus-cfallwfs_pipluspiplus)
 
 #--------KAONS--------
 
-results = np.loadtxt('../scottrun/results_direct/KplusKplus/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_direct2/KplusKplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_KplusKplus=results[1]
 NK=results[2]
-results = np.loadtxt('../scottrun/results_direct/KplusKminus/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_direct2/KplusKminus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_KplusKminus=results[1]
 NK=NK+results[2]
 bfdirect_KK=dNdY_K*(cfdirect_KplusKminus-cfdirect_KplusKplus)
 error_K=0.02*dNdY_K/sqrt(NK+0.01)
 
-results = np.loadtxt('../scottrun/results_allwfs/KplusKplus/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_allwfs2/KplusKplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_KplusKplus=results[1]
-results = np.loadtxt('../scottrun/results_allwfs/KplusKminus/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_allwfs2/KplusKminus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_KplusKminus=results[1]
 bfallwfs_KK=dNdY_K*(cfallwfs_KplusKminus-cfallwfs_KplusKplus)
 
 #--------PROTONS--------
 
-results = np.loadtxt('../scottrun/results_direct/pp/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_direct2/pp/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_ppluspplus=results[1]
 Np=results[2]
-results = np.loadtxt('../scottrun/results_direct/ppbar/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_direct2/ppbar/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_ppluspminus=results[1]
 Np=Np+results[2]
 bfdirect_pp=dNdY_p*(cfdirect_ppluspminus-cfdirect_ppluspplus)
 error_p=0.02*dNdY_p/sqrt(Np+0.01)
 
-results = np.loadtxt('../scottrun/results_allwfs/pp/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_allwfs2/pp/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_pp=results[1]
-results = np.loadtxt('../scottrun/results_allwfs/ppbar/cf_y.dat',skiprows=0,unpack=True)
+results = np.loadtxt('../scottrun/results_allwfs2/ppbar/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_ppbar=results[1]
 bfallwfs_pp=dNdY_p*(cfallwfs_ppbar-cfallwfs_pp)
