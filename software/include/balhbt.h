@@ -122,7 +122,7 @@ public:
 	double DELY,DELPHI,DELQ;
 	CCF_Arrays(int NYset,double DELYset,int NPHIset,int NQset,double DELQset);
 	vector<double> cf_inv,denom_inv,cf_out,denom_out,cf_side,denom_side,cf_long,denom_long;
-	vector<double> cf_y,denom_y,cf_phi,denom_phi;
+	vector<double> cf_y,denom_y,cf_phi,denom_phi,error_y,error_phi;
 	void Increment(double dely,double delphi,double qinv,double qout,double qside,double qlong,double weight);
 	void Zero();
 	void Print();

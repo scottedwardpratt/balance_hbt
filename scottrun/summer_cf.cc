@@ -18,29 +18,38 @@ int main(int argc,char *argv[]){
 	string pairname[12]={"pipluspiplus","pipluspiminus","piplusKplus","piplusKminus","piplusp","pipluspbar",
 	"KplusKplus","KplusKminus","Kplusp","Kpluspbar","pp","ppbar"};
 	double cy,cphi,cout,cside,clong,cinv,denomy,denomphi,denomout,denomside,denomlong,denominv;
+	double errory,errorphi;
 	vector<double> q,dely,delphi;
-	vector<double> cf_y,cf_phi,cf_out,cf_side,cf_long,cf_inv;
+	vector<double> cf_y,cf_phi,error_y,error_phi,cf_out,cf_side,cf_long,cf_inv;
 	vector<double> denom_y,denom_phi,denom_out,denom_side,denom_long,denom_inv;
-	q.resize(NQ);
-	dely.resize(NY);
-	delphi.resize(NPHI);
-	cf_y.resize(NY);
-	cf_phi.resize(NPHI);
-	cf_out.resize(NQ);
-	cf_side.resize(NQ);
-	cf_long.resize(NQ);
-	cf_inv.resize(NQ);
-	denom_y.resize(NY);
-	denom_phi.resize(NPHI);
-	denom_out.resize(NQ);
-	denom_side.resize(NQ);
-	denom_long.resize(NQ);
-	denom_inv.resize(NQ);
+	q.resize(NQ,0.0);
+	dely.resize(NY,0.0);
+	delphi.resize(NPHI,0.0);
+	cf_y.resize(NY,0.0);
+	cf_phi.resize(NPHI,0.0);
+	cf_out.resize(NQ,0.0);
+	cf_side.resize(NQ,0.0);
+	cf_long.resize(NQ,0.0);
+	cf_inv.resize(NQ,0.0);
+	denom_y.resize(NY,0.0);
+	denom_phi.resize(NPHI,0.0);
+	denom_out.resize(NQ,0.0);
+	denom_side.resize(NQ,0.0);
+	denom_long.resize(NQ,0.0);
+	denom_inv.resize(NQ,0.0);
+	error_y.resize(NY,0.0);
+	error_phi.resize(NPHI,0.0);
 	
 	for(ipair=0;ipair<12;ipair++){
 		
 		for(iq=0;iq<NQ;iq++){
 			cf_out[iq]=cf_side[iq]=cf_long[iq]=cf_inv[iq]=denom_out[iq]=denom_side[iq]=denom_long[iq]=denom_inv[iq]=0.0;
+		}
+		for(iy=0;iy<NY;iy++){
+			cf_y[iy]=denom_y[iy]=error_y[iy]=0.0;
+		}
+		for(iphi=0;iphi<NPHI;iphi++){
+			cf_phi[iphi]=denom_phi[iphi]=error_phi[iphi]=0.0;
 		}
 		for(irun=0;irun<NRUNS;irun++){
 			
@@ -48,13 +57,14 @@ int main(int argc,char *argv[]){
 			//printf("will read from %s\n",filename);
 			fptr=fopen(filename,"r");
 			fgets(dummy,120,fptr);
-			for(iq=0;iq<NQ;iq++){
-				fscanf(fptr,"%lf",&dely[iq]);
-				fscanf(fptr,"%lf %lf",&cy,&denomy);
+			for(iy=0;iy<NY;iy++){
+				fscanf(fptr,"%lf",&dely[iy]);
+				fscanf(fptr,"%lf %lf %lf",&cy,&denomy,&errory);
 				if(cy!=cy)
 					cy=0.0;
-				cf_y[iq]+=cy*denomy;
-				denom_y[iq]+=denomy;
+				cf_y[iy]+=cy*denomy;
+				denom_y[iy]+=denomy;
+				error_y[iy]+=errory;
 			}
 			fclose(fptr);
 			
@@ -64,11 +74,12 @@ int main(int argc,char *argv[]){
 			fgets(dummy,120,fptr);
 			for(iphi=0;iphi<NPHI;iphi++){
 				fscanf(fptr,"%lf",&delphi[iphi]);
-				fscanf(fptr,"%lf %lf",&cphi,&denomphi);
+				fscanf(fptr,"%lf %lf %lf",&cphi,&denomphi,&errorphi);
 				if(cphi!=cphi)
 					cphi=0.0;
 				cf_phi[iphi]+=cphi*denomphi;
 				denom_phi[iphi]+=denomphi;
+				error_phi[iphi]+=errorphi;
 			}
 			fclose(fptr);
 			
@@ -105,10 +116,11 @@ int main(int argc,char *argv[]){
 		fptr=fopen(filename,"w");
 		for(iy=0;iy<NY;iy++){
 			cf_y[iy]=cf_y[iy]/denom_y[iy];
+			error_y[iy]=error_y[iy]/double(NRUNS);
 			if(cf_y[iy]!=cf_y[iy]){
 				cf_y[iy]=0.0;
 			}
-			fprintf(fptr,"%7.2f %12.8f  %12.8f\n",dely[iy],cf_y[iy],denom_y[iy]);
+			fprintf(fptr,"%7.2f %12.8f %12.8f %12.8f\n",dely[iy],cf_y[iy],denom_y[iy],error_y[iy]);
 		}
 		fclose(fptr);
 		
@@ -117,10 +129,11 @@ int main(int argc,char *argv[]){
 		fptr=fopen(filename,"w");
 		for(iphi=0;iphi<NPHI;iphi++){
 			cf_phi[iphi]=cf_phi[iphi]/denom_phi[iphi];
+			error_phi[iphi]=error_phi[iphi]/double(NRUNS);
 			if(cf_phi[iphi]!=cf_phi[iphi]){
 				cf_phi[iphi]=0.0;
 			}
-			fprintf(fptr,"%7.2f %12.8f  %12.8f\n",delphi[iphi],cf_phi[iphi],denom_phi[iphi]);
+			fprintf(fptr,"%7.2f %12.8f  %12.8f %12.8f\n",delphi[iphi],cf_phi[iphi],denom_phi[iphi],error_phi[iphi]);
 		}
 		fclose(fptr);
 

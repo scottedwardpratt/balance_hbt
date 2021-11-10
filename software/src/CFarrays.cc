@@ -8,8 +8,8 @@ CCF_Arrays::CCF_Arrays(int NYset,double DELYset,int NPHIset,int NQset,double DEL
 	NQ=NQset;
 	DELQ=DELQset;
 	DELPHI=180.0/double(NPHI);
-	cf_y.resize(NY,0.0); denom_y.resize(NY,0.0);
-	cf_phi.resize(NPHI,0.0); denom_phi.resize(NPHI,0.0);
+	cf_y.resize(NY,0.0); denom_y.resize(NY,0.0); error_y.resize(NY,0.0);
+	cf_phi.resize(NPHI,0.0); denom_phi.resize(NPHI,0.0); error_phi.resize(NPHI,0.0);
 	cf_inv.resize(NQ,0.0); denom_inv.resize(NQ,0.0);
 	cf_out.resize(NQ,0.0); denom_out.resize(NQ,0.0);
 	cf_side.resize(NQ,0.0); denom_side.resize(NQ,0.0);
@@ -64,11 +64,13 @@ void CCF_Arrays::Increment(double dely,double delphi,double qinv,double qout,dou
 	if(iy<NY){
 		cf_y[iy]+=weight;
 		denom_y[iy]+=1.0;
+		error_y[iy]+=weight*weight;
 	}
 	iphi=lrint(floor(delphi/DELPHI));
 	if(iphi<NPHI){
 		cf_phi[iphi]+=weight;
 		denom_phi[iphi]+=1.0;
+		error_phi[iphi]+=weight*weight;
 	}
 }
 
@@ -80,7 +82,7 @@ void CCF_Arrays::Print(){
 
 void CCF_Arrays::WriteResults(string dirname,int run_number){
 	FILE *fptr;
-	double delq,dely,delphi;
+	double delq,dely,delphi,sigme;
 	string filename;
 	string command;
 	command="mkdir -p "+dirname;
@@ -101,7 +103,9 @@ void CCF_Arrays::WriteResults(string dirname,int run_number){
 	fprintf(fptr,"#   dely     C(y)    Ny\n");
 	for(int iy=0;iy<NY;iy++){
 		dely=(iy+0.5)*DELY;
-		fprintf(fptr,"%7.4f %12.9f %12.0f\n",dely,cf_y[iy]/denom_y[iy],denom_y[iy]);
+		sigma=error_y[iy]/denom_y[iy]-pow(cf_y[iy]/denom_y[iy],2);
+		sigma=sqrt(sigma/denom_y[iy]);
+		fprintf(fptr,"%7.4f %12.9f %12.0f %12.9f\n",dely,cf_y[iy]/denom_y[iy],denom_y[iy],sigma);
 	}
 	fclose(fptr);
 	filename=dirname+"cf"+to_string(run_number)+"_phi.dat";
@@ -109,7 +113,9 @@ void CCF_Arrays::WriteResults(string dirname,int run_number){
 	fprintf(fptr,"#   delphi     C(delphi)    Nphi\n");
 	for(int iphi=0;iphi<NPHI;iphi++){
 		delphi=(iphi+0.5)*DELPHI;
-		fprintf(fptr,"%7.4f %12.9f %12.0f\n",delphi,cf_phi[iphi]/denom_phi[iphi],denom_phi[iphi]);
+		sigma=error_phi[iy]/denom_phi[iphi]-pow(cf_phi[iphi]/denom_phi[iphi],2);
+		sigma=sqrt(sigma/denom_phi[iphi]);
+		fprintf(fptr,"%7.4f %12.9f %12.0f %12.9f\n",delphi,cf_phi[iphi]/denom_phi[iphi],denom_phi[iphi],sigma);
 	}
 	fclose(fptr);
 }
