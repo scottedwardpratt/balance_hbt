@@ -113,7 +113,7 @@ void CCF_Arrays::WriteResults(string dirname,int run_number){
 	fprintf(fptr,"#   delphi     C(delphi)    Nphi\n");
 	for(int iphi=0;iphi<NPHI;iphi++){
 		delphi=(iphi+0.5)*DELPHI;
-		sigma=error_phi[iy]/denom_phi[iphi]-pow(cf_phi[iphi]/denom_phi[iphi],2);
+		sigma=error_phi[iphi]/denom_phi[iphi]-pow(cf_phi[iphi]/denom_phi[iphi],2);
 		sigma=sqrt(sigma/denom_phi[iphi]);
 		fprintf(fptr,"%7.4f %12.9f %12.0f %12.9f\n",delphi,cf_phi[iphi]/denom_phi[iphi],denom_phi[iphi],sigma);
 	}
