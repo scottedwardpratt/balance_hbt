@@ -123,7 +123,7 @@ int main(int argc,char *argv[]){
 		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iy=0;iy<NY;iy++){
-			error_y[iy]=(error_y[iy]-cf[iy]*cf[iy])/double(NRUNS);
+			error_y[iy]=(error_y[iy]-cf_y[iy]*cf_y[iy])/double(NRUNS);
 			error_y[iy]=error_y[iy]/sqrt(double(NRUNS));
 			fprintf(fptr,"%7.2f %12.8f %12.8f %12.8f\n",dely[iy],cf_y[iy],denom_y[iy],error_y[iy]);
 		}
@@ -139,8 +139,8 @@ int main(int argc,char *argv[]){
 		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iphi=0;iphi<NPHI;iphi++){
-			error_phi[iphi]=(error_phi[iphi]-cf[iphi]*cf[iphi])/double(NRUNS);
-			error_phi[iphi]=error_phi[iphi]/sqrt(double(NRUNs));
+			error_phi[iphi]=(error_phi[iphi]-cf_phi[iphi]*cf_phi[iphi])/double(NRUNS);
+			error_phi[iphi]=error_phi[iphi]/sqrt(double(NRUNS));
 			fprintf(fptr,"%7.2f %12.8f %12.8f %12.8f\n",delphi[iphi],cf_phi[iphi],denom_phi[iphi],error_phi[iphi]);
 		}
 		fclose(fptr);
