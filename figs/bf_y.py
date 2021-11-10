@@ -41,7 +41,7 @@ x=results[0]
 cfdirect_pipluspiminus=results[1]
 Npi=Npi+results[2]
 bfdirect_pipi=dNdY_pi*(cfdirect_pipluspiminus-cfdirect_pipluspiplus)
-error_pipi=0.5*dNdY_pi/sqrt(Npi+0.01)
+error_pipi=results[3]
 
 results = np.loadtxt('../scottrun/results_allwfs/pipluspiplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
@@ -62,7 +62,7 @@ x=results[0]
 cfdirect_KplusKminus=results[1]
 NK=NK+results[2]
 bfdirect_KK=dNdY_K*(cfdirect_KplusKminus-cfdirect_KplusKplus)
-error_K=0.02*dNdY_K/sqrt(NK+0.01)
+error_K=results[3]
 
 results = np.loadtxt('../scottrun/results_allwfs/KplusKplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
@@ -83,7 +83,7 @@ x=results[0]
 cfdirect_ppluspminus=results[1]
 Np=Np+results[2]
 bfdirect_pp=dNdY_p*(cfdirect_ppluspminus-cfdirect_ppluspplus)
-error_p=0.02*dNdY_p/sqrt(Np+0.01)
+error_p=results[3]
 
 results = np.loadtxt('../scottrun/results_allwfs/pp/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]

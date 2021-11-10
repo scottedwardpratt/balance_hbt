@@ -59,7 +59,7 @@ int main(int argc,char *argv[]){
 			fgets(dummy,120,fptr);
 			for(iy=0;iy<NY;iy++){
 				fscanf(fptr,"%lf",&dely[iy]);
-				fscanf(fptr,"%lf %lf %lf",&cy,&denomy,&errory);
+				fscanf(fptr,"%lf %lf %lf",&cy,&denomy);
 				if(cy!=cy)
 					cy=0.0;
 				cf_y[iy]+=cy*denomy;
@@ -74,7 +74,7 @@ int main(int argc,char *argv[]){
 			fgets(dummy,120,fptr);
 			for(iphi=0;iphi<NPHI;iphi++){
 				fscanf(fptr,"%lf",&delphi[iphi]);
-				fscanf(fptr,"%lf %lf %lf",&cphi,&denomphi,&errorphi);
+				fscanf(fptr,"%lf %lf %lf",&cphi,&denomphi);
 				if(cphi!=cphi)
 					cphi=0.0;
 				cf_phi[iphi]+=cphi*denomphi;
