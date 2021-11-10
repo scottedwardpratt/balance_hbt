@@ -64,7 +64,7 @@ int main(int argc,char *argv[]){
 					cy=0.0;
 				cf_y[iy]+=cy*denomy;
 				denom_y[iy]+=denomy;
-				error_y[iy]+=errory;
+				error_y[iy]+=cy*cy;
 			}
 			fclose(fptr);
 			
@@ -79,7 +79,7 @@ int main(int argc,char *argv[]){
 					cphi=0.0;
 				cf_phi[iphi]+=cphi*denomphi;
 				denom_phi[iphi]+=denomphi;
-				error_phi[iphi]+=errorphi;
+				error_phi[iphi]+=cphi*cphi;
 			}
 			fclose(fptr);
 			
@@ -111,29 +111,37 @@ int main(int argc,char *argv[]){
 			fclose(fptr);
 		}
 		
+		
+		for(iy=0;iy<NY;iy++){
+			cf_y[iy]=cf_y[iy]/denom_y[iy];
+			if(cf_y[iy]!=cf_y[iy]){
+				cf_y[iy]=0.0;
+			}
+		}
+		
 		sprintf(filename,"results/%s/cf_y.dat",pairname[ipair].c_str());
 		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iy=0;iy<NY;iy++){
-			cf_y[iy]=cf_y[iy]/denom_y[iy];
-			error_y[iy]=error_y[iy]/double(NRUNS);
-			if(cf_y[iy]!=cf_y[iy]){
-				cf_y[iy]=0.0;
-			}
+			error_y[iy]=(error_y[iy]-cf[iy]*cf[iy])/double(NRUNS);
+			error_y[iy]=error_y[iy]/sqrt(double(NRUNS));
 			fprintf(fptr,"%7.2f %12.8f %12.8f %12.8f\n",dely[iy],cf_y[iy],denom_y[iy],error_y[iy]);
 		}
 		fclose(fptr);
 		
+		for(iphi=0;iphi<NPHI;iphi++){
+			cf_phi[iphi]=cf_phi[iphi]/denom_phi[iphi];
+			if(cf_phi[iphi]!=cf_phi[iphi]){
+				cf_phi[iphi]=0.0;
+			}
+		}
 		sprintf(filename,"results/%s/cf_phi.dat",pairname[ipair].c_str());
 		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iphi=0;iphi<NPHI;iphi++){
-			cf_phi[iphi]=cf_phi[iphi]/denom_phi[iphi];
-			error_phi[iphi]=error_phi[iphi]/double(NRUNS);
-			if(cf_phi[iphi]!=cf_phi[iphi]){
-				cf_phi[iphi]=0.0;
-			}
-			fprintf(fptr,"%7.2f %12.8f  %12.8f %12.8f\n",delphi[iphi],cf_phi[iphi],denom_phi[iphi],error_phi[iphi]);
+			error_phi[iphi]=(error_phi[iphi]-cf[iphi]*cf[iphi])/double(NRUNS);
+			error_phi[iphi]=error_phi[iphi]/sqrt(double(NRUNs));
+			fprintf(fptr,"%7.2f %12.8f %12.8f %12.8f\n",delphi[iphi],cf_phi[iphi],denom_phi[iphi],error_phi[iphi]);
 		}
 		fclose(fptr);
 
