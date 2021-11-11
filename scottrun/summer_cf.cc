@@ -52,7 +52,7 @@ int main(int argc,char *argv[]){
 		}
 		for(irun=0;irun<NRUNS;irun++){
 			
-			sprintf(filename,"results/%s/cf%d_y.dat",pairname[ipair].c_str(),irun);
+			sprintf(filename,"results_direct/%s/cf%d_y.dat",pairname[ipair].c_str(),irun);
 			//printf("will read from %s\n",filename);
 			fptr=fopen(filename,"r");
 			fgets(dummy,120,fptr);
@@ -67,7 +67,7 @@ int main(int argc,char *argv[]){
 			}
 			fclose(fptr);
 			
-			sprintf(filename,"results/%s/cf%d_phi.dat",pairname[ipair].c_str(),irun);
+			sprintf(filename,"results_direct/%s/cf%d_phi.dat",pairname[ipair].c_str(),irun);
 			//printf("will read from %s\n",filename);
 			fptr=fopen(filename,"r");
 			fgets(dummy,120,fptr);
@@ -82,7 +82,7 @@ int main(int argc,char *argv[]){
 			}
 			fclose(fptr);
 			
-			sprintf(filename,"results/%s/cf%d_outsidelong.dat",pairname[ipair].c_str(),irun);
+			sprintf(filename,"results_direct/%s/cf%d_outsidelong.dat",pairname[ipair].c_str(),irun);
 			//printf("will read from %s\n",filename);
 			fptr=fopen(filename,"r");
 			fgets(dummy,120,fptr);
@@ -118,7 +118,7 @@ int main(int argc,char *argv[]){
 			}
 		}
 		
-		sprintf(filename,"results/%s/cf_y.dat",pairname[ipair].c_str());
+		sprintf(filename,"results_direct/%s/cf_y.dat",pairname[ipair].c_str());
 		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iy=0;iy<NY;iy++){
@@ -134,7 +134,7 @@ int main(int argc,char *argv[]){
 				cf_phi[iphi]=0.0;
 			}
 		}
-		sprintf(filename,"results/%s/cf_phi.dat",pairname[ipair].c_str());
+		sprintf(filename,"results_direct/%s/cf_phi.dat",pairname[ipair].c_str());
 		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iphi=0;iphi<NPHI;iphi++){
@@ -144,7 +144,7 @@ int main(int argc,char *argv[]){
 		}
 		fclose(fptr);
 
-		sprintf(filename,"results/%s/cf_outsidelong.dat",pairname[ipair].c_str());
+		sprintf(filename,"results_direct/%s/cf_outsidelong.dat",pairname[ipair].c_str());
 		//printf("will write to %s\n",filename);
 		fptr=fopen(filename,"w");
 		for(iq=0;iq<NQ;iq++){
