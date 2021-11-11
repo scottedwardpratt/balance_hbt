@@ -27,8 +27,8 @@ xmin=0.0
 xmax=1.8
 
 dNdY_pi=1000.0
-dNdY_K=1000.0
-dNdY_p=1000.0
+dNdY_K=100.0
+dNdY_p=50.0
 
 #--------PIONS--------
 
@@ -41,7 +41,7 @@ x=results[0]
 cfdirect_pipluspiminus=results[1]
 Npi=Npi+results[2]
 bfdirect_pipi=dNdY_pi*(cfdirect_pipluspiminus-cfdirect_pipluspiplus)
-error_pipi=0.5*dNdY_pi/sqrt(Npi+0.01)
+error_pipi=results[3]*dNdY_pi
 
 results = np.loadtxt('../scottrun/results_allwfs/pipluspiplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
@@ -62,7 +62,7 @@ x=results[0]
 cfdirect_KplusKminus=results[1]
 NK=NK+results[2]
 bfdirect_KK=dNdY_K*(cfdirect_KplusKminus-cfdirect_KplusKplus)
-error_K=0.02*dNdY_K/sqrt(NK+0.01)
+error_K=results[3]*dNdY_K
 
 results = np.loadtxt('../scottrun/results_allwfs/KplusKplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
@@ -83,7 +83,7 @@ x=results[0]
 cfdirect_ppluspminus=results[1]
 Np=Np+results[2]
 bfdirect_pp=dNdY_p*(cfdirect_ppluspminus-cfdirect_ppluspplus)
-error_p=0.02*dNdY_p/sqrt(Np+0.01)
+error_p=results[3]*dNdY_p
 
 results = np.loadtxt('../scottrun/results_allwfs/pp/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
@@ -104,8 +104,8 @@ for jpanel in range(0,3):
       plt.errorbar(x,bfdirect_pipi,error_pipi,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
       #plt.plot(x,bfallwfs_pipi,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
       plt.errorbar(x,bfallwfs_pipi,error_pipi,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      ymin=-0.2
-      ymax=0.15
+      ymin=-0.3
+      ymax=0.3
       ax.set_yticks(np.arange(-0.2,0.4,0.05),minor=False)
       ax.set_yticklabels(np.arange(-0.2,0.4,0.05),minor=False)
       ax.set_yticks(np.arange(-0.2,0.4,0.01),minor=True)
@@ -115,8 +115,8 @@ for jpanel in range(0,3):
       ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
    if jpanel==1:
       type='$KK$'
-      ymin=-0.01
-      ymax=0.03
+      ymin=-0.05
+      ymax=0.05
       #plt.plot(x,bfdirect_KK,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
       plt.errorbar(x,bfdirect_KK,error_K,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
       #plt.plot(x,bfallwfs_KK,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
@@ -130,15 +130,15 @@ for jpanel in range(0,3):
       ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
    if jpanel==2:
      type='$pp$'
-     ymin=-0.002
-     ymax=0.01
+     ymin=-0.05
+     ymax=0.05
      #plt.plot(x,bfdirect_pp,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
      plt.errorbar(x,bfdirect_pp,error_p,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
      #plt.plot(x,bfallwfs_pp,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
      plt.errorbar(x,bfallwfs_pp,error_p,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-     ax.set_yticks(np.arange(-0.1,0.2,0.005),minor=False)
-     ax.set_yticklabels(np.arange(-0.10,0.2,0.005),minor=False)
-     ax.set_yticks(np.arange(-0.10,0.2,0.001),minor=True)
+     ax.set_yticks(np.arange(-0.1,0.2,0.01),minor=False)
+     ax.set_yticklabels(np.arange(-0.10,0.2,0.01),minor=False)
+     ax.set_yticks(np.arange(-0.10,0.2,0.005),minor=True)
      plt.xlim(xmin,xmax)
      plt.ylim(ymin,ymax)
      plt.ylabel(None)
