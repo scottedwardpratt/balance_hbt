@@ -185,10 +185,7 @@ void CBalHBT::CalcCFs(){
 		GetDecayProducts(partprimevec[0],productprimevec[0]);
 		GetDecayProducts(partprimevec[1],productprimevec[1]);
 		
-		//printf("%d,%d\n",partvec[0]->resinfo->code,partvec[1]->resinfo->code);
-		//printf("%d,%d\n",partprimevec[0]->resinfo->code,partprimevec[1]->resinfo->code);
-		bf->Evaluate(partvec,productvec,partprimevec,productprimevec,id1,id2,id1prime,id2prime,balweight,balweightprime);
-		//printf("-------------\n");
+		//bf->Evaluate(partvec,productvec,partprimevec,productprimevec,id1,id2,id1prime,id2prime,balweight,balweightprime);
 		
 		for(int anti=0;anti<2;anti++){
 			if(anti==1){
@@ -224,6 +221,59 @@ void CBalHBT::CalcCFs(){
 	}
 	partvec.clear();
 	partprimevec.clear();
-	bf->WriteResults(run_number);
+	bf->WriteResultsCF(run_number);
 	fclose(logfile);
 }
+
+void CBalHBT::CalcBFs(){
+	long long unsigned int imc;
+	unsigned int id,id1,id2,i,iprod;
+	double balweight;
+	vector<CHBTPart *> partvec(2);
+	vector<vector<CHBTPart *>> productvec(2);
+	for(id=0;id<2;id++){
+		partvec[id]=new CHBTPart();
+	}
+	for(imc=0;imc<NMC;imc++){
+		GetPart(stablevec,id1);
+		GetPart(stablevec,id2);
+		
+		balweight=-bfnorm[id1][id2]*0.5;
+		partvec[0]->resinfo=stablevec[id1]->resinfo;
+		partvec[1]->resinfo=stablevec[id2]->resinfo;
+		
+		if(randy->ran()<0.5){
+			partvec[0]->PartAntipart();
+			balweight=-balweight;
+		}
+		if(randy->ran()<0.5){
+			partvec[1]->PartAntipart();
+			balweight=-balweight;
+		}
+		
+		bw->GetXP(partvec);
+		
+		GetDecayProducts(partvec[0],productvec[0]);
+		GetDecayProducts(partvec[1],productvec[1]);
+		
+		bf->IncrementBFs(partvec,productvec,id1,id2,balweight);
+		
+		for(i=0;i<2;i++){
+			for(iprod=0;iprod<productvec[i].size();iprod++)
+				delete productvec[i][iprod];
+			productvec[i].clear();
+		}
+		if((imc+1)%(NMC/10)==0){
+			fprintf(logfile,"finished %ld percent\n",lrint(100.0*imc/double(NMC)));
+			fflush(logfile);
+		}
+	}
+	
+	for(id=0;id<2;id++){
+		delete partvec[id];
+	}
+	partvec.clear();
+	bf->WriteResultsBF(run_number);
+	fclose(logfile);
+}
+

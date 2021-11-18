@@ -141,8 +141,91 @@ void CBF::IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double ef
 	else{
 		cfarrays=NULL;
 	}
-	if(cfarrays!=NULL)
+	if(cfarrays!=NULL){
 		cfarrays->Increment(dely,delphi,qinv,qout_lcms,qside,qlong,weight);
+	}
+}
+
+void CBF::IncrementBFs(vector<CHBTPart *> partvec,vector<vector<CHBTPart *>> productvec,int id1,int id2,double balweight){
+	CHBTPart *part1,*part2;
+	int pid1,pid2;
+	CCF_Arrays *cfarrays;
+	double eff,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi;
+	unsigned int iprod1,iprod2;
+	for(iprod1=0;iprod1<productvec[0].size();iprod1++){
+		part1=productvec[0][iprod1];
+		pid1=part1->resinfo->code;
+		if(acceptancebal->acceptance(part1,eff)){
+			if(abs(part1->resinfo->code)==211)
+				picount+=1;
+			if(abs(part1->resinfo->code)==321)
+				Kcount+=1;
+			if(abs(part1->resinfo->code)==2212)
+				pcount+=1;
+			for(iprod2=0;iprod2<productvec[1].size();iprod2++){
+				part2=productvec[1][iprod2];
+				pid2=part2->resinfo->code;
+				if(abs(pid1)==211 && abs(pid2)==211){
+					cfarrays=CF_pipluspiplus;
+				}
+				else if(abs(pid1)==211 && abs(pid2)==321){
+					cfarrays=CF_piplusKplus;
+				}
+				else if(abs(pid1)==211 && abs(pid2)==2212){
+					cfarrays=CF_piplusp;
+				}
+				else if(abs(pid1)==321 && abs(pid2)==321){
+					cfarrays=CF_KplusKplus;
+				}
+				else if(abs(pid1)==321 && abs(pid2)==2212){
+					cfarrays=CF_Kplusp;
+				}
+				else if(abs(pid1)==2212 && abs(pid2)==2212){
+					cfarrays=CF_pp;
+				}
+				else{
+					cfarrays=NULL;
+				}
+				if(cfarrays!=NULL){
+					Misc::outsidelong_lcms(part1->p,part2->p,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi);
+					cfarrays->Increment(dely,delphi,qinv,qout_lcms,qside,qlong,-balweight*part1->resinfo->charge*part2->resinfo->charge);
+
+				}
+			}
+			for(iprod2=0;iprod2<productvec[0].size();iprod2++){
+				if(iprod2!=iprod1){
+					part2=productvec[0][iprod2];
+					pid2=part2->resinfo->code;
+					if(abs(pid1)==211 && abs(pid2)==211){
+						cfarrays=CF_pipluspiplus;
+					}
+					else if(abs(pid1)==211 && abs(pid2)==321){
+						cfarrays=CF_piplusKplus;
+					}
+					else if(abs(pid1)==211 && abs(pid2)==2212){
+						cfarrays=CF_piplusp;
+					}
+					else if(abs(pid1)==321 && abs(pid2)==321){
+						cfarrays=CF_KplusKplus;
+					}
+					else if(abs(pid1)==321 && abs(pid2)==2212){
+						cfarrays=CF_Kplusp;
+					}
+					else if(abs(pid1)==2212 && abs(pid2)==2212){
+						cfarrays=CF_pp;
+					}
+					else{
+						cfarrays=NULL;
+					}
+					if(cfarrays!=NULL){
+						Misc::outsidelong_lcms(part1->p,part2->p,qinv,qout,qout_lcms,qside,qlong,deleta,dely,delphi);
+						cfarrays->Increment(dely,delphi,qinv,qout_lcms,qside,qlong,
+						-balweight*part1->resinfo->charge*part2->resinfo->charge);
+					}
+				}
+			}
+		}
+	}
 }
 
 

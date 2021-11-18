@@ -28,17 +28,17 @@ results = np.loadtxt('../scottrun/results_direct/pipluspiplus/cf_outsidelong.dat
 x=results[0]
 q=results[0]
 cf1wf_out=results[1]
-cf1wf_side=results[3]
-cf1wf_long=results[5]
-cf1wf_qinv=results[7]
+cf1wf_side=results[4]
+cf1wf_long=results[7]
+cf1wf_qinv=results[10]
 
 results = np.loadtxt('../scottrun/results_allwfs/pipluspiplus/cf_outsidelong.dat',skiprows=0,unpack=True)
 x=results[0]
 q=results[0]
 cfall_out=results[1]
-cfall_side=results[3]
-cfall_long=results[5]
-cfall_qinv=results[7]
+cfall_side=results[4]
+cfall_long=results[7]
+cfall_qinv=results[10]
 
 expresults = np.loadtxt('cf_exp.dat',skiprows=0,unpack=True)
 qexp=0.5*expresults[0]*1000.0
@@ -47,7 +47,7 @@ cfexp_side=expresults[2]-1.0
 cfexp_long=expresults[3]-1.0
 
 ymin=-0.02
-ymax=0.12
+ymax=0.13
 xmin=0
 xmax=100.0
 height=0.224
@@ -65,24 +65,24 @@ for jpanel in range(0,4):
     type='long'
   if jpanel==3:
     type='qinv'
-    ymax=0.22
-    ymin=-0.22
+    ymax=0.23
+    ymin=-0.23
 
   if jpanel==0:
-    plt.plot(q,A*cf1wf_out,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(q,A*cfall_out,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-    #plt.plot(qexp,cfexp_out,linestyle='-',linewidth=3,color='g',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cf1wf_out,linestyle='-',linewidth=2,color='r',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cfall_out,linestyle='-',linewidth=2,color='b',markersize=6,marker='s',label=type)
+    #plt.plot(qexp,cfexp_out,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
   if jpanel==1:
-    plt.plot(q,A*cf1wf_side,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(q,A*cfall_side,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-    #plt.plot(qexp,cfexp_side,linestyle='-',linewidth=3,color='g',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cf1wf_side,linestyle='-',linewidth=2,color='r',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cfall_side,linestyle='-',linewidth=2,color='b',markersize=6,marker='s',label=type)
+    #plt.plot(qexp,cfexp_side,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
   if jpanel==2:
-    plt.plot(q,A*cf1wf_long,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(q,A*cfall_long,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-    #plt.plot(qexp,cfexp_long,linestyle='-',linewidth=3,color='g',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cf1wf_long,linestyle='-',linewidth=2,color='r',markersize=6,marker='o',label=type)
+    plt.plot(q,A*cfall_long,linestyle='-',linewidth=2,color='b',markersize=6,marker='s',label=type)
+    #plt.plot(qexp,cfexp_long,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
   if jpanel==3:
-    plt.plot(q,cf1wf_qinv,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-    plt.plot(q,cfall_qinv,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
+    plt.plot(q,cf1wf_qinv,linestyle='-',linewidth=2,color='r',markersize=6,marker='o',label=type)
+    plt.plot(q,cfall_qinv,linestyle='-',linewidth=2,color='b',markersize=6,marker='s',label=type)
 
   ax.tick_params(axis='both', which='major', labelsize=14)
 

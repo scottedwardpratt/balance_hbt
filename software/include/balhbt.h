@@ -51,7 +51,9 @@ public:
 	void GetPart(vector<CStableInfo *> &stablevec,unsigned int &id);
 	void InitHBT(vector<CStableInfo *> &stablevec,string hbtparsfilename);
 	void CalcCFs();
-	void WriteResults(string dirname);
+	void CalcBFs();
+	void WriteResultsCF(string dirname);
+	void WriteResultsBF(string dirname);
 };
 
 class CHBTPart{
@@ -122,11 +124,12 @@ public:
 	double DELY,DELPHI,DELQ;
 	CCF_Arrays(int NYset,double DELYset,int NPHIset,int NQset,double DELQset);
 	vector<double> cf_inv,denom_inv,cf_out,denom_out,cf_side,denom_side,cf_long,denom_long;
-	vector<double> cf_y,denom_y,cf_phi,denom_phi,error_y,error_phi;
+	vector<double> cf_y,denom_y,cf_phi,denom_phi;
 	void Increment(double dely,double delphi,double qinv,double qout,double qside,double qlong,double weight);
 	void Zero();
 	void Print();
-	void WriteResults(string dirname,int run_number);
+	void WriteResultsCF(string dirname,long long int denom_count,int run_number);
+		void WriteResultsBF(string dirname,long long int denom_count,int run_number);
 };
 
 class CBF{
@@ -148,7 +151,9 @@ public:
 	void Evaluate(vector<CHBTPart *> &partvec,vector<vector<CHBTPart *>> &productvec,
 	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,int id0,int id1,int id0prime,int id1prime,double balweight,double balweightprime);
 	void IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
-	void WriteResults(int run_number);
+	void IncrementBFs(vector<CHBTPart *> partvec,vector<vector<CHBTPart *>> productvec,int id1,int id2,double balweight);
+	void WriteResultsCF(int run_number);
+	void WriteResultsBF(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
 	bool CHEAPPSISQUARED;
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);

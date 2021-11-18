@@ -58,6 +58,11 @@ add_executable(chisquare ${CMAKE_CURRENT_SOURCE_DIR}/chisquare.cc)
 add_dependencies(chisquare extern_balhbt extern_b3d2 extern_coral extern_commonutils)
 target_link_libraries(chisquare ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 #################################################
+set(SOURCE_FILES ./balmain.cc)
+add_executable(bal ${CMAKE_CURRENT_SOURCE_DIR}/balmain.cc)
+add_dependencies(bal extern_balhbt extern_b3d2 extern_coral extern_commonutils)
+target_link_libraries(bal ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
+#################################################
 #set(SOURCE_FILES ./crap.cc)
 #add_executable(crap ${CMAKE_CURRENT_SOURCE_DIR}/crap.cc)
 #add_dependencies(crap extern_commonutils)

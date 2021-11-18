@@ -56,33 +56,52 @@ void CBF::Zero(){
 	
 }
 
-void CBF::WriteResults(int run_number){
+void CBF::WriteResultsCF(int run_number){
 	string dirname;
 	string type;
 	type="pipluspiplus"; dirname="results/"+type+"/";
-	CF_pipluspiplus->WriteResults(dirname,run_number);
+	CF_pipluspiplus->WriteResultsCF(dirname,picount,run_number);
 	type="pipluspiminus"; dirname="results/"+type+"/";
-	CF_pipluspiminus->WriteResults(dirname,run_number);
+	CF_pipluspiminus->WriteResultsCF(dirname,picount,run_number);
 	type="piplusKplus"; dirname="results/"+type+"/";
-	CF_piplusKplus->WriteResults(dirname,run_number);
+	CF_piplusKplus->WriteResultsCF(dirname,picount,run_number);
 	type="piplusKminus"; dirname="results/"+type+"/";
-	CF_piplusKminus->WriteResults(dirname,run_number);
+	CF_piplusKminus->WriteResultsCF(dirname,picount,run_number);
 	type="piplusp"; dirname="results/"+type+"/";
-	CF_piplusp->WriteResults(dirname,run_number);
+	CF_piplusp->WriteResultsCF(dirname,picount,run_number);
 	type="pipluspbar"; dirname="results/"+type+"/";
-	CF_pipluspbar->WriteResults(dirname,run_number);
+	CF_pipluspbar->WriteResultsCF(dirname,picount,run_number);
 	type="KplusKplus"; dirname="results/"+type+"/";
-	CF_KplusKplus->WriteResults(dirname,run_number);
+	CF_KplusKplus->WriteResultsCF(dirname,Kcount,run_number);
 	type="KplusKminus"; dirname="results/"+type+"/";
-	CF_KplusKminus->WriteResults(dirname,run_number);
+	CF_KplusKminus->WriteResultsCF(dirname,Kcount,run_number);
 	type="Kplusp"; dirname="results/"+type+"/";
-	CF_Kplusp->WriteResults(dirname,run_number);
+	CF_Kplusp->WriteResultsCF(dirname,Kcount,run_number);
 	type="Kpluspbar"; dirname="results/"+type+"/";
-	CF_Kpluspbar->WriteResults(dirname,run_number);
+	CF_Kpluspbar->WriteResultsCF(dirname,Kcount,run_number);
 	type="pp"; dirname="results/"+type+"/";
-	CF_pp->WriteResults(dirname,run_number);
+	CF_pp->WriteResultsCF(dirname,pcount,run_number);
 	type="ppbar"; dirname="results/"+type+"/";
-	CF_ppbar->WriteResults(dirname,run_number);
+	CF_ppbar->WriteResultsCF(dirname,pcount,run_number);
+	fprintf(balhbt->logfile,"picount=%lld, Kcount=%lld, pcount=%lld, Ntest=%lld\n",picount,Kcount,pcount,Ntest);
+	fflush(balhbt->logfile);
+}
+
+void CBF::WriteResultsBF(int run_number){
+	string dirname;
+	string type;
+	type="pipi"; dirname="results/"+type+"/";
+	CF_pipluspiplus->WriteResultsBF(dirname,picount,run_number);
+	type="piK"; dirname="results/"+type+"/";
+	CF_piplusKplus->WriteResultsBF(dirname,picount,run_number);
+	type="pip"; dirname="results/"+type+"/";
+	CF_piplusp->WriteResultsBF(dirname,picount,run_number);
+	type="KK"; dirname="results/"+type+"/";
+	CF_KplusKplus->WriteResultsBF(dirname,Kcount,run_number);
+	type="Kp"; dirname="results/"+type+"/";
+	CF_Kplusp->WriteResultsBF(dirname,Kcount,run_number);
+	type="pp"; dirname="results/"+type+"/";
+	CF_pp->WriteResultsBF(dirname,pcount,run_number);
 	fprintf(balhbt->logfile,"picount=%lld, Kcount=%lld, pcount=%lld, Ntest=%lld\n",picount,Kcount,pcount,Ntest);
 	fflush(balhbt->logfile);
 }

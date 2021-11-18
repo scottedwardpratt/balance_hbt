@@ -8,8 +8,8 @@ CCF_Arrays::CCF_Arrays(int NYset,double DELYset,int NPHIset,int NQset,double DEL
 	NQ=NQset;
 	DELQ=DELQset;
 	DELPHI=180.0/double(NPHI);
-	cf_y.resize(NY,0.0); denom_y.resize(NY,0.0); error_y.resize(NY,0.0);
-	cf_phi.resize(NPHI,0.0); denom_phi.resize(NPHI,0.0); error_phi.resize(NPHI,0.0);
+	cf_y.resize(NY,0.0); denom_y.resize(NY,0.0);
+	cf_phi.resize(NPHI,0.0); denom_phi.resize(NPHI,0.0);
 	cf_inv.resize(NQ,0.0); denom_inv.resize(NQ,0.0);
 	cf_out.resize(NQ,0.0); denom_out.resize(NQ,0.0);
 	cf_side.resize(NQ,0.0); denom_side.resize(NQ,0.0);
@@ -64,13 +64,11 @@ void CCF_Arrays::Increment(double dely,double delphi,double qinv,double qout,dou
 	if(iy<NY){
 		cf_y[iy]+=weight;
 		denom_y[iy]+=1.0;
-		error_y[iy]+=weight*weight;
 	}
 	iphi=lrint(floor(delphi/DELPHI));
 	if(iphi<NPHI){
 		cf_phi[iphi]+=weight;
 		denom_phi[iphi]+=1.0;
-		error_phi[iphi]+=weight*weight;
 	}
 }
 
@@ -80,9 +78,9 @@ void CCF_Arrays::Print(){
 	printf("-----------\n");
 }
 
-void CCF_Arrays::WriteResults(string dirname,int run_number){
+void CCF_Arrays::WriteResultsCF(string dirname,long long int denom_count,int run_number){
 	FILE *fptr;
-	double delq,dely,delphi,sigma;
+	double delq,dely,delphi;
 	string filename;
 	string command;
 	command="mkdir -p "+dirname;
@@ -103,9 +101,8 @@ void CCF_Arrays::WriteResults(string dirname,int run_number){
 	fprintf(fptr,"#   dely     C(y)    Ny\n");
 	for(int iy=0;iy<NY;iy++){
 		dely=(iy+0.5)*DELY;
-		sigma=error_y[iy]/denom_y[iy]-pow(cf_y[iy]/denom_y[iy],2);
-		sigma=sqrt(sigma/denom_y[iy]);
-		fprintf(fptr,"%7.4f %12.9f %12.0f %12.9f\n",dely,cf_y[iy]/denom_y[iy],denom_y[iy],sigma);
+
+		fprintf(fptr,"%7.4f %12.9f %12.0f\n",dely,cf_y[iy]/denom_y[iy],denom_y[iy]);
 	}
 	fclose(fptr);
 	filename=dirname+"cf"+to_string(run_number)+"_phi.dat";
@@ -113,9 +110,48 @@ void CCF_Arrays::WriteResults(string dirname,int run_number){
 	fprintf(fptr,"#   delphi     C(delphi)    Nphi\n");
 	for(int iphi=0;iphi<NPHI;iphi++){
 		delphi=(iphi+0.5)*DELPHI;
-		sigma=error_phi[iphi]/denom_phi[iphi]-pow(cf_phi[iphi]/denom_phi[iphi],2);
-		sigma=sqrt(sigma/denom_phi[iphi]);
-		fprintf(fptr,"%7.4f %12.9f %12.0f %12.9f\n",delphi,cf_phi[iphi]/denom_phi[iphi],denom_phi[iphi],sigma);
+		fprintf(fptr,"%7.4f %12.9f %12.0f\n",delphi,cf_phi[iphi]/denom_phi[iphi],denom_phi[iphi]);
+	}
+	fclose(fptr);
+}
+
+void CCF_Arrays::WriteResultsBF(string dirname,long long int denom_count,int run_number){
+	FILE *fptr;
+	double delq,dely,delphi,denom,norm=0.0;
+	string filename;
+	string command;
+	command="mkdir -p "+dirname;
+	system(command.c_str());
+	filename=dirname+"bf"+to_string(run_number)+"_outsidelong.dat";
+	fptr=fopen(filename.c_str(),"w");
+	fprintf(fptr,"#   q     Cout       Nout      Cside       Nside       Clong        Nlong\n");
+	for(int iq=0;iq<NQ;iq++){
+		delq=(0.5+iq)*DELQ;
+		denom=0.5*denom_count*DELPHI;
+		fprintf(fptr,"%7.3f %12.9f %12.0f %12.9f %12.0f %12.9f %12.0f %12.9f %12.0f\n",
+		delq,
+		cf_out[iq]/denom,denom_out[iq],cf_side[iq]/denom,denom_side[iq],
+		cf_long[iq]/denom,denom_long[iq],cf_inv[iq]/denom,denom_inv[iq]);
+	}
+	fclose(fptr);
+	filename=dirname+"bf"+to_string(run_number)+"_y.dat";
+	fptr=fopen(filename.c_str(),"w");
+	fprintf(fptr,"#   dely     C(y)    Ny\n");
+	for(int iy=0;iy<NY;iy++){
+		dely=(iy+0.5)*DELY;
+		denom=0.5*denom_count*DELY;
+		fprintf(fptr,"%7.4f %12.9f %12.0f\n",dely,cf_y[iy]/denom,denom_y[iy]);
+		norm+=DELY*cf_y[iy]/denom;
+	}
+	printf("%s: norm=%g\n",dirname.c_str(),norm);
+	fclose(fptr);
+	filename=dirname+"bf"+to_string(run_number)+"_phi.dat";
+	fptr=fopen(filename.c_str(),"w");
+	fprintf(fptr,"#   delphi     C(delphi)    Nphi\n");
+	for(int iphi=0;iphi<NPHI;iphi++){
+		delphi=(iphi+0.5)*DELPHI;
+		denom=0.5*denom_count*DELPHI;
+		fprintf(fptr,"%7.4f %12.9f %12.0f\n",delphi,cf_phi[iphi]/denom,denom_phi[iphi]);
 	}
 	fclose(fptr);
 }

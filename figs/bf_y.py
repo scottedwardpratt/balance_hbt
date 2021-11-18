@@ -23,12 +23,16 @@ width=(0.97-x0)
 y0=0.1
 height=(1.0-y0-0.04)/3.0
 
+root2=sqrt(2.0)
 xmin=0.0
 xmax=1.8
 
-dNdY_pi=1000.0
-dNdY_K=100.0
-dNdY_p=50.0
+dNdY_pi=649 # both + and - multiplicity
+dNdY_K=100.8
+dNdY_p=61.4
+dNdY_pi=0.5*dNdY_pi
+dNdY_K=0.5*dNdY_K
+dNdY_p=0.5*dNdY_p
 
 #--------PIONS--------
 
@@ -36,19 +40,22 @@ results = np.loadtxt('../scottrun/results_direct/pipluspiplus/cf_y.dat',skiprows
 x=results[0]
 cfdirect_pipluspiplus=results[1]
 Npi=results[2]
+errordirect_pipi=results[3]*dNdY_pi
 results = np.loadtxt('../scottrun/results_direct/pipluspiminus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_pipluspiminus=results[1]
 Npi=Npi+results[2]
+errordirect_pipi+=results[3]*dNdY_pi
 bfdirect_pipi=dNdY_pi*(cfdirect_pipluspiminus-cfdirect_pipluspiplus)
-error_pipi=results[3]*dNdY_pi
 
 results = np.loadtxt('../scottrun/results_allwfs/pipluspiplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_pipluspiplus=results[1]
+errorallwfs_pipi=results[3]*dNdY_pi
 results = np.loadtxt('../scottrun/results_allwfs/pipluspiminus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_pipluspiminus=results[1]
+errorallwfs_pipi+=results[3]*dNdY_pi
 bfallwfs_pipi=dNdY_pi*(cfallwfs_pipluspiminus-cfallwfs_pipluspiplus)
 
 #--------KAONS--------
@@ -57,19 +64,22 @@ results = np.loadtxt('../scottrun/results_direct/KplusKplus/cf_y.dat',skiprows=0
 x=results[0]
 cfdirect_KplusKplus=results[1]
 NK=results[2]
+errordirect_K=results[3]*dNdY_K
 results = np.loadtxt('../scottrun/results_direct/KplusKminus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_KplusKminus=results[1]
 NK=NK+results[2]
+errordirect_K+=results[3]*dNdY_K
 bfdirect_KK=dNdY_K*(cfdirect_KplusKminus-cfdirect_KplusKplus)
-error_K=results[3]*dNdY_K
 
 results = np.loadtxt('../scottrun/results_allwfs/KplusKplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_KplusKplus=results[1]
+errorallwfs_K=results[3]*dNdY_K
 results = np.loadtxt('../scottrun/results_allwfs/KplusKminus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_KplusKminus=results[1]
+errordirect_K+=results[3]*dNdY_K
 bfallwfs_KK=dNdY_K*(cfallwfs_KplusKminus-cfallwfs_KplusKplus)
 
 #--------PROTONS--------
@@ -78,19 +88,23 @@ results = np.loadtxt('../scottrun/results_direct/pp/cf_y.dat',skiprows=0,unpack=
 x=results[0]
 cfdirect_ppluspplus=results[1]
 Np=results[2]
+errordirect_pp=results[3]*dNdY_p
 results = np.loadtxt('../scottrun/results_direct/ppbar/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_ppluspminus=results[1]
 Np=Np+results[2]
+errordirect_pp+=results[3]*dNdY_p
 bfdirect_pp=dNdY_p*(cfdirect_ppluspminus-cfdirect_ppluspplus)
-error_p=results[3]*dNdY_p
+
 
 results = np.loadtxt('../scottrun/results_allwfs/pp/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_pp=results[1]
+errorallwfs_pp=results[3]*dNdY_p
 results = np.loadtxt('../scottrun/results_allwfs/ppbar/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_ppbar=results[1]
+errorallwfs_pp+=results[3]*dNdY_p
 bfallwfs_pp=dNdY_p*(cfallwfs_ppbar-cfallwfs_pp)
 
 for jpanel in range(0,3):
@@ -100,15 +114,13 @@ for jpanel in range(0,3):
 
    if jpanel==0:
       type='$\pi\pi$'
-      #plt.plot(x,bfdirect_pipi,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-      plt.errorbar(x,bfdirect_pipi,error_pipi,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-      #plt.plot(x,bfallwfs_pipi,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      plt.errorbar(x,bfallwfs_pipi,error_pipi,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      ymin=-0.3
-      ymax=0.3
-      ax.set_yticks(np.arange(-0.2,0.4,0.05),minor=False)
-      ax.set_yticklabels(np.arange(-0.2,0.4,0.05),minor=False)
-      ax.set_yticks(np.arange(-0.2,0.4,0.01),minor=True)
+      plt.errorbar(x,bfdirect_pipi,errordirect_pipi/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+      plt.errorbar(x,bfallwfs_pipi,errorallwfs_pipi/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+      ymin=-0.12
+      ymax=0.12
+      ax.set_yticks(np.arange(-0.4,0.4,0.05),minor=False)
+      ax.set_yticklabels(np.arange(-0.4,0.4,0.05),minor=False)
+      ax.set_yticks(np.arange(-0.4,0.4,0.01),minor=True)
       plt.xlabel('$\Delta y$', fontsize=24, weight='normal')
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
@@ -117,28 +129,24 @@ for jpanel in range(0,3):
       type='$KK$'
       ymin=-0.05
       ymax=0.05
-      #plt.plot(x,bfdirect_KK,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-      plt.errorbar(x,bfdirect_KK,error_K,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-      #plt.plot(x,bfallwfs_KK,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      plt.errorbar(x,bfallwfs_KK,error_K,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      ax.set_yticks(np.arange(-0.1,0.2,0.01),minor=False)
-      ax.set_yticklabels(np.arange(-0.10,0.2,0.01),minor=False)
-      ax.set_yticks(np.arange(-0.10,0.2,0.005),minor=True)
+      plt.errorbar(x,bfdirect_KK,errordirect_K/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+      plt.errorbar(x,bfallwfs_KK,errorallwfs_K/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+      ax.set_yticks(np.arange(-0.1,0.2,0.02),minor=False)
+      ax.set_yticklabels(np.arange(-0.10,0.2,0.02),minor=False)
+      ax.set_yticks(np.arange(-0.10,0.2,0.01),minor=True)
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
-      plt.ylabel('$B(y)$')
+      plt.ylabel('$B(\Delta y)$',fontsize='24')
       ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
    if jpanel==2:
      type='$pp$'
      ymin=-0.05
      ymax=0.05
-     #plt.plot(x,bfdirect_pp,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-     plt.errorbar(x,bfdirect_pp,error_p,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-     #plt.plot(x,bfallwfs_pp,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-     plt.errorbar(x,bfallwfs_pp,error_p,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-     ax.set_yticks(np.arange(-0.1,0.2,0.01),minor=False)
-     ax.set_yticklabels(np.arange(-0.10,0.2,0.01),minor=False)
-     ax.set_yticks(np.arange(-0.10,0.2,0.005),minor=True)
+     plt.errorbar(x,bfdirect_pp,errordirect_pp/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+     plt.errorbar(x,bfallwfs_pp,errorallwfs_pp/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+     ax.set_yticks(np.arange(-0.1,0.2,0.02),minor=False)
+     ax.set_yticklabels(np.arange(-0.10,0.2,0.02),minor=False)
+     ax.set_yticks(np.arange(-0.10,0.2,0.01),minor=True)
      plt.xlim(xmin,xmax)
      plt.ylim(ymin,ymax)
      plt.ylabel(None)

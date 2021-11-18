@@ -23,12 +23,16 @@ width=(0.97-x0)
 y0=0.1
 height=(1.0-y0-0.04)/3.0
 
+root2=sqrt(2.0)
 xmin=0.0
-xmax=180.01
+xmax=180.001
 
-dNdphi_pi=500.0
-dNdphi_K=500.0
-dNdphi_p=500.0
+dNdY_pi=649 # both + and - multiplicity
+dNdY_K=100.8
+dNdY_p=61.4
+dNdY_pi=0.5*dNdY_pi
+dNdY_K=0.5*dNdY_K
+dNdY_p=0.5*dNdY_p
 
 #--------PIONS--------
 
@@ -36,20 +40,23 @@ results = np.loadtxt('../scottrun/results_direct/pipluspiplus/cf_phi.dat',skipro
 x=results[0]
 cfdirect_pipluspiplus=results[1]
 Npi=results[2]
+errordirect_pipi=results[3]*dNdY_pi
 results = np.loadtxt('../scottrun/results_direct/pipluspiminus/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_pipluspiminus=results[1]
 Npi=Npi+results[2]
-bfdirect_pipi=dNdphi_pi*(cfdirect_pipluspiminus-cfdirect_pipluspiplus)
-error_pipi=0.5*dNdphi_pi/sqrt(Npi+0.01)
+errordirect_pipi+=results[3]*dNdY_pi
+bfdirect_pipi=dNdY_pi*(cfdirect_pipluspiminus-cfdirect_pipluspiplus)
 
 results = np.loadtxt('../scottrun/results_allwfs/pipluspiplus/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_pipluspiplus=results[1]
+errorallwfs_pipi=results[3]*dNdY_pi
 results = np.loadtxt('../scottrun/results_allwfs/pipluspiminus/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_pipluspiminus=results[1]
-bfallwfs_pipi=dNdphi_pi*(cfallwfs_pipluspiminus-cfallwfs_pipluspiplus)
+errorallwfs_pipi+=results[3]*dNdY_pi
+bfallwfs_pipi=dNdY_pi*(cfallwfs_pipluspiminus-cfallwfs_pipluspiplus)
 
 #--------KAONS--------
 
@@ -57,20 +64,23 @@ results = np.loadtxt('../scottrun/results_direct/KplusKplus/cf_phi.dat',skiprows
 x=results[0]
 cfdirect_KplusKplus=results[1]
 NK=results[2]
+errordirect_K=results[3]*dNdY_K
 results = np.loadtxt('../scottrun/results_direct/KplusKminus/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_KplusKminus=results[1]
 NK=NK+results[2]
-bfdirect_KK=dNdphi_K*(cfdirect_KplusKminus-cfdirect_KplusKplus)
-error_K=0.02*dNdphi_K/sqrt(NK+0.01)
+errordirect_K+=results[3]*dNdY_K
+bfdirect_KK=dNdY_K*(cfdirect_KplusKminus-cfdirect_KplusKplus)
 
 results = np.loadtxt('../scottrun/results_allwfs/KplusKplus/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_KplusKplus=results[1]
+errorallwfs_K=results[3]*dNdY_K
 results = np.loadtxt('../scottrun/results_allwfs/KplusKminus/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_KplusKminus=results[1]
-bfallwfs_KK=dNdphi_K*(cfallwfs_KplusKminus-cfallwfs_KplusKplus)
+errordirect_K+=results[3]*dNdY_K
+bfallwfs_KK=dNdY_K*(cfallwfs_KplusKminus-cfallwfs_KplusKplus)
 
 #--------PROTONS--------
 
@@ -78,20 +88,24 @@ results = np.loadtxt('../scottrun/results_direct/pp/cf_phi.dat',skiprows=0,unpac
 x=results[0]
 cfdirect_ppluspplus=results[1]
 Np=results[2]
+errordirect_pp=results[3]*dNdY_p
 results = np.loadtxt('../scottrun/results_direct/ppbar/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_ppluspminus=results[1]
 Np=Np+results[2]
-bfdirect_pp=dNdphi_p*(cfdirect_ppluspminus-cfdirect_ppluspplus)
-error_p=0.02*dNdphi_p/sqrt(Np+0.01)
+errordirect_pp+=results[3]*dNdY_p
+bfdirect_pp=dNdY_p*(cfdirect_ppluspminus-cfdirect_ppluspplus)
+
 
 results = np.loadtxt('../scottrun/results_allwfs/pp/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_pp=results[1]
+errorallwfs_pp=results[3]*dNdY_p
 results = np.loadtxt('../scottrun/results_allwfs/ppbar/cf_phi.dat',skiprows=0,unpack=True)
 x=results[0]
 cfallwfs_ppbar=results[1]
-bfallwfs_pp=dNdphi_p*(cfallwfs_ppbar-cfallwfs_pp)
+errorallwfs_pp+=results[3]*dNdY_p
+bfallwfs_pp=dNdY_p*(cfallwfs_ppbar-cfallwfs_pp)
 
 for jpanel in range(0,3):
    ax = fig.add_axes([x0,y0+jpanel*height,width,height])
@@ -100,54 +114,48 @@ for jpanel in range(0,3):
 
    if jpanel==0:
       type='$\pi\pi$'
-      #plt.plot(x,bfdirect_pipi,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-      plt.errorbar(x,bfdirect_pipi,error_pipi,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-      #plt.plot(x,bfallwfs_pipi,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      plt.errorbar(x,bfallwfs_pipi,error_pipi,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      ymin=-0.2
-      ymax=0.15
-      ax.set_yticks(np.arange(-0.2,0.4,0.05),minor=False)
-      ax.set_yticklabels(np.arange(-0.2,0.4,0.05),minor=False)
-      ax.set_yticks(np.arange(-0.2,0.4,0.01),minor=True)
-      plt.xlabel('$\Delta y$', fontsize=24, weight='normal')
+      plt.errorbar(x,bfdirect_pipi,errordirect_pipi/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+      plt.errorbar(x,bfallwfs_pipi,errorallwfs_pipi/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+      ymin=-0.22
+      ymax=0.22
+      ax.set_yticks(np.arange(-0.8,0.8,0.1),minor=False)
+      ax.set_yticklabels(np.arange(-0.8,0.8,0.1),minor=False)
+      ax.set_yticks(np.arange(-0.8,0.8,0.05),minor=True)
+      plt.xlabel('$\Delta\phi$', fontsize=24, weight='normal')
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
       ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
    if jpanel==1:
       type='$KK$'
-      ymin=-0.01
-      ymax=0.03
-      #plt.plot(x,bfdirect_KK,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-      plt.errorbar(x,bfdirect_KK,error_K,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-      #plt.plot(x,bfallwfs_KK,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      plt.errorbar(x,bfallwfs_KK,error_K,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-      ax.set_yticks(np.arange(-0.1,0.2,0.01),minor=False)
-      ax.set_yticklabels(np.arange(-0.10,0.2,0.01),minor=False)
-      ax.set_yticks(np.arange(-0.10,0.2,0.005),minor=True)
+      ymin=-0.03
+      ymax=0.07
+      plt.errorbar(x,bfdirect_KK,errordirect_K/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+      plt.errorbar(x,bfallwfs_KK,errorallwfs_K/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+      ax.set_yticks(np.arange(-0.12,0.2,0.04),minor=False)
+      ax.set_yticklabels(np.arange(-0.12,0.2,0.04),minor=False)
+      ax.set_yticks(np.arange(-0.12,0.2,0.02),minor=True)
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
-      plt.ylabel('$B(y)$')
+      plt.ylabel('$B(\Delta\phi)$',fontsize='24')
       ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
    if jpanel==2:
      type='$pp$'
-     ymin=-0.002
-     ymax=0.01
-     #plt.plot(x,bfdirect_pp,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-     plt.errorbar(x,bfdirect_pp,error_p,linestyle='-',linewidth=3,color='r',markersize=6,marker='o',label=type)
-     #plt.plot(x,bfallwfs_pp,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-     plt.errorbar(x,bfallwfs_pp,error_p,linestyle='-',linewidth=3,color='b',markersize=6,marker='o',label=type)
-     ax.set_yticks(np.arange(-0.1,0.2,0.005),minor=False)
-     ax.set_yticklabels(np.arange(-0.10,0.2,0.005),minor=False)
-     ax.set_yticks(np.arange(-0.10,0.2,0.001),minor=True)
+     ymin=-0.03
+     ymax=0.06
+     plt.errorbar(x,bfdirect_pp,errordirect_pp/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+     plt.errorbar(x,bfallwfs_pp,errorallwfs_pp/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+     ax.set_yticks(np.arange(-0.1,0.2,0.02),minor=False)
+     ax.set_yticklabels(np.arange(-0.10,0.2,0.02),minor=False)
+     ax.set_yticks(np.arange(-0.10,0.2,0.01),minor=True)
      plt.xlim(xmin,xmax)
      plt.ylim(ymin,ymax)
      plt.ylabel(None)
      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
      
-   ax.set_xticks(np.arange(xmin,xmax,45), minor=False)
-   ax.set_xticks(np.arange(xmin,xmax,5), minor=True)
+   ax.set_xticks(np.arange(xmin,xmax,30), minor=False)
+   ax.set_xticks(np.arange(xmin,xmax,10), minor=True)
    if jpanel==0:
-      ax.set_xticklabels(np.arange(xmin,xmax,45), minor=False, family='serif')
+      ax.set_xticklabels(np.arange(xmin,xmax,30), minor=False, family='serif')
       ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
    else:
       ax.set_xticklabels([])
