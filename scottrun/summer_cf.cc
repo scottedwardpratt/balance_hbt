@@ -15,7 +15,7 @@ int main(int argc,char *argv[]){
 	int iq,irun,ipair,iy,iphi;
 	FILE *fptr;
 	char filename[120],dummy[120];
-	string dirname="results_direct";
+	string dirname="results";
 	string pairname[12]={"pipluspiplus","pipluspiminus","piplusKplus","piplusKminus","piplusp","pipluspbar",
 	"KplusKplus","KplusKminus","Kplusp","Kpluspbar","pp","ppbar"};
 	double cy,cphi,cout,cside,clong,cinv,denomy,denomphi,denomout,denomside,denomlong,denominv;
