@@ -106,6 +106,25 @@ void CBF::WriteResultsBF(int run_number){
 	fflush(balhbt->logfile);
 }
 
+void CBF::WriteResultsBFCFDenoms(int run_number){
+	string dirname;
+	string type;
+	type="pipi_denom"; dirname="results/"+type+"/";
+	CF_pipluspiplus->WriteResultsBF(dirname,picount,run_number);
+	type="piK_denom"; dirname="results/"+type+"/";
+	CF_piplusKplus->WriteResultsBF(dirname,picount,run_number);
+	type="pip_denom"; dirname="results/"+type+"/";
+	CF_piplusp->WriteResultsBF(dirname,picount,run_number);
+	type="KK_denom"; dirname="results/"+type+"/";
+	CF_KplusKplus->WriteResultsBF(dirname,Kcount,run_number);
+	type="Kp_denom"; dirname="results/"+type+"/";
+	CF_Kplusp->WriteResultsBF(dirname,Kcount,run_number);
+	type="pp_denom"; dirname="results/"+type+"/";
+	CF_pp->WriteResultsBF(dirname,pcount,run_number);
+	fprintf(balhbt->logfile,"picount=%lld, Kcount=%lld, pcount=%lld, Ntest=%lld\n",picount,Kcount,pcount,Ntest);
+	fflush(balhbt->logfile);
+}
+
 double CBF::Getqinv(CHBTPart *part,CHBTPart *partprime){
 	double P2,Pdotq,Qinv2,m=part->resinfo->mass,mprime=partprime->resinfo->mass;
 	int alpha;

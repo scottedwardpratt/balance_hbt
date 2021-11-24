@@ -36,6 +36,10 @@ dNdY_p=0.5*dNdY_p
 
 #--------PIONS--------
 
+results = np.loadtxt('../scottrun/results_bal/pipi/bf0_y.dat',skiprows=1,unpack=True)
+xbal=results[0]
+bfbal_pipi=results[1]
+
 results = np.loadtxt('../scottrun/results_direct/pipluspiplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_pipluspiplus=results[1]
@@ -60,6 +64,10 @@ bfallwfs_pipi=dNdY_pi*(cfallwfs_pipluspiminus-cfallwfs_pipluspiplus)
 
 #--------KAONS--------
 
+results = np.loadtxt('../scottrun/results_bal/KK/bf0_y.dat',skiprows=1,unpack=True)
+xbal=results[0]
+bfbal_KK=results[1]
+
 results = np.loadtxt('../scottrun/results_direct/KplusKplus/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
 cfdirect_KplusKplus=results[1]
@@ -83,6 +91,10 @@ errordirect_K+=results[3]*dNdY_K
 bfallwfs_KK=dNdY_K*(cfallwfs_KplusKminus-cfallwfs_KplusKplus)
 
 #--------PROTONS--------
+
+results = np.loadtxt('../scottrun/results_bal/pp/bf0_y.dat',skiprows=1,unpack=True)
+xbal=results[0]
+bfbal_pp=results[1]
 
 results = np.loadtxt('../scottrun/results_direct/pp/cf_y.dat',skiprows=0,unpack=True)
 x=results[0]
@@ -114,26 +126,31 @@ for jpanel in range(0,3):
 
    if jpanel==0:
       type='$\pi\pi$'
-      plt.errorbar(x,bfdirect_pipi,errordirect_pipi/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
-      plt.errorbar(x,bfallwfs_pipi,errorallwfs_pipi/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
-      ymin=-0.12
-      ymax=0.12
-      ax.set_yticks(np.arange(-0.4,0.4,0.05),minor=False)
-      ax.set_yticklabels(np.arange(-0.4,0.4,0.05),minor=False)
-      ax.set_yticks(np.arange(-0.4,0.4,0.01),minor=True)
+      plt.errorbar(x,bfallwfs_pipi+bfbal_pipi,errordirect_pipi,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+      plt.errorbar(x,bfallwfs_pipi,errorallwfs_pipi,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+      plt.plot(xbal,bfbal_pipi,linestyle='-',linewidth=4,color='k',label=type)
+      ymin=-0.1
+      ymax=0.8
+      ax.set_yticks(np.arange(-1,1,0.2),minor=False)
+      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False)
+      ax.set_yticks(np.arange(-1,1,0.1),minor=True)
       plt.xlabel('$\Delta y$', fontsize=24, weight='normal')
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
       ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+      text(0.05,0.1,'final-state interactions',color='blue',fontsize='22',family='sans')
+      text(0.05,0.55,'charge balance',color='black',fontsize='22',family='sans')
+      text(0.35,0.72,'sum',color='red',fontsize='22',family='sans')
    if jpanel==1:
       type='$KK$'
       ymin=-0.05
-      ymax=0.05
-      plt.errorbar(x,bfdirect_KK,errordirect_K/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
-      plt.errorbar(x,bfallwfs_KK,errorallwfs_K/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
-      ax.set_yticks(np.arange(-0.1,0.2,0.02),minor=False)
-      ax.set_yticklabels(np.arange(-0.10,0.2,0.02),minor=False)
-      ax.set_yticks(np.arange(-0.10,0.2,0.01),minor=True)
+      ymax=0.5
+      plt.errorbar(x,bfallwfs_KK+bfbal_KK,errordirect_K,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+      plt.errorbar(x,bfallwfs_KK,errorallwfs_K,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+      plt.plot(xbal,bfbal_KK,linestyle='-',color='k',linewidth=4,label=type)
+      ax.set_yticks(np.arange(-1,1,0.2),minor=False)
+      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False)
+      ax.set_yticks(np.arange(-1,1,0.1),minor=True)
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
       plt.ylabel('$B(\Delta y)$',fontsize='24')
@@ -141,12 +158,13 @@ for jpanel in range(0,3):
    if jpanel==2:
      type='$pp$'
      ymin=-0.05
-     ymax=0.05
-     plt.errorbar(x,bfdirect_pp,errordirect_pp/root2,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
-     plt.errorbar(x,bfallwfs_pp,errorallwfs_pp/root2,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
-     ax.set_yticks(np.arange(-0.1,0.2,0.02),minor=False)
-     ax.set_yticklabels(np.arange(-0.10,0.2,0.02),minor=False)
-     ax.set_yticks(np.arange(-0.10,0.2,0.01),minor=True)
+     ymax=0.5
+     plt.errorbar(x,bfallwfs_pp+bfbal_pp,errordirect_pp,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+     plt.errorbar(x,bfallwfs_pp,errorallwfs_pp,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
+     plt.plot(xbal,bfbal_pp,linestyle='-',color='k',linewidth=4,label=type)
+     ax.set_yticks(np.arange(-1,1,0.2),minor=False)
+     ax.set_yticklabels(np.arange(-1,1,0.2),minor=False)
+     ax.set_yticks(np.arange(-1,1,0.1),minor=True)
      plt.xlim(xmin,xmax)
      plt.ylim(ymin,ymax)
      plt.ylabel(None)

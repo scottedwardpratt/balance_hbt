@@ -84,13 +84,9 @@ void CblastWave::GenerateParts(vector<CResInfo *> &resinfovec,vector<CHBTPart *>
 void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 	unsigned int ipart,nparts=partvec.size();
 	FourVector u,p;
-	double eta,etabar,xbar,ybar,g1,g2,Rbar;
+	double eta,etabar,xbar,ybar,g1,g2;
 	CHBTPart *part;
-	//randy->ran_gauss2(ubar[1],ubar[2]);
 	randy->ran_gauss2(g1,g2);
-	Rbar=sqrt(Rperp*Rperp-sigmaR*sigmaR);
-	xbar=Rbar*g1;
-	ybar=Rbar*g2;
 	do{
 		xbar=Rperp*(1.0-2.0*randy->ran());
 		ybar=Rperp*(1.0-2.0*randy->ran());
@@ -119,6 +115,42 @@ void CblastWave::GetXP(vector<CHBTPart *> &partvec){
 		Misc::Boost(u,p,part->p); // Boost along beam
 		part->SetEtaYPt();
 	}
+}
+
+void CblastWave::GetXP(CHBTPart *part){
+	FourVector u,p;
+	double eta,etabar,xbar,ybar,g1,g2;
+	//randy->ran_gauss2(ubar[1],ubar[2]);
+	randy->ran_gauss2(g1,g2);
+	//Rbar=sqrt(Rperp*Rperp-sigmaR*sigmaR);
+	
+	//xbar=Rperp*g1;
+	//ybar=Rperp*g2;
+	do{
+		xbar=Rperp*(1.0-2.0*randy->ran());
+		ybar=Rperp*(1.0-2.0*randy->ran());
+	}while(xbar*xbar+ybar*ybar>Rperp*Rperp);
+	etabar=etawidth*randy->ran_gauss();
+	
+	randy->generate_boltzmann(part->resinfo->mass,Tf,p);
+	randy->ran_gauss2(g1,g2);
+	part->x[1]=xbar+sigmaR*g1;
+	part->x[2]=ybar+sigmaR*g2;
+	eta=etabar+sigma_eta*randy->ran_gauss();
+	part->x[0]=tau*cosh(eta);
+	part->x[3]=tau*sinh(eta);
+	//printf("inside GetXP, x=(%g,%g,%g,%g)\n",part->x[0],part->x[1],part->x[2],part->x[3]);
+	// Boost outward
+	u[1]=uperpmax*part->x[1]/Rperp;
+	u[2]=uperpmax*part->x[2]/Rperp;
+	u[3]=0.0;
+	u[0]=sqrt(1.0+u[1]*u[1]+u[2]*u[2]);
+	Misc::Boost(u,p);
+	u[1]=u[2]=0.0;
+	u[3]=sinh(eta);
+	u[0]=cosh(eta);
+	Misc::Boost(u,p,part->p); // Boost along beam
+	part->SetEtaYPt();
 }
 
 /*

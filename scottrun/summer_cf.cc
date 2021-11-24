@@ -11,11 +11,11 @@
 using namespace std;
 
 int main(int argc,char *argv[]){
-	const int NRUNS=24,NQ=100,NY=20,NPHI=18;
+	const int NRUNS=24,NQ=200,NY=20,NPHI=18;
 	int iq,irun,ipair,iy,iphi;
 	FILE *fptr;
 	char filename[120],dummy[120];
-	string dirname="results";
+	string dirname="results_allwfs";
 	string pairname[12]={"pipluspiplus","pipluspiminus","piplusKplus","piplusKminus","piplusp","pipluspbar",
 	"KplusKplus","KplusKminus","Kplusp","Kpluspbar","pp","ppbar"};
 	double cy,cphi,cout,cside,clong,cinv,denomy,denomphi,denomout,denomside,denomlong,denominv;
@@ -160,7 +160,7 @@ int main(int argc,char *argv[]){
 		fptr=fopen(filename,"w");
 		for(iy=0;iy<NY;iy++){
 			error_y[iy]=(error_y[iy]/double(NRUNS))-cf_y[iy]*cf_y[iy];
-			error_y[iy]=sqrt(error_y[iy]/double(NRUNS));
+			error_y[iy]=sqrt(error_y[iy]/double(NRUNS-1));
 			fprintf(fptr,"%7.2f %12.8f %12.8f %12.8f\n",dely[iy],cf_y[iy],denom_y[iy],error_y[iy]);
 		}
 		fclose(fptr);
@@ -171,7 +171,7 @@ int main(int argc,char *argv[]){
 		fptr=fopen(filename,"w");
 		for(iphi=0;iphi<NPHI;iphi++){
 			error_phi[iphi]=(error_phi[iphi]/double(NRUNS))-cf_phi[iphi]*cf_phi[iphi];
-			error_phi[iphi]=sqrt(error_phi[iphi]/double(NRUNS));
+			error_phi[iphi]=sqrt(error_phi[iphi]/double(NRUNS-1));
 			fprintf(fptr,"%7.2f %12.8f %12.8f %12.8f\n",delphi[iphi],cf_phi[iphi],denom_phi[iphi],error_phi[iphi]);
 		}
 		fclose(fptr);
@@ -184,10 +184,10 @@ int main(int argc,char *argv[]){
 			error_side[iq]=(error_side[iq]/double(NRUNS))-cf_side[iq]*cf_side[iq];
 			error_long[iq]=(error_long[iq]/double(NRUNS))-cf_long[iq]*cf_long[iq];
 			error_inv[iq]=(error_inv[iq]/double(NRUNS))-cf_inv[iq]*cf_inv[iq];
-			error_out[iq]=sqrt(error_out[iq]/double(NRUNS));
-			error_side[iq]=sqrt(error_side[iq]/double(NRUNS));
-			error_long[iq]=sqrt(error_long[iq]/double(NRUNS));
-			error_inv[iq]=sqrt(error_inv[iq]/double(NRUNS));
+			error_out[iq]=sqrt(error_out[iq]/double(NRUNS-1));
+			error_side[iq]=sqrt(error_side[iq]/double(NRUNS-1));
+			error_long[iq]=sqrt(error_long[iq]/double(NRUNS-1));
+			error_inv[iq]=sqrt(error_inv[iq]/double(NRUNS-1));
 			fprintf(fptr,"%7.2f %12.8f  %12.8f  %12.8f  %12.8f  %12.8f  %12.8f  %12.8f  %12.8f  %12.8f  %12.8f %12.8f %12.8f\n",
 			q[iq],
 			cf_out[iq],denom_out[iq],error_out[iq],cf_side[iq],denom_side[iq],error_side[iq],

@@ -277,3 +277,56 @@ void CBalHBT::CalcBFs(){
 	fclose(logfile);
 }
 
+void CBalHBT::CalcBFCFDenoms(){
+	long long unsigned int imc;
+	unsigned int id,id1,id2,i,iprod;
+	double balweight=1.0;
+	vector<CHBTPart *> partvec(2);
+	vector<vector<CHBTPart *>> productvec(2);
+	for(id=0;id<2;id++){
+		partvec[id]=new CHBTPart();
+	}
+	for(imc=0;imc<NMC;imc++){
+		GetPart(stablevec,id1);
+		GetPart(stablevec,id2);
+		
+		partvec[0]->resinfo=stablevec[id1]->resinfo;
+		partvec[1]->resinfo=stablevec[id2]->resinfo;
+		
+		if(randy->ran()<0.5){
+			partvec[0]->PartAntipart();
+			balweight=-balweight;
+		}
+		if(randy->ran()<0.5){
+			partvec[1]->PartAntipart();
+			balweight=-balweight;
+		}
+		
+		//bw->GetXP(partvec);
+		bw->GetXP(partvec[0]);
+		bw->GetXP(partvec[1]);
+		
+		GetDecayProducts(partvec[0],productvec[0]);
+		GetDecayProducts(partvec[1],productvec[1]);
+		
+		bf->IncrementBFCFDenoms(partvec,productvec,id1,id2,balweight);
+		
+		for(i=0;i<2;i++){
+			for(iprod=0;iprod<productvec[i].size();iprod++)
+				delete productvec[i][iprod];
+			productvec[i].clear();
+		}
+		if((imc+1)%(NMC/10)==0){
+			fprintf(logfile,"finished %ld percent\n",lrint(100.0*imc/double(NMC)));
+			fflush(logfile);
+		}
+	}
+	
+	for(id=0;id<2;id++){
+		delete partvec[id];
+	}
+	partvec.clear();
+	bf->WriteResultsBFCFDenoms(run_number);
+	fclose(logfile);
+}
+

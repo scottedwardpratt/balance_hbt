@@ -150,7 +150,7 @@ void CCF_Arrays::WriteResultsBF(string dirname,long long int denom_count,int run
 	fprintf(fptr,"#   delphi     C(delphi)    Nphi\n");
 	for(int iphi=0;iphi<NPHI;iphi++){
 		delphi=(iphi+0.5)*DELPHI;
-		denom=0.5*denom_count*DELPHI;
+		denom=0.5*denom_count*DELPHI*PI/180.0;
 		fprintf(fptr,"%7.4f %12.9f %12.0f\n",delphi,cf_phi[iphi]/denom,denom_phi[iphi]);
 	}
 	fclose(fptr);

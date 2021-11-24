@@ -52,6 +52,7 @@ public:
 	void InitHBT(vector<CStableInfo *> &stablevec,string hbtparsfilename);
 	void CalcCFs();
 	void CalcBFs();
+	void CalcBFCFDenoms();
 	void WriteResultsCF(string dirname);
 	void WriteResultsBF(string dirname);
 };
@@ -104,6 +105,7 @@ public:
 	CblastWave(CBalHBT *balhbtset);
 	void GenerateParts(vector<CResInfo *> &resinfovec,vector<CHBTPart *> &partvec);
 	void GetXP(vector<CHBTPart *> &partvec);
+	void GetXP(CHBTPart *part);
 	void GetDecayMomenta(CHBTPart *mother,int &nbodies,vector<CHBTPart *> &daughterpartvec);
 	void SetYbeam(double roots);
 };
@@ -129,7 +131,8 @@ public:
 	void Zero();
 	void Print();
 	void WriteResultsCF(string dirname,long long int denom_count,int run_number);
-		void WriteResultsBF(string dirname,long long int denom_count,int run_number);
+	void WriteResultsBF(string dirname,long long int denom_count,int run_number);
+	void WriteResultsBFCFDenoms(string dirname,long long int denom_count,int run_number);
 };
 
 class CBF{
@@ -152,8 +155,10 @@ public:
 	vector<CHBTPart *> &partprimevec,vector<vector<CHBTPart *>> &productprimevec,int id0,int id1,int id0prime,int id1prime,double balweight,double balweightprime);
 	void IncrementCF(CHBTPart *part,CHBTPart *partprime,double weight,double efficiency);
 	void IncrementBFs(vector<CHBTPart *> partvec,vector<vector<CHBTPart *>> productvec,int id1,int id2,double balweight);
+	void IncrementBFCFDenoms(vector<CHBTPart *> partvec,vector<vector<CHBTPart *>> productvec,int id1,int id2,double balweight);
 	void WriteResultsCF(int run_number);
 	void WriteResultsBF(int run_number);
+	void WriteResultsBFCFDenoms(int run_number);
 	double Getqinv(CHBTPart *part,CHBTPart *partprime);
 	bool CHEAPPSISQUARED;
 	double CheapPsiSquared(CHBTPart *part,CHBTPart *partprime);
