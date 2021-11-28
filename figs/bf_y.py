@@ -25,7 +25,7 @@ height=(1.0-y0-0.04)/3.0
 
 root2=sqrt(2.0)
 xmin=0.0
-xmax=1.8
+xmax=1.8001
 
 dNdY_pi=649 # both + and - multiplicity
 dNdY_K=100.8
@@ -126,54 +126,54 @@ for jpanel in range(0,3):
 
    if jpanel==0:
       type='$\pi\pi$'
-      plt.errorbar(x,bfallwfs_pipi+bfbal_pipi,errordirect_pipi,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+      plt.errorbar(x,bfallwfs_pipi+bfbal_pipi,errordirect_pipi,linestyle='-',linewidth=2,color='k',markersize=10,marker='o',label=type)
       plt.errorbar(x,bfallwfs_pipi,errorallwfs_pipi,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
-      plt.plot(xbal,bfbal_pipi,linestyle='-',linewidth=4,color='k',label=type)
+      plt.plot(xbal,bfbal_pipi,linestyle='-',linewidth=4,color='r',label=type)
       ymin=-0.1
       ymax=0.8
       ax.set_yticks(np.arange(-1,1,0.2),minor=False)
-      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False)
+      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans')
       ax.set_yticks(np.arange(-1,1,0.1),minor=True)
-      plt.xlabel('$\Delta y$', fontsize=24, weight='normal')
+      plt.xlabel('$\Delta y$', fontsize=28, weight='normal')
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
-      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
       text(0.05,0.1,'final-state interactions',color='blue',fontsize='22',family='sans')
-      text(0.05,0.55,'charge balance',color='black',fontsize='22',family='sans')
-      text(0.35,0.72,'sum',color='red',fontsize='22',family='sans')
+      text(0.05,0.55,'charge balance',color='red',fontsize='22',family='sans')
+      text(0.35,0.72,'sum',color='k',fontsize='22',family='sans')
    if jpanel==1:
       type='$KK$'
       ymin=-0.05
       ymax=0.5
-      plt.errorbar(x,bfallwfs_KK+bfbal_KK,errordirect_K,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+      plt.errorbar(x,bfallwfs_KK+bfbal_KK,errordirect_K,linestyle='-',linewidth=2,color='k',markersize=10,marker='o',label=type)
       plt.errorbar(x,bfallwfs_KK,errorallwfs_K,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
-      plt.plot(xbal,bfbal_KK,linestyle='-',color='k',linewidth=4,label=type)
+      plt.plot(xbal,bfbal_KK,linestyle='-',color='r',linewidth=4,label=type)
       ax.set_yticks(np.arange(-1,1,0.2),minor=False)
-      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False)
+      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans')
       ax.set_yticks(np.arange(-1,1,0.1),minor=True)
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
       plt.ylabel('$B(\Delta y)$',fontsize='24')
-      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+      ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
    if jpanel==2:
      type='$pp$'
      ymin=-0.05
      ymax=0.5
-     plt.errorbar(x,bfallwfs_pp+bfbal_pp,errordirect_pp,linestyle='-',linewidth=2,color='r',markersize=10,marker='o',label=type)
+     plt.errorbar(x,bfallwfs_pp+bfbal_pp,errordirect_pp,linestyle='-',linewidth=2,color='k',markersize=10,marker='o',label=type)
      plt.errorbar(x,bfallwfs_pp,errorallwfs_pp,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
-     plt.plot(xbal,bfbal_pp,linestyle='-',color='k',linewidth=4,label=type)
+     plt.plot(xbal,bfbal_pp,linestyle='-',color='r',linewidth=4,label=type)
      ax.set_yticks(np.arange(-1,1,0.2),minor=False)
-     ax.set_yticklabels(np.arange(-1,1,0.2),minor=False)
+     ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans')
      ax.set_yticks(np.arange(-1,1,0.1),minor=True)
      plt.xlim(xmin,xmax)
      plt.ylim(ymin,ymax)
      plt.ylabel(None)
-     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
      
    ax.set_xticks(np.arange(xmin,xmax,0.2), minor=False)
    ax.set_xticks(np.arange(xmin,xmax,0.1), minor=True)
    if jpanel==0:
-      ax.set_xticklabels(np.arange(xmin,xmax,0.2), minor=False, family='serif')
+      ax.set_xticklabels(np.arange(xmin,xmax,0.2), minor=False, family='sans')
       ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
    else:
       ax.set_xticklabels([])
