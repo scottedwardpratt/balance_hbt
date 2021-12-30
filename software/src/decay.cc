@@ -9,8 +9,10 @@ void CBalHBT::GetDecayProducts(CHBTPart *part,vector<CHBTPart *> &products){
 	}
 	products.clear();
 	array<CResInfo *,5> dresinfo;
-	vector<CHBTPart> daughter(5);
-	vector<CHBTPart*> daughter_ptr(5);
+	vector<CHBTPart> daughter;
+	daughter.resize(5);
+	vector<CHBTPart*> daughter_ptr;
+	daughter_ptr.resize(5);
 	
 	
 	GetDecayResInfo(part->resinfo,ndaughters,dresinfo);
@@ -94,8 +96,10 @@ void CBalHBT::GetDecayResInfo(CResInfo *resinfo0,int &ndaughters,array<CResInfo 
 
 void CBalHBT::Decay(CHBTPart *mother,int &nbodies,vector<CHBTPart *> &daughter){
 	int ibody,alpha;
-	vector<double> mass(6);
-	vector<FourVector> p(5);
+	vector<double> mass;
+	mass.resize(6);
+	vector<FourVector> p;
+	p.resize(5);
 	double mtot;
 	CHBTPart *dptr;
 	FourVector u;

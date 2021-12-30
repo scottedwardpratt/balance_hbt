@@ -18,10 +18,10 @@ plt.rc('text', usetex=False)
 plt.figure(figsize=(10,15))
 fig = plt.figure(1)
 
-x0=0.14
-width=(0.97-x0)
-y0=0.1
-height=(1.0-y0-0.04)/3.0
+x0=0.15
+width=(0.96-x0)
+y0=0.07
+height=(1.0-y0-0.02)/3.0
 
 root2=sqrt(2.0)
 xmin=0.0
@@ -140,15 +140,15 @@ for jpanel in range(0,3):
       ymin=-0.1
       ymax=0.65
       ax.set_yticks(np.arange(-1,1,0.2),minor=False)
-      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans')
+      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans',fontsize=24)
       ax.set_yticks(np.arange(-1,1,0.1),minor=True)
-      plt.xlabel('$\Delta\phi$', fontsize=28, weight='normal')
+      plt.xlabel('$\Delta\phi$ [degrees]', fontsize=32, weight='normal')
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
       ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
-      text(5,0.05,'final-state interactions',color='blue',fontsize='22',family='sans')
-      text(5,0.32,'charge balance',color='red',fontsize='22',family='sans')
-      text(30,0.52,'sum',color='black',fontsize='22',family='sans')
+      text(5,0.05,'final-state interactions',color='blue',fontsize='28',family='sans')
+      text(5,0.26,'charge balance',color='red',fontsize='28',family='sans')
+      text(30,0.52,'sum',color='black',fontsize='28',family='sans')
    if jpanel==1:
       type='$KK$'
       ymin=-0.05
@@ -157,11 +157,11 @@ for jpanel in range(0,3):
       plt.errorbar(x,bfallwfs_KK,errorallwfs_K,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
       plt.plot(xbal,bfbal_KK,linestyle='-',linewidth=4,color='r',label=type)
       ax.set_yticks(np.arange(-1,1,0.2),minor=False)
-      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans')
+      ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans',fontsize=24)
       ax.set_yticks(np.arange(-1,1,0.1),minor=True)
       plt.xlim(xmin,xmax)
       plt.ylim(ymin,ymax)
-      plt.ylabel('$B(\Delta\phi)$',fontsize='24')
+      plt.ylabel('$B(\Delta\phi)$ [rad$^{-1}$]',fontsize='32')
       ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
    if jpanel==2:
      type='$pp$'
@@ -171,7 +171,7 @@ for jpanel in range(0,3):
      plt.errorbar(x,bfallwfs_pp,errorallwfs_pp,linestyle='-',linewidth=2,color='b',markersize=10,marker='s',label=type)
      plt.plot(xbal,bfbal_pp,linestyle='-',linewidth=4,color='r',label=type)
      ax.set_yticks(np.arange(-1,1,0.2),minor=False)
-     ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans')
+     ax.set_yticklabels(np.arange(-1,1,0.2),minor=False,family='sans',fontsize=24)
      ax.set_yticks(np.arange(-1,1,0.1),minor=True)
      plt.xlim(xmin,xmax)
      plt.ylim(ymin,ymax)
@@ -181,17 +181,17 @@ for jpanel in range(0,3):
    ax.set_xticks(np.arange(xmin,xmax,30), minor=False)
    ax.set_xticks(np.arange(xmin,xmax,10), minor=True)
    if jpanel==0:
-      ax.set_xticklabels(np.arange(xmin,xmax,30), minor=False, family='sans')
+      ax.set_xticklabels(np.arange(xmin,xmax,30), minor=False, family='sans',fontsize=24)
       ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0f'))
    else:
       ax.set_xticklabels([])
 
    if jpanel==0:
-      text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),"d) "+type,size=32,color='black',ha='right')
    if jpanel==1:
-      text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),"e) "+type,size=32,color='black',ha='right')
    if jpanel==2:
-      text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right')
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),"f) "+type,size=32,color='black',ha='right')
    if jpanel==3:
       text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right') 
   
