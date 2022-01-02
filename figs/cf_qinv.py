@@ -60,20 +60,34 @@ cfallwfs_pipi=cfallwfs_pipluspiminus-cfallwfs_pipluspiplus
 
 results = np.loadtxt('../scottrun/results_bal/pipi_denom/bf0_outsidelong.dat',skiprows=1,unpack=True)
 xbal=results[0]
-cfbal_denom=results[7]*dNdY_pi
+bal_denom=results[7]*dNdY_pi
 etawidth=1.8
-cfbal_pipi=(cfbal_pipi/cfbal_denom)/(etawidth*sqrt(2.0*np.pi)*dNdY_pi)
-
+bal_pipi=(cfbal_pipi/100000000.0);
+NQnormfile=np.loadtxt('../scottrun/NofQ.dat',skiprows=0,unpack=True);
+xbal_short=NQnormfile[0]
+balnorm_short=NQnormfile[1]
+cfbal_short=zeros(50)
+cfallwfs_short=zeros(50)
+for i in range(0,50):
+   #print(xbal_short[i],bal_pipi[i],balnorm_short[i])
+   cfbal_short[i]=cfbal_pipi[i]/balnorm_short[i]
+   cfbal_short[i]=cfbal_short[i]*2.0/(dNdY_pi*1.8)
+   print(cfbal_short[i])
+   cfallwfs_short[i]=cfallwfs_pipi[i]
+   print(cfallwfs_short[i])
+   print(xbal_short[i])
+   
+for i in range(0,50):
+   print(xbal_short[i],cfbal_short[i],cfallwfs_short[i])
 
 ax = fig.add_axes([x0,y0,width,height])
 #ax.tick_params(axis='both', which='major', labelsize=14)
 plt.plot([xmin,xmax],[0,0],linestyle='dashed',color='grey')
 
 type='$\pi\pi$'
-#plt.plot(x,cfallwfs_pipi+cfbal_pipi,linestyle='-',linewidth2,color='r',markersize=10,marker='o',label=type)
 plt.plot(2*x,cfallwfs_pipi,linestyle='-',linewidth=1,color='b',markersize=10,marker='s',label=type)
-plt.plot(2*xbal,cfbal_pipi,linestyle='-',linewidth=3,color='r',label=type)
-plt.plot(2*xbal,cfallwfs_pipi+cfbal_pipi,linestyle='-',linewidth=3,color='k',label=type)
+plt.plot(xbal_short,cfbal_short,linestyle='-',linewidth=3,color='r',label=type)
+plt.plot(xbal_short,cfallwfs_short+cfbal_short,linestyle='-',linewidth=3,color='k',label=type)
 ymin=-0.2
 ymax=0.8
 ax.set_yticks(np.arange(-1,1,0.2),minor=False)
@@ -93,7 +107,6 @@ ax.set_xticklabels(np.arange(xmin,xmax+1,50), minor=False, family='sans',size=24
 ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0f'))
 text(93,0.72,'b)',color='black',fontsize=32,family='sans')
 
-
 #upper panel
 ax = fig.add_axes([x0,y0+height,width,height])
 
@@ -102,8 +115,8 @@ plt.plot([xmin,xmax],[0,0],linestyle='dashed',color='grey')
 type='$\pi\pi$'
 #plt.plot(x,cfallwfs_pipi+cfbal_pipi,linestyle='-',linewidth2,color='r',markersize=10,marker='o',label=type)
 plt.plot(2*x,cfallwfs_pipi,linestyle='-',linewidth=1,color='b',markersize=10,marker='s',label=type)
-plt.plot(2*xbal,cfbal_pipi,linestyle='-',linewidth=3,color='r',label=type)
-plt.plot(2*xbal,cfallwfs_pipi+cfbal_pipi,linestyle='-',linewidth=3,color='k',label=type)
+plt.plot(xbal_short,cfbal_short,linestyle='-',linewidth=3,color='r',label=type)
+plt.plot(xbal_short,cfallwfs_short+cfbal_short,linestyle='-',linewidth=3,color='k',label=type)
 ymin=-0.05
 ymax=0.02
 ax.set_yticks(np.arange(-1,1,0.02),minor=False)
@@ -115,8 +128,8 @@ plt.xlim(xmin,xmax)
 plt.ylim(ymin,ymax)
 ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
 text(45,-0.014,'final-state interactions',color='blue',fontsize='28',family='sans')
-text(12,0.004,'charge balance',color='red',fontsize='28',family='sans')
-text(65,0.007,'sum',color='black',fontsize='28',family='sans')
+text(12,0.006,'charge balance',color='red',fontsize='28',family='sans')
+text(65,0.0085,'sum',color='black',fontsize='28',family='sans')
 ax.set_xticks(np.arange(xmin,xmax+1,50), minor=False)
 ax.set_xticks(np.arange(xmin,xmax+1,10), minor=True)
 ax.set_xticklabels(np.arange(xmin,xmax+1,50), minor=False, family='sans',size=16)

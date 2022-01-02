@@ -127,7 +127,7 @@ void CCF_Arrays::WriteResultsBF(string dirname,long long int denom_count,int run
 	fprintf(fptr,"#   q     Cout       Nout      Cside       Nside       Clong        Nlong\n");
 	for(int iq=0;iq<NQ;iq++){
 		delq=(0.5+iq)*DELQ;
-		denom=0.5*denom_count*DELPHI;
+		denom=0.5*denom_count*(0.001*DELQ);
 		fprintf(fptr,"%7.3f %12.9f %12.0f %12.9f %12.0f %12.9f %12.0f %12.9f %12.0f\n",
 		delq,
 		cf_out[iq]/denom,denom_out[iq],cf_side[iq]/denom,denom_side[iq],
