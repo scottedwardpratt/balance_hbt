@@ -38,7 +38,7 @@ dNdY_p=0.5*dNdY_p
 
 results = np.loadtxt('../scottrun/results_bal/pipi/bf0_outsidelong.dat',skiprows=1,unpack=True)
 xbal=results[0]
-cfbal_pipi=results[7]*dNdY_pi
+cfbal_pipi=results[7]*2000.0 # from qinv in MeV to Qinv in GeV
 
 results = np.loadtxt('../scottrun/results_direct/pipluspiplus/cf_outsidelong.dat',skiprows=0,unpack=True)
 x=results[0]
@@ -62,22 +62,22 @@ results = np.loadtxt('../scottrun/results_bal/pipi_denom/bf0_outsidelong.dat',sk
 xbal=results[0]
 bal_denom=results[7]*dNdY_pi
 etawidth=1.8
-bal_pipi=(cfbal_pipi/100000000.0);
-NQnormfile=np.loadtxt('../scottrun/NofQ.dat',skiprows=0,unpack=True);
-xbal_short=NQnormfile[0]
-balnorm_short=NQnormfile[1]
-cfbal_short=zeros(50)
-cfallwfs_short=zeros(50)
-for i in range(0,50):
-   #print(xbal_short[i],bal_pipi[i],balnorm_short[i])
-   cfbal_short[i]=cfbal_pipi[i]/balnorm_short[i]
-   cfbal_short[i]=cfbal_short[i]*2.0/(dNdY_pi*1.8)
-   print(cfbal_short[i])
+R_CBfile=np.loadtxt('../scottrun/results/R_CB.dat',skiprows=0,unpack=True);
+xbal_short=R_CBfile[0]
+R_CB=R_CBfile[1]
+cfbal_short=zeros(200)
+cfallwfs_short=zeros(200)
+norm=0.0
+for i in range(0,200):
+   norm=norm+0.005*cfbal_pipi[i]
+   cfbal_short[i]=cfbal_pipi[i]/R_CB[i]
+   #print(cfbal_short[i])
    cfallwfs_short[i]=cfallwfs_pipi[i]
-   print(cfallwfs_short[i])
-   print(xbal_short[i])
+   #print(cfallwfs_short[i])
+   #print(xbal_short[i])
+print('norm=',norm)
    
-for i in range(0,50):
+for i in range(0,200):
    print(xbal_short[i],cfbal_short[i],cfallwfs_short[i])
 
 ax = fig.add_axes([x0,y0,width,height])
@@ -128,8 +128,8 @@ plt.xlim(xmin,xmax)
 plt.ylim(ymin,ymax)
 ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
 text(45,-0.014,'final-state interactions',color='blue',fontsize='28',family='sans')
-text(12,0.006,'charge balance',color='red',fontsize='28',family='sans')
-text(65,0.0085,'sum',color='black',fontsize='28',family='sans')
+text(12,0.003,'charge balance',color='red',fontsize='28',family='sans')
+text(65,0.0055,'sum',color='black',fontsize='28',family='sans')
 ax.set_xticks(np.arange(xmin,xmax+1,50), minor=False)
 ax.set_xticks(np.arange(xmin,xmax+1,10), minor=True)
 ax.set_xticklabels(np.arange(xmin,xmax+1,50), minor=False, family='sans',size=16)

@@ -71,15 +71,15 @@ for jpanel in range(0,4):
   if jpanel==0:
     plt.plot(q,A*cf1wf_out,linestyle='-',linewidth=2,color='r',markersize=6,marker='o',label=type)
     plt.plot(q,A*cfall_out,linestyle='-',linewidth=2,color='b',markersize=6,marker='s',label=type)
-    #plt.plot(qexp,cfexp_out,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
+    plt.plot(qexp,cfexp_out,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
   if jpanel==1:
     plt.plot(q,A*cf1wf_side,linestyle='-',linewidth=2,color='r',markersize=6,marker='o',label=type)
     plt.plot(q,A*cfall_side,linestyle='-',linewidth=2,color='b',markersize=6,marker='s',label=type)
-    #plt.plot(qexp,cfexp_side,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
+    plt.plot(qexp,cfexp_side,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
   if jpanel==2:
     plt.plot(q,A*cf1wf_long,linestyle='-',linewidth=2,color='r',markersize=6,marker='o',label=type)
     plt.plot(q,A*cfall_long,linestyle='-',linewidth=2,color='b',markersize=6,marker='s',label=type)
-    #plt.plot(qexp,cfexp_long,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
+    plt.plot(qexp,cfexp_long,linestyle='-',linewidth=2,color='g',markersize=6,marker='o',label=type)
   if jpanel==3:
     plt.plot(q,cf1wf_qinv,linestyle='-',linewidth=2,color='r',markersize=6,marker='o',label=type)
     plt.plot(q,cfall_qinv,linestyle='-',linewidth=2,color='b',markersize=6,marker='s',label=type)

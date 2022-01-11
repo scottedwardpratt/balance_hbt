@@ -36,10 +36,10 @@ add_dependencies(bwspectra extern_balhbt extern_b3d2 extern_coral extern_commonu
 target_link_libraries(bwspectra ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 
 #################################################
-set(SOURCE_FILES ./bw_NofDQinv.cc)
-add_executable(bw_NofDQinv ${CMAKE_CURRENT_SOURCE_DIR}/bw_NofDQinv.cc)
-add_dependencies(bw_NofDQinv extern_balhbt extern_b3d2 extern_coral extern_commonutils)
-target_link_libraries(bw_NofDQinv ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
+set(SOURCE_FILES ./bw_R_CB.cc)
+add_executable(bw_R_CB ${CMAKE_CURRENT_SOURCE_DIR}/bw_R_CB.cc)
+add_dependencies(bw_R_CB extern_balhbt extern_b3d2 extern_coral extern_commonutils)
+target_link_libraries(bw_R_CB ${GITHOME_MSU}/balance_hbt/software/lib/libbalhbt.a ${GITHOME_MSU}/hp/alice/software/b3d2/lib/libb3d_alice.a ${GITHOME_MSU}/coral/software/lib/libcoral.a ${GITHOME_MSU}/commonutils/software/lib/libcommonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 
 ##################################################################################################
 set(SOURCE_FILES ./protonsonly.cc)
