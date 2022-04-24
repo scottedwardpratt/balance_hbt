@@ -1,7 +1,7 @@
+import os
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import numpy as np
-import os
 from pylab import *
 from matplotlib import ticker
 from matplotlib.ticker import ScalarFormatter
@@ -10,9 +10,7 @@ sformatter.set_scientific(True)
 sformatter.set_powerlimits((-4,3))
 #plt.ticklabel_format(style='sci', axis='y')
 
-font = {'family' : 'serif',
-        'weight' : 'normal',
-        'size'   : 14}
+font = {'family' : 'serif','weight' : 'normal','size'   : 14}
 plt.rc('font', **font)
 plt.rc('text', usetex=False)
 plt.figure(figsize=(10,15))
@@ -69,16 +67,16 @@ cfbal_short=zeros(200)
 cfallwfs_short=zeros(200)
 norm=0.0
 for i in range(0,200):
-   norm=norm+0.005*cfbal_pipi[i]
-   cfbal_short[i]=cfbal_pipi[i]/R_CB[i]
-   #print(cfbal_short[i])
-   cfallwfs_short[i]=cfallwfs_pipi[i]
-   #print(cfallwfs_short[i])
-   #print(xbal_short[i])
+	norm=norm+0.005*cfbal_pipi[i]
+	cfbal_short[i]=cfbal_pipi[i]/R_CB[i]
+	#print(cfbal_short[i])
+	cfallwfs_short[i]=cfallwfs_pipi[i]
+	#print(cfallwfs_short[i])
+	#print(xbal_short[i])
 print('norm=',norm)
-   
+	
 for i in range(0,200):
-   print(xbal_short[i],cfbal_short[i],cfallwfs_short[i])
+	print(xbal_short[i],cfbal_short[i],cfallwfs_short[i])
 
 ax = fig.add_axes([x0,y0,width,height])
 #ax.tick_params(axis='both', which='major', labelsize=14)
@@ -137,7 +135,7 @@ ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0f'))
 
 text(93,-0.047,'a)',color='black',fontsize=32,family='sans')
 
-   
+	
 ax.set_xticks(np.arange(xmin,xmax+1,50), minor=False)
 ax.set_xticks(np.arange(xmin,xmax+1,10), minor=True)
 ax.set_xticklabels([], minor=False)

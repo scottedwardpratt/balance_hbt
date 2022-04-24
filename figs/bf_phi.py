@@ -187,11 +187,11 @@ for jpanel in range(0,3):
       ax.set_xticklabels([])
 
    if jpanel==0:
-      text(0.95*xmax,ymin+0.85*(ymax-ymin),"d) "+type,size=32,color='black',ha='right')
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),"f) "+type,size=32,color='black',ha='right')
    if jpanel==1:
       text(0.95*xmax,ymin+0.85*(ymax-ymin),"e) "+type,size=32,color='black',ha='right')
    if jpanel==2:
-      text(0.95*xmax,ymin+0.85*(ymax-ymin),"f) "+type,size=32,color='black',ha='right')
+      text(0.95*xmax,ymin+0.85*(ymax-ymin),"d) "+type,size=32,color='black',ha='right')
    if jpanel==3:
       text(0.95*xmax,ymin+0.85*(ymax-ymin),type,size=24,color='black',ha='right') 
   
